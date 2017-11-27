@@ -37,7 +37,8 @@ public class SubReqServerHandler extends ChannelInboundHandlerAdapter {
         builder.setSubReqID(subReqID);
         builder.setRespCode(0);
         builder.setDesc("Netty book order succeed, 3 days later, sent to the designated address");
-        return builder.build();
+//        return builder.build();
+        return null;
     }
 
     @Override
