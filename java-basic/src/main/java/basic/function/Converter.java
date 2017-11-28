@@ -2,6 +2,8 @@ package basic.function;
 
 import org.junit.Test;
 
+import java.util.function.Function;
+
 /**
  * @Author:chaoqiang.zhou
  * @Description:
@@ -19,6 +21,13 @@ public interface Converter<F, T> {
 //        Converter<String, Integer> converter = (from) -> Integer.valueOf(from);
         //静态方法引用
         Converter<String, Integer> converter = Integer::valueOf;
+
+        Function<String,Integer> function= Integer::valueOf;
+        System.out.println(function.apply("33"));
+
+        Function<String,Integer> function1=(a)->{
+          return 2;
+        };
         Integer converted = converter.convert("123");
         System.out.println(converted);   // 123
 

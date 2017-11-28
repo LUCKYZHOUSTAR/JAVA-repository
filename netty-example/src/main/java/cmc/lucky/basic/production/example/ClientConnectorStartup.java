@@ -37,6 +37,9 @@ public class ClientConnectorStartup {
             public void operationComplete(ChannelFuture future) throws Exception {
                 if (!future.isSuccess()) {
                     logger.info("send fail,reason is {}", future.cause().getMessage());
+                }else{
+                    //通过监听来获取到结果信息
+                    
                 }
             }
         });

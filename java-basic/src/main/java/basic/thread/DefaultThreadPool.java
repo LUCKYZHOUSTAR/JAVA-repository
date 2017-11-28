@@ -113,6 +113,16 @@ public class DefaultThreadPool<Job extends Runnable> implements ThreadPool<Job> 
     }
 
 
+    /**
+     * 仿照netty改写优雅的关闭的操作
+     * 所谓优雅的关闭，是在发生关闭操作之后，某个时间段后不在接收任务，并且等待执行的任务全部的执行完毕后，该任务才会关闭
+     */
+    @Override
+    public void shutdownGracefully() {
+
+    }
+
+
     //工作者负责消费任务,也就是并发的从集合中进行获取任务然后执行，当没有任务的时候，就会进行阻塞操作
     class Worker implements Runnable {
 
