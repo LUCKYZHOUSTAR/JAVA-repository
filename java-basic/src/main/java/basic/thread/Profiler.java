@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
  * @Date:Create in 10:20 2017/10/25
  */
 public class Profiler {
+    private static final ThreadLocal<Long> THREAD_LOCAL = new ThreadLocal<>();
     // 第一次get()方法调用时会进行初始化（如果set方法没有调用），每个线程会调用一次
     //每一个线程缓存了一个副本，该副本之间相互的不影响
     private static final ThreadLocal<Long> TIME_THREADLOCAL = new ThreadLocal<Long>() {

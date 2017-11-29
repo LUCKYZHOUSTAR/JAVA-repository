@@ -4,7 +4,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @Author:chaoqiang.zhou
- * @Description:
+ * @Description:中断就是线程的一个标识，代表线程中断过而已，但是当抛出interrunption后，该标识会自动的进行
+ * 清除操作
  * @Date:Create in 20:44 2017/10/24
  */
 public class Interrupted {

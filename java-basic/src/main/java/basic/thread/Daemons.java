@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @Author:chaoqiang.zhou
  * @Description:https://www.cnblogs.com/yjmyzz/p/daemon-thread-demo.html
+ * 就是一个守护线程，等用户线程推出后，就自动的退出
  * @Date:Create in 18:27 2017/11/23
  */
 public class Daemons {
@@ -20,7 +21,7 @@ public class Daemons {
 
         Thread d = new Thread(new Daemon());
 
-        d.setDaemon(true); //必须在启动线程前调用
+//        d.setDaemon(true); //必须在启动线程前调用
 
         d.start();
 
