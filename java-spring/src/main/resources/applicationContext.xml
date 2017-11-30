@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+					http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+
+    <!--扫描配置的注解信息-->
+    <context:component-scan base-package="com.lucky"></context:component-scan>
+    <!-- name中的user可以取别名    scope="prototype" 或singleton="false"可以设置为非单例模式 -->
+    <!--<bean name="user" class="com.lucky.ioc.User">-->
+    <!--<property name="id" value="1"/>-->
+    <!--<property name="name" value="tom"/>-->
+    <!--<property name="age" value="20"/>-->
+    <!--<property name="gender" value="male"/>-->
+    <!--</bean>-->
+</beans>

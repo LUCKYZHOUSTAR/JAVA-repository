@@ -1,0 +1,78 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<beans xmlns="http://www.springframework.org/schema/beans"-->
+	   <!--xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+	   <!--xmlns:p="http://www.springframework.org/schema/p"-->
+	   <!--xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">-->
+
+	<!--<bean id="duke" class="com.springinaction.springidol.Juggler" >-->
+		<!--&lt;!&ndash; 通过构造方法设置属性值 &ndash;&gt;-->
+		<!--<constructor-arg value="15"></constructor-arg>-->
+	<!--</bean>-->
+
+	<!--<bean id="sonnect29" class="com.springinaction.springidol.Sonnet29"></bean>-->
+
+	<!--<bean id="poeticPoem" class="com.springinaction.springidol.PoeticJuggler">-->
+		<!--<constructor-arg value="15"></constructor-arg>-->
+		<!--<constructor-arg ref="sonnect29"></constructor-arg>-->
+	<!--</bean>-->
+
+	<!--&lt;!&ndash; 建立一个Instrumentalist bean-->
+    <!--@通过property为bean设置属性值,一旦instrumentalist被实例化，则对象会被赋此值-->
+<!--&ndash;&gt;-->
+	<!--<bean id="Kenny" class="com.springinaction.springidol.Instrumentalist">-->
+		<!--<property name="song" value="Jingle Bells"></property>-->
+		<!--<property name="age" value="37"></property>-->
+
+		<!--&lt;!&ndash; 这种做法可以实现接口与类的松耦合,比如下面两个都实现了Instrument接口的乐器类，Kenny bean可以随意引用 &ndash;&gt;-->
+		<!--&lt;!&ndash;-->
+        <!--<property name="instrument" ref="saxphone"></property>-->
+        <!--<property name="instrument" ref="piano"></property>-->
+        <!--&ndash;&gt;-->
+		<!--&lt;!&ndash; 内部bean的使用方式，这里用在property，constructor里面也是一样用 &ndash;&gt;-->
+		<!--<property name="instrument">-->
+			<!--<bean class="com.springinaction.springidol.piano"></bean>-->
+		<!--</property>-->
+	<!--</bean>-->
+
+	<!--<bean id="saxphone" class="com.springinaction.springidol.saxphone"></bean>-->
+	<!--<bean id="piano" class="com.springinaction.springidol.piano"></bean>-->
+
+	<!--&lt;!&ndash; p命名空间用法 &ndash;&gt;-->
+	<!--<bean id="Kenny2" class="com.springinaction.springidol.Instrumentalist"-->
+		  <!--p:song="Lemon Tree" p:age="30" p:instrument-ref="saxphone"    >-->
+	<!--</bean>-->
+
+	<!--&lt;!&ndash; 为集合配置bean &ndash;&gt;-->
+	<!--<bean id="hank" class="com.springinaction.springidol.OneManBand">-->
+		<!--<property name="instruments">-->
+			<!--<list>-->
+				<!--<ref bean="piano" />-->
+				<!--<ref bean="saxphone" />-->
+			<!--</list>-->
+		<!--</property>-->
+		<!--<property name="instruments2">-->
+			<!--<map>-->
+				<!--<entry key="piano" value-ref="piano"></entry>-->
+				<!--<entry key="saxphone" value-ref="saxphone"></entry>-->
+			<!--</map>-->
+		<!--</property>-->
+	<!--</bean>-->
+
+	<!--&lt;!&ndash; properties的写法 &ndash;&gt;-->
+	<!--<bean id="hank2" class="com.springinaction.springidol.OneManBand">-->
+		<!--<property name="instruments">-->
+			<!--<props>-->
+				<!--&lt;!&ndash; key和value都为String &ndash;&gt;-->
+				<!--<prop key="piano">la la la</prop>-->
+				<!--<prop key="saxphone">ta ta ta</prop>-->
+			<!--</props>-->
+		<!--</property>-->
+	<!--</bean>-->
+
+	<!--&lt;!&ndash; 赋null值 &ndash;&gt;-->
+	<!--&lt;!&ndash;-->
+    <!--...-->
+        <!--<property name="xxx"><null/></property>-->
+    <!--...-->
+     <!--&ndash;&gt;-->
+<!--</beans>-->
