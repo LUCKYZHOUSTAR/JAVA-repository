@@ -1,16 +1,13 @@
 package com.lucky.aop.basic;
 
-import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.aop.support.RegexpMethodPointcutAdvisor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import sun.awt.geom.AreaOp;
 
 /**
  * @Author:chaoqiang.zhou
@@ -39,7 +36,6 @@ public class AopTest {
         ProxyFactory proxyFactory = new ProxyFactory();
         proxyFactory.setTarget(new GreetingImpl());
         proxyFactory.addAdvice(new GreetingAroundAdvice());
-
         Greeting greeting = (Greeting) proxyFactory.getProxy();
         greeting.sayHello("jack");
     }
@@ -47,7 +43,7 @@ public class AopTest {
     @Test
     public void test3() {
 
-        ProxyFactoryBean proxyFactoryBean=new ProxyFactoryBean();
+        ProxyFactoryBean proxyFactoryBean = new ProxyFactoryBean();
         proxyFactoryBean.setTarget(new GreetingImpl());
         proxyFactoryBean.addAdvice(new GreetingBeforeAndAfterAdvice());
         Greeting greeting = (Greeting) proxyFactoryBean.getObject();
@@ -57,14 +53,13 @@ public class AopTest {
     @Test
     public void test4() {
 
-        RegexpMethodPointcutAdvisor regexpMethodPointcutAdvisor= new RegexpMethodPointcutAdvisor();
+        RegexpMethodPointcutAdvisor regexpMethodPointcutAdvisor = new RegexpMethodPointcutAdvisor();
         regexpMethodPointcutAdvisor.setAdvice(new GreetingAroundAdvice());
         regexpMethodPointcutAdvisor.setPattern("com.lucky.aop.basic.GreetingImpl.good.*");
 
 
-        ProxyFactoryBean proxyFactoryBean=new ProxyFactoryBean();
+        ProxyFactoryBean proxyFactoryBean = new ProxyFactoryBean();
         proxyFactoryBean.setTarget(new GreetingImpl());
-
         proxyFactoryBean.addAdvisors(regexpMethodPointcutAdvisor);
 //        proxyFactoryBean.setInterceptorNames("regexpMethodPointcutAdvisor");
         proxyFactoryBean.setProxyTargetClass(true);//代理目标累
@@ -74,12 +69,11 @@ public class AopTest {
     }
 
 
-
     @Autowired
     private Greeting greeting;
 
     @Test
-    public void test5(){
+    public void test5() {
         greeting.sayHello("ja");
 
     }
