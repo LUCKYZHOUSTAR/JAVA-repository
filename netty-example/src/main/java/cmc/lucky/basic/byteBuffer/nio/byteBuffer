@@ -1,0 +1,3 @@
+1.ByteBuffer长度固定：一旦分配完成，他的容量不能动态扩展和收缩，当需要编码的POJO对象大于ByteBuffer的容量时，会发生索引越界的异常
+2.ByteBuffer只有一个标识位置的指针position，读写的时候需要手工调用flip（）和rewind，使用者必须小心谨慎地使用这些api
+3.byebyffer的功能有限，一些高级和实用的特性他不支持，需要自己实现

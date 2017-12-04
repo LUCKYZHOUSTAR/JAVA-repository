@@ -9,6 +9,7 @@ import java.util.Collections;
 /**
  * @Author:chaoqiang.zhou
  * @Description:http://mp.weixin.qq.com/s/qJK61ew0kCExvXrqb7-RSg
+ * https://www.cnblogs.com/yanghuahui/p/3697996.html
  * @Date:Create in 11:19 2017/12/4
  */
 public class Distributedlock {
