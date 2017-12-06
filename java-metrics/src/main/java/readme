@@ -1,0 +1,8 @@
+1:agent
+该agent以aop的形式嵌套到各个业务系统中，维护所有方法的meter，并且后台30秒上报一次
+2.collector
+方法收集系统，收集到es当中去
+3.console
+web界面，事实检测信息
+4.task
+邮件每天通知信息
