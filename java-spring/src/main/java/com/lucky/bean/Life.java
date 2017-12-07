@@ -28,6 +28,7 @@ public class Life implements BeanNameAware,BeanFactoryAware {
         this.name = name;
     }
 
+
     public void myInit() {
         System.out.println("调用myInit方法");
     }

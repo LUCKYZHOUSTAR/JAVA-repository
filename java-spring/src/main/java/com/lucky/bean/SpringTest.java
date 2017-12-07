@@ -41,7 +41,8 @@ public class SpringTest {
         //该bean初始化后，才会调用application的操作
         ClassPathXmlApplicationContext ac = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
 
-        AwareTest awareTest = ac.getBean("applicationAawareTest", AwareTest.class);
-        System.out.println(awareTest);
+//        AwareTest awareTest = ac.getBean("applicationAawareTest", AwareTest.class);
+        ac.close();
+//        System.out.println(awareTest);
     }
 }

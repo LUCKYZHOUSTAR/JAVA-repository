@@ -1,0 +1,25 @@
+1.Disruptor只是一个中介，内部还是用RingBuffer来实现:https://www.cnblogs.com/ohuang/p/5799467.html
+2.RingBuffer用来生产数据，this.ringBuffer.publishEvent(eventTranslator);
+3.EventHandler消费者
+4.EventFactory事件工厂，用来创建事件
+
+5.EventHandlerGroup：消费者组的概念
+6.EventTranslatorOneArg：事件初始化器，ringbuffer发布事件的时候会调用他
+
+2.ringbuffer
+  2.1publish事件，调用了该方法，首先获取下一个序号，然后下面是进行包装该事件，最后调用发布方法
+  //获取到序号
+    long sequence = this.sequencer.next();
+   //填充该事件
+        this.translateAndPublish(translator, sequence);//也可以不用这个方法包装，可以自己直接包装事件信息
+        //直接发布该事件，最终还是sequenceer发布的是位置上的序号信息
+        this.sequencer.publish(sequence);
+看内部方法，也可以一批一批的进行发送，生产者信息
+
+
+消费者是如何关联起来的呢，有消费者的处理器BatchEventProcessor，最后通过 ringBuffer.addGatingSequences(transProcessor.getSequence());
+来给ringbuffer来关联起来
+
+BatchEventProcessor和前面的WorkProcessor大部分相同,不同的地方是:
+1 处理的是EventHandler,后面执行的时候也是一个EventHandler一个线程
+2 少了排队取任务的过程,所以线程是并行的.这样多个线程都会同时去检查生产者的位置信息,竞争压力会更大一点.

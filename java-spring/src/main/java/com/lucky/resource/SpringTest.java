@@ -31,6 +31,8 @@ public class SpringTest {
         //该bean初始化后，才会调用application的操作
         ClassPathXmlApplicationContext ac = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
         ResourceTest resourceTest = ac.getBean(ResourceTest.class);
+        //只有执行了这句话，才会调用distroy方法
+        ac.registerShutdownHook();
         try {
             resourceTest.resource();
         } catch (IOException e) {
