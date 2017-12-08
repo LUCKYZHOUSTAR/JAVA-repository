@@ -17,6 +17,8 @@
         <module>java-util</module>
         <module>java-disruptor</module>
         <module>java-metrics</module>
+        <module>java-benchmarks</module>
+        <module>java-jms</module>
     </modules>
     <packaging>pom</packaging>
     <properties>
