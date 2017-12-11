@@ -16,4 +16,8 @@ public class StrongUuidGenerator {
     return timeBasedGenerator.generate().toString();
   }
 
+  public static void main(String[] args) {
+    System.out.println(getNextId());
+  }
+
 }
