@@ -1,6 +1,8 @@
 package cmc.lucky.basic.attributeMapConstant;
 
 import io.netty.util.AttributeKey;
+import lombok.AllArgsConstructor;
+import lombok.ToString;
 
 /**
  * @Author:chaoqiang.zhou
@@ -9,6 +11,8 @@ import io.netty.util.AttributeKey;
  * 如果绑定在channel上的话，对于所有的上下文是共享的
  * @Date:Create in 10:59 2017/11/27
  */
+@ToString
+@AllArgsConstructor
 public class AttributeMapConstant {
     public static final AttributeKey<NettyChannel> NETTY_CHANNEL_KEY = AttributeKey.valueOf("netty.channel");
 }
