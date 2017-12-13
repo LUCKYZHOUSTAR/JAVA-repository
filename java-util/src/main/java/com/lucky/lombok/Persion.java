@@ -23,8 +23,35 @@ public class Persion {
 
 
     public static void main(String[] args) {
-        Persion persion=new Persion(23,"asdf");
+        Persion persion = new Persion(23, "asdf");
         System.out.println(persion);
     }
 
+
+    @Override
+    public int hashCode() {
+
+        int hash = 31;
+        hash = LangUtils.hashCode(hash, name);
+        hash = LangUtils.hashCode(hash, id);
+        return hash;
+
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        } else if (this == obj) {
+            return true;
+        } else if (obj instanceof Persion) {
+            return true;
+        } else {
+            Persion persion = (Persion) obj;
+
+            return LangUtils.equals(this.name, ((Persion) obj).name) && LangUtils.equals(this.id, ((Persion) obj).id);
+        }
+
+
+    }
 }
