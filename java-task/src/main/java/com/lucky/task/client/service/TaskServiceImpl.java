@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.lucky.task.client.Executor;
 import com.lucky.task.client.TaskContext;
 import com.lucky.task.client.data.ExecuteParam;
-import com.lucky.task.client.data.Result;
+import com.lucky.task.core.net.codec.Response;
 import com.lucky.task.core.util.Profiler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -34,21 +34,21 @@ public class TaskServiceImpl implements TaskService {
 
 
     @Override
-    public Result execute(ExecuteParam param) {
+    public Response execute(ExecuteParam param) {
         log.info("接收到任务{}", JSON.toJSONString(param));
         //过滤手动执行job，多次在任务执行期间执行
         if (param.getType() == ExecuteParam.ExecuteType.AUTO && runningTasks.containsKey(param.getName())) {
             String error = String.format("任务 %s 正在执行, 跳过此次调度(如果多次发生类型情况, 请检查调度时间是否合理)", param.getName());
             log.warn(error);
             //上报结果信息
-            return new Result(true, error);
+            return new Response(true, error);
         }
 
         String name = param.getName();
         Executor executor = executors.get(name);
         if (executor == null) {
             log.error("任务信息找寻不到，{}", name);
-            return new Result(false, "找不到任务信息");
+            return new Response(false, "找不到任务信息");
         }
         try {
 
@@ -59,9 +59,9 @@ public class TaskServiceImpl implements TaskService {
             pool.execute(() -> this.execute(executor, param));
         } catch (Exception e) {
             log.error("提交任务线程池失败", e);
-            return new Result(false, "提交任务线程池失败" + e.getMessage());
+            return new Response(false, "提交任务线程池失败" + e.getMessage());
         }
-        return new Result(true, null);
+        return new Response(true, null);
     }
 
 

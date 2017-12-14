@@ -1,22 +1,23 @@
-package com.lucky.task.client.data;
+package com.lucky.task.core.net.codec;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
 
 @Getter
 @Setter
 @ToString
-public class Result {
+public class Response  implements Serializable{
     public boolean Success;
 
     public String ErrorInfo;
 
-    public Result() {
+    public Response() {
     }
 
-    public Result(boolean success, String error) {
+    public Response(boolean success, String error) {
         this.Success = success;
         this.ErrorInfo = error;
     }

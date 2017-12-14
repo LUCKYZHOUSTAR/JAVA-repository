@@ -23,6 +23,7 @@
         <module>spring-quartz</module>
         <module>java-jetty</module>
         <module>java-task</module>
+        <module>spring-task</module>
     </modules>
     <packaging>pom</packaging>
     <properties>
