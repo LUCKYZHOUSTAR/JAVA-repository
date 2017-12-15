@@ -1,7 +1,7 @@
 package com.lucky.task.client;
 
-import com.lucky.task.client.data.Arg;
-import com.lucky.task.client.data.ExecuteParam;
+import com.lucky.task.core.config.Arg;
+import com.lucky.task.core.config.ExecuteParam;
 import lombok.Getter;
 
 import java.util.HashMap;

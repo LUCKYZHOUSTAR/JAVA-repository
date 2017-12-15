@@ -1,6 +1,5 @@
 package com.lucky.task.core.config;
 
-import com.sun.org.apache.xpath.internal.Arg;
 import lombok.Getter;
 import lombok.Setter;
 

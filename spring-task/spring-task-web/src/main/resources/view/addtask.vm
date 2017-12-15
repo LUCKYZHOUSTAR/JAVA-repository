@@ -1,0 +1,129 @@
+<link type="text/css" rel="stylesheet" href="/css/bootstrap.css"/>
+<link type="text/css" rel="stylesheet" href="/css/datepicker.css"/>
+<link type="text/css" rel="stylesheet" href="/css/jquery-cron.css"/>
+<link type="text/css" rel="stylesheet" href="/css/lucky.sba2.css"/>
+<link type="text/css" rel="stylesheet" href="/css/metis-menu.css"/>
+
+
+
+<script src="/js/jquery.js" type="text/javascript"></script>
+<script src="/js/bootstrap.js" type="text/javascript"></script>
+<script src="/js/jquery-cron.js" type="text/javascript"></script>
+<script src="/js/bootstrap-datepicker.js" type="text/javascript"></script>
+<script src="/js/lucky.check.js" type="text/javascript"></script>
+<script src="/js/lucky.ext.js" type="text/javascript"></script>
+<script src="/js/task.js" type="text/javascript"></script>
+
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="glyphicon glyphicon-plus"></i> 添加任务
+            </div>
+            <div class="panel-body">
+                <form id="form_task" class="form" role="form" novalidate>
+                    <div class="form-group has-feedback">
+                        <label>名称</label>
+                        <input class="form-control" id="txt_name" name="name" maxlength="100" placeholder="任务名称，唯一" required>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <span class="help-block with-errors"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>别名</label>
+                        <input class="form-control" id="txt_alias" name="alias" maxlength="100" placeholder="执行器中的任务别名，可选">
+                    </div>
+                    <div class="form-group">
+                        <label>说明</label>
+                        <input class="form-control" id="txt_note" name="note" placeholder="任务描述">
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label>执行器</label>
+                        <input class="form-control" id="txt_executor" name="executor" placeholder="执行服务名称" required>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <span class="help-block with-errors"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>触发器</label>
+                        <table class="table table-bordered table-condensed" style="margin-bottom:0">
+                            <thead>
+                            <tr>
+                                <th>表达式</th>
+                                <th>开始时间</th>
+                                <th>结束时间</th>
+                                <th style="vertical-align: middle">
+                                    <a  data-action="add-trigger" class="btn btn-info btn-xs">添加</a>
+                                    </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody_triggers">
+                            <tr>
+                                <td>
+                                    <input value="" class="form-control input-sm" placeholder="格式: * 1 * * *"/>
+                                </td>
+                                <td>
+                                    <input value="" class="form-control input-sm" data-provide="datepicker" placeholder="格式: 2015-01-01"/>
+                                </td>
+                                <td>
+                                    <input value="" class="form-control input-sm" data-provide="datepicker" placeholder="格式: 2016-01-01"/>
+                                </td>
+                                <td style="vertical-align: middle">
+                                    <a data-action="edit-trigger" class="btn btn-info btn-xs">修改</a>
+                                                <a  data-action="delete-trigger" class="btn btn-danger btn-xs">删除</a>
+                                    <a  data-action="test-trigger" class="btn btn-info btn-xs">测试</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <span class="help-block">cron: [秒] {分} {时} {天/月} {月} {天/周} [年]. 如果仅指定 6 位, 会自动在秒位补 0; 如果仅指定 5 位, 则在秒位补 0, 同时年位补充 *</span>
+                    </div>
+                    <div class="form-group">
+                        <label>参数</label>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                            <tr>
+                                <th>名称</th>
+                                <th>值</th>
+                                <th style="vertical-align: middle">
+                                    <a  data-action="add-arg" class="btn btn-info btn-xs">添加</a>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody_args">
+                            <tr>
+                                <td>
+                                    <input value="" class="form-control input-sm"/>
+                                </td>
+                                <td>
+                                    <input value="" class="form-control input-sm"/>
+                                </td>
+                                <td style="vertical-align: middle">
+                                    <a data-action="delete-arg" class="btn btn-danger btn-xs">删除</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="form-group">
+                                    <label>报警邮箱</label>
+                                    <input class="form-control" id="txt_warning_emails" name="warning_emails" placeholder="多个邮箱用逗号分割">
+                    </div>
+                    <div class="form-group">
+                        <label>报警手机</label>
+                        <input class="form-control" id="txt_warning_mobiles" name="warning_mobiles" placeholder="多个手机号用逗号分割">
+                    </div>
+                    <div id="div_status" class="form-group">
+                        <label>状态</label>
+                        <label class="radio-inline">
+                            <input type="radio" value="0" id="rb_status_0" name="status">停用
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" value="1" id="rb_status_1" name="status" checked>启用
+                        </label>
+                    </div>
+                    <button id="btn_save" type="submit" class="btn btn-primary">保存</button>
+                    <a href="/task/list" class="btn btn-default">取消</a>
+                </form>
+            </div>
+        </div>
+
+    </div>
+

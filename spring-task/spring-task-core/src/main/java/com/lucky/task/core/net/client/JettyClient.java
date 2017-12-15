@@ -17,7 +17,6 @@ public class JettyClient {
     public static Response send(RpcRequest rpcRequest, String address) {
         try {
             byte[] requestBytes = SerializerFactory.getSerializer().writeObject(rpcRequest);
-
             byte[] responseBytes = HttpClientUtil.postRequest(address, requestBytes);
             if (responseBytes == null || responseBytes.length == 0) {
                 Response rpcResponse = new Response(false, "RpcResponse byte[] is null");

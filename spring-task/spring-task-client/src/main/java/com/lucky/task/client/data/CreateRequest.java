@@ -32,5 +32,5 @@ public class CreateRequest {
     /**
      * 参数列表
      */
-    public List<Arg> Args;
+    public List<ExecuteRequest.Arg> Args;
 }

@@ -11,6 +11,7 @@ import com.lucky.task.core.util.HttpClientUtil;
 import lombok.Setter;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import java.io.OutputStream;
 /**
  * 客户端的server，用来接收执行任务的通知
  */
+@Service
 public class ServerHandler extends AbstractHandler {
 
     @Setter
@@ -47,23 +49,6 @@ public class ServerHandler extends AbstractHandler {
     }
 
 
-    public void reportHandler(RpcRequest rpcRpcRequest, HttpServletResponse response) throws IOException {
 
-        //处理执行的请求信息
-        if (rpcRpcRequest.getType() != ProcessType.report.value()) {
-            return;
-        }
-
-        //todo：开始处理上报的请求信息
-        ServerOptions param = (ServerOptions) rpcRpcRequest.getBody();
-        System.out.println("获取到了上报的信息{}" + JSON.toJSONString(param));
-        Response rpcResponse = new Response(true, "report");
-        byte[] responseBytes = SerializerFactory.getSerializer().writeObject(rpcResponse);
-        response.setContentType("text/html;charset=utf-8");
-        response.setStatus(HttpServletResponse.SC_OK);
-        OutputStream out = response.getOutputStream();
-        out.write(responseBytes);
-        out.flush();
-    }
 
 }

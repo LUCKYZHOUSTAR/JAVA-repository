@@ -1,0 +1,35 @@
+table tr .datagrid-radio, table tr .datagrid-checkbox {
+    cursor: pointer;
+    display: inline-block;
+    font-weight: normal;
+    margin-bottom: 0;
+    padding-left: 0px;
+    position: relative;
+    vertical-align: middle;
+}
+table > tbody > tr > td.selectable:not(.unselectable) {
+    cursor: pointer;
+}
+table > tbody > tr > td.unselectable {
+    cursor: inherit;
+}
+
+table > tbody > tr > td.text-left {
+    text-align: left;
+}
+table > tbody > tr > td.text-right {
+    text-align: right;
+}
+
+table > thead > tr > th[data-field-name][data-sort].sort {
+    background: rgba(0, 0, 0, 0) url("../img/sort_both.png") no-repeat scroll right center;
+    cursor: pointer;
+}
+
+table > thead > tr > th[data-field-name][data-sort].sort-asc {
+    background: rgba(0, 0, 0, 0) url("../img/sort_asc.png") no-repeat scroll right center;
+}
+
+table > thead > tr > th[data-field-name][data-sort].sort-desc {
+    background: rgba(0, 0, 0, 0) url("../img/sort_desc.png") no-repeat scroll right center;
+}

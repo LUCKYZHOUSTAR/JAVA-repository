@@ -79,10 +79,22 @@ public class TaskApplication {
 
 
     public ApplicationContext run() {
+        //添加一个钩子函数
+        //最后也需要上报
+        shutDown();
         ctx = app.run(this.args);
         this.load();
         log.info("server start:{} success", options.getPort());
         return ctx;
+    }
+
+
+    private void shutDown() {
+        Thread shutdownHookOne = new Thread(() -> {
+            jobClientScheduler.destroy();
+        });
+        Runtime.getRuntime().addShutdownHook(shutdownHookOne);
+
     }
 
     public <T> T getBean(Class<T> clazz) {

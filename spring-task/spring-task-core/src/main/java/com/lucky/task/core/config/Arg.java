@@ -1,4 +1,4 @@
-package com.lucky.task.client.data;
+package com.lucky.task.core.config;
 
 import lombok.Getter;
 import lombok.Setter;

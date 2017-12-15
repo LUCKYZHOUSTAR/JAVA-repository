@@ -1,6 +1,6 @@
 package com.lucky.task.client.service;
 
-import com.lucky.task.client.data.ExecuteParam;
+import com.lucky.task.core.config.ExecuteParam;
 import com.lucky.task.core.net.codec.Response;
 
 /**

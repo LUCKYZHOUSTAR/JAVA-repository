@@ -3,7 +3,7 @@ package com.lucky.task.client.service;
 import com.alibaba.fastjson.JSON;
 import com.lucky.task.client.Executor;
 import com.lucky.task.client.TaskContext;
-import com.lucky.task.client.data.ExecuteParam;
+import com.lucky.task.core.config.ExecuteParam;
 import com.lucky.task.core.net.codec.Response;
 import com.lucky.task.core.util.Profiler;
 import lombok.extern.slf4j.Slf4j;

@@ -15,6 +15,7 @@ import java.io.Serializable;
 @Setter
 public class ServerOptions implements Serializable {
 
+    //分组的信息
     private String name;
     private String ip;
     private int port;

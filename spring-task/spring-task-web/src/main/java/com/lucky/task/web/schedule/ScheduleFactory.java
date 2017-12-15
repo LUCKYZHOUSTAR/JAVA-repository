@@ -3,6 +3,8 @@ package com.lucky.task.web.schedule;
 import com.lucky.task.web.core.JobBean;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
+import org.quartz.impl.StdSchedulerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
@@ -14,8 +16,16 @@ import java.util.Date;
 @Slf4j
 public class ScheduleFactory {
 
-    private static Scheduler scheduler = null;
 
+
+    private static Scheduler scheduler=null;
+    static{
+        try {
+            scheduler=new StdSchedulerFactory().getScheduler();
+
+        }catch (Exception e){
+        }
+    }
 
     public static boolean checkExists(String jobName, String jobGroup) throws SchedulerException {
         TriggerKey triggerKey = TriggerKey.triggerKey(jobName, jobGroup);
