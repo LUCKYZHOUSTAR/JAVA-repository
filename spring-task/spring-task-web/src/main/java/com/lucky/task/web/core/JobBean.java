@@ -27,7 +27,7 @@ public class JobBean extends QuartzJobBean {
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         TriggerKey triggerKey = context.getTrigger().getKey();
         log.info("task{}，执行器{}开始调度{}", triggerKey.getName(), triggerKey.getGroup(), LocalDate.now());
-        //后续实现各种路由的算法
+        //后续实现各种路由的算法,以及调用不同的话，移除该bean的信息
         JobInfoFactory.jobs.get(triggerKey.getGroup()).forEach(data -> {
             trigger(triggerKey.getGroup(), triggerKey.getName(), data);
             return;
