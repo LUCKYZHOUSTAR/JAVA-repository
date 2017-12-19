@@ -48,7 +48,6 @@ public class Persion {
             return true;
         } else {
             Persion persion = (Persion) obj;
-
             return LangUtils.equals(this.name, ((Persion) obj).name) && LangUtils.equals(this.id, ((Persion) obj).id);
         }
 
