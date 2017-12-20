@@ -24,6 +24,8 @@
         <module>java-jetty</module>
         <module>java-task</module>
         <module>spring-task</module>
+        <module>java-metrics-boot</module>
+        <module>java-jctools</module>
     </modules>
     <packaging>pom</packaging>
     <properties>

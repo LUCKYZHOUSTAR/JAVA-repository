@@ -1,0 +1,77 @@
+
+序
+JCTools是一款对jdk并发数据结构进行增强的并发工具，主要提供了map以及queue的增强数据结构。原来netty还是自己写的MpscLinkedQueueNode，后来新版本就换成使用JCTools的并发队列了。
+
+增强map
+ConcurrentAutoTable(后面几个map/set结构的基础)
+NonBlockingHashMap
+NonBlockingHashMapLong
+NonBlockingHashSet
+NonBlockingIdentityHashMap
+NonBlockingSetInt
+增强队列
+SPSC - Single Producer Single Consumer (Wait Free, bounded and unbounded)
+MPSC - Multi Producer Single Consumer (Lock less, bounded and unbounded)
+SPMC - Single Producer Multi Consumer (Lock less, bounded)
+MPMC - Multi Producer Multi Consumer (Lock less, bounded)
+maven
+        <dependency>
+            <groupId>org.jctools</groupId>
+            <artifactId>jctools-core</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+ConcurrentAutoTable
+替代AtomicLong，专门为高性能的counter设计的。只有几个方法
+
+public void add( long x );
+public void decrement();
+public void increment();
+public void set( long x );
+public long get();
+public int  intValue();
+public long longValue();
+public long estimate_get();
+对比AtomicLong主要是操作之后没有立即返回
+
+public final long incrementAndGet();
+public final long decrementAndGet()
+NonBlockingHashMap
+NonBlockingHashMap是对ConcurrentHashMap的增强，对多CPU的支持以及高并发更新提供更好的性能。
+NonBlockingHashMapLong是key为Long型的NonBlockingHashMap。
+NonBlockingHashSet是对NonBlockingHashMap的简单包装以支持set的接口。
+NonBlockingIdentityHashMap是从NonBlockingHashMap改造来的，使用System.identityHashCode()来计算哈希
+NonBlockingSetInt是一个使用CAS的简单的bit-vector
+
+原来是
+// --- hash ----------------------------------------------------------------
+  // Helper function to spread lousy hashCodes.  Throws NPE for null Key, on
+  // purpose - as the first place to conveniently toss the required NPE for a
+  // null Key.
+  private static final int hash(final Object key) {
+    int h = key.hashCode();     // The real hashCode call
+    h ^= (h>>>20) ^ (h>>>12);
+    h ^= (h>>> 7) ^ (h>>> 4);
+    h += h<<7; // smear low bits up high, for hashcodes that only differ by 1
+    return h;
+  }
+改为
+
+// --- hash ----------------------------------------------------------------
+  // Helper function to spread lousy hashCodes
+  private static final int hash(final Object key) {
+    int h = System.identityHashCode(key); // The real hashCode call
+    // I assume that System.identityHashCode is well implemented with a good
+    // spreader, and a second bit-spreader is redundant.
+    //h ^= (h>>>20) ^ (h>>>12);
+    //h ^= (h>>> 7) ^ (h>>> 4);
+    return h;
+  }
+SPSC/MPSC/SPMC/MPMC 数据变量的并发队列：
+SPSC：单个生产者对单个消费者（无等待、有界和无界都有实现）
+MPSC：多个生产者对单个消费者（无锁、有界和无界都有实现）
+SPMC：单生产者对多个消费者（无锁 有界）
+MPMC：多生产者对多个消费者（无锁、有界）
+SPSC/MPSC 提供了一个在性能，分配和分配规则之间的平衡的关联数组队列
+扩展队列的接口（MessagePassingQueue）:
+relaxedOffer/Peek/Poll: 对于空/满的队列基于某种机制下进行合并来改进队列的使用效率提高性能
+drain/fill: 批量读写方法提高数据处理量并且减少数据冲突
