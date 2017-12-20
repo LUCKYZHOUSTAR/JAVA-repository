@@ -31,7 +31,7 @@ public class Persion {
     @Override
     public int hashCode() {
 
-        int hash = 31;
+        int hash = LangUtils.HASH_SEED;
         hash = LangUtils.hashCode(hash, name);
         hash = LangUtils.hashCode(hash, id);
         return hash;

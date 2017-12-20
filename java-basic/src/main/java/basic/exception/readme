@@ -1,0 +1,33 @@
+1.java中的异常分类
+
+                                                                                   |-----------------------StackOverFlowError
+                                                                                   |
+                                                                                   |
+                                                                                   |
+                                                |-------------VirtulMachineError---|
+                                                |                                  |
+                                                |                                  |---------------OutOfMemoryError
+                   |-----------------------Error|
+                   |                            |-------------AWTError
+                   |
+Throwable----------|                                                            |------EORException
+                   |                                                            |
+                   |                                |----------------IOException|--------FileNotFoundException
+                   |                                |
+                   |                                |
+                   |-----------------------Exception|
+                                                    |
+                                                    |                                  |------ArrithmeticException
+                                                    |                                  |
+                                                    |------------------RunTimeException|
+                                                                                       |--------NullPointerException
+
+Throwable派生出一些通用的异常：Error类和Excpeiton类
+错误：Error类以及他的子类的实例，代表了JVM本身的错误，错误不能被程序员通过代码错误处理，Error很少出现，因此更应该关系Exception类的信息
+异常：Excpeiton类以及他的子类，代表程序运行时发生的各种不期望发生的事件，可以被java异常处理机制使用，是异常处理的核心
+
+非检查的异常和检查的异常：根据能不能被编译
+对于未检查异常也叫RuntimeException(运行时异常),对于运行时的异常，不要求一定把他捕获或者一定要继续抛出，但是对于checkedexception(检查异常)要求你必须要在方法里面或者捕获或者继续抛出.
+1.继承自runtimeexception或error的是非检查型异常，而继承自exception的则是检查型异常（当然，runtimeexception本身也是exception的子类,也是非检查异常）。
+2.对非检查型类异常可以不用捕获，而检查型异常则必须用try语句块进行处理或者把异常交给上级方法处理总之就是必须写代码处理它。
+

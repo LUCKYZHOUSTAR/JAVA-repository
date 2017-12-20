@@ -23,10 +23,10 @@ public class ThrowablesTest {
     public void testThrowables() {
         try {
             throw new Exception();
-        } catch (Throwable t) {
+        } catch (Exception t) {
             String ss = Throwables.getStackTraceAsString(t);
             System.out.println("ss:" + ss);
-            Throwables.propagate(t);
+//            Throwables.propagate(t);
         }
     }
 
@@ -35,7 +35,7 @@ public class ThrowablesTest {
         try {
             throw new IOException();
         } catch (Throwable t) {
-            Throwables.propagateIfInstanceOf(t, IOException.class);
+//            Throwables.propagateIfInstanceOf(t, IOException.class);
             throw Throwables.propagate(t);
         }
     }
@@ -51,4 +51,96 @@ public class ThrowablesTest {
         }
     }
 
+
+//    @Test
+//    public void call3()throws IOException{
+//        try {
+//            throw new IOException();
+//        } catch (Exception e) {
+//        } catch (Throwable t) {
+//            Throwables.propagateIfInstanceOf(t, IOException.class);
+//            Throwables.propagateIfInstanceOf(t, SQLException.class);
+//            throw Throwables.propagate(t);
+//        }
+//    }
+
+
+    /**
+     *
+     1
+     2
+     3
+     4
+     5
+     6
+     7
+     8
+     9
+     try {
+     someMethodThatCouldThrowAnything();
+     } catch (IKnowWhatToDoWithThisException e) {
+     handle(e);
+     } catch (Throwable t) {
+     Throwables.propagateIfInstanceOf(t, IOException.class);
+     Throwables.propagateIfInstanceOf(t, SQLException.class);
+     throw Throwables.propagate(t);
+     }
+     　　上面的例子中，只抛出感兴趣的IOException或者SQLException，至于其他的异常直接转换为运行时异常。
+
+     1
+     2
+     3
+     4
+     5
+     6
+     7
+     8
+     try {
+     someMethodThatCouldThrowAnything();
+     } catch (IKnowWhatToDoWithThisException e) {
+     handle(e);
+     } catch (Throwable t) {
+     Throwables.propagateIfPossible(t);
+     throw new RuntimeException("unexpected", t);
+     }
+     　　propagateIfPossible方法只会对RuntimeException或者Error异常感兴趣
+
+     1
+     2
+     3
+     4
+     5
+     6
+     7
+     8
+     try {
+     someMethodThatCouldThrowAnything();
+     } catch (IKnowWhatToDoWithThisException e) {
+     handle(e);
+     } catch (Throwable t) {
+     Throwables.propagateIfPossible(t, OtherException.class);
+     throw new RuntimeException("unexpected", t);
+     }
+     　　propagateIfPossible的另外一个重载方法，容许我们来自己指定一个感兴趣的异常。这样这个方法只会对RuntimeException或者Error和我们指定的这3种异常感兴趣。
+
+     1
+     2
+     3
+     4
+     5
+     6
+     7
+     8
+     9
+     T doSomething() {
+     try {
+     return someMethodThatCouldThrowAnything();
+     } catch (IKnowWhatToDoWithThisException e) {
+     return handle(e);
+     } catch (Throwable t) {
+     throw Throwables.propagate(t);
+     }
+     }
+     　　上面的方法会将受检查的异常转换为运行时异常。
+     */
 }
