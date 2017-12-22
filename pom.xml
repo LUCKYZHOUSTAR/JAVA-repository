@@ -26,6 +26,7 @@
         <module>spring-task</module>
         <module>java-metrics-boot</module>
         <module>java-jctools</module>
+        <module>java-encrypt</module>
     </modules>
     <packaging>pom</packaging>
     <properties>
