@@ -12,3 +12,10 @@ Producer 由用户实现，它调用RingBuffer来插入事件(Event)，在Disrup
 WorkProcessor 确保每个sequence只被一个processor消费，在同一个WorkPool中的处理多个WorkProcessor不会消费同样的sequence。
 WorkerPool 一个WorkProcessor池，其中WorkProcessor将消费Sequence，所以任务可以在实现WorkHandler接口的worker吃间移交
 LifecycleAware 当BatchEventProcessor启动和停止时，于实现这个接口用于接收通知。
+
+
+
+       有关RingBuffer要记住以下几点：
+              1.RingBuffer是协调事件发布者和事件处理者的中间队列，事件发布者发布事件放到RingBuffer，事件处理者从RingBuffer上拿事件进行消费。
+              2.RingBuffer可以认为是一个环形队列，底层由数组实现。内部做了大量的缓存行填充，保存事件使用的数组的长度必须是2的幂，这样可以高效的取模(取模本身就包含绕回逻辑，按照序列不断的增长，形成一个环形轨迹)。由于RingBuffer这样的特性，也避免了GC带来的性能影响，因为RingBuffer本身永远不会被GC。
+              3.RingBuffer和普通的FIFO队列相比还有一个重要的区别就是，RingBuffer避免了头尾节点的竞争，多个事件发布者/事件处理者之间不必竞争同一个节点，只需要安全申请序列值各自存取事件就好了。

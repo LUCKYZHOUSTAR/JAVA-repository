@@ -19,5 +19,8 @@ public class ObjSize {
 
     public static class A {
         boolean f;
+        public long p1;
+        public volatile long value = 0L;
+
     }
 }
