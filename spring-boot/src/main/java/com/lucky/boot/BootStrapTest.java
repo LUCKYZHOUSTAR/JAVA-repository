@@ -32,12 +32,13 @@ import org.springframework.context.ApplicationContext;
  * 则可以直接使用@Configuration、@EnableAutoConfiguration、@ComponentScan三个注解。
  */
 //默认扫描的就是这个类下面的包和子包,可以手动指定
-@SpringBootApplication
 //@ComponentScan("com.lucky.boot.flag")
-public class Boot {
+@SpringBootApplication
+public class BootStrapTest {
 
     public static void main(String[] args) {
-        ApplicationContext context = SpringApplication.run(Boot.class, args);
+        System.out.println("sadf");
+        ApplicationContext context = SpringApplication.run(BootStrapTest.class, args);
         context.getBean(FlyService.class).fly();
         context.getBean(ContentService.class).doSomething();
     }

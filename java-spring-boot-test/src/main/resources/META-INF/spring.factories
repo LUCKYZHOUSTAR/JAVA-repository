@@ -1,0 +1,4 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.lucky.spring.configuration.MetricsAutoConfiguration,\
+com.lucky.spring.configuration.HealthCheckAutoConfiguration

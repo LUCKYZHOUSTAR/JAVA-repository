@@ -1,5 +1,6 @@
 package basic.thread;
 
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -19,6 +20,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class LockUseCase {
     static Lock lock = new ReentrantLock();
+    static Condition condition = lock.newCondition();
 
     /**
      * Lock lock = new ReentrantLock();

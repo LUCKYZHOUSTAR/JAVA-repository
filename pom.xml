@@ -27,6 +27,7 @@
         <module>java-metrics-boot</module>
         <module>java-jctools</module>
         <module>java-encrypt</module>
+        <module>java-spring-boot-test</module>
     </modules>
     <packaging>pom</packaging>
     <properties>

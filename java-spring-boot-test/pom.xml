@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>java-class-repository</artifactId>
+        <groupId>cmc.lucky.java</groupId>
+        <version>1.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>java-springboot-test</artifactId>
+    <properties>
+        <encoding.source>UTF-8</encoding.source>
+        <version.jdk>1.8</version.jdk>
+        <version.maven.compiler>3.3</version.maven.compiler>
+        <version.slf4j>1.7.21</version.slf4j>
+        <version.log4j>1.2.17</version.log4j>
+        <version.lombok>1.16.8</version.lombok>
+        <version.guava>19.0</version.guava>
+        <version.lark>${project.version}</version.lark>
+        <version.netty>4.1.0.CR6</version.netty>
+        <version.etcd4j>2.10.0</version.etcd4j>
+        <version.jug>2.0.0</version.jug>
+        <version.protobuf>2.6.1</version.protobuf>
+        <version.jedis>2.8.1</version.jedis>
+        <version.fastjson>1.2.8</version.fastjson>
+        <version.junit>4.12</version.junit>
+        <version.fst>2.45</version.fst>
+        <version.nsq>1.0.0.RC2-M7</version.nsq>
+        <version.mongodb>3.2.2</version.mongodb>
+        <version.mongodb.morphia>1.1.1</version.mongodb.morphia>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${version.spring}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+            <version>${version.spring.boot}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-velocity</artifactId>
+            <version>${version.spring.boot}</version>
+            <exclusions>
+                <exclusion>
+                    <!-- 导致使用 slf4j 时与 log4j 冲突-->
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+                <exclusion>
+                    <!-- 导致 slf4j 循环引用堆栈溢出 -->
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>log4j-over-slf4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${version.spring}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <version>${version.spring.boot}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.18</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+
+</project>

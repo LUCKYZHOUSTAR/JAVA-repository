@@ -14,8 +14,9 @@ import java.util.*;
  */
 public class TestCase {
 
-    public static final String ip="192.168.54.101";
-    public static final int port=6379;
+    public static final String ip = "192.168.54.101";
+    public static final int port = 6379;
+
     /**
      * 在不同的线程中使用相同的Jedis实例会发生奇怪的错误。但是创建太多的实现也不好因为这意味着会建立很多sokcet连接，
      * 也会导致奇怪的错误发生。单一Jedis实例不是线程安全的。为了避免这些问题，可以使用JedisPool,
@@ -30,9 +31,78 @@ public class TestCase {
 
     }
 
+
     @Test
-    public  void Hello() {
-        Jedis jedis = RedisUtil.getJedis(ip,port);
+    public void setTest() {
+        Jedis jedis = RedisUtil.getJedis(ip, port);
+
+        try {
+
+            jedis.set("aa", "bb");
+            System.out.println(jedis.get("aa"));
+
+            jedis.expire("aa", 32);
+//            Thread.sleep(3000L);
+//            System.out.println(jedis.get("aa"));
+            //获取存货的时间
+            System.out.println(jedis.ttl("aa"));
+
+            jedis.set("aa", "cc", "NX", "EX", 2);
+            System.out.println(jedis.get("aa"));
+            jedis.set("dd", "bb");
+
+//            System.out.println(jedis.exists("aa","dd"));
+            jedis.del("aa");
+            System.out.println(jedis.get("aa"));
+            System.out.println(jedis.type("dd"));
+
+            System.out.println(jedis.keys("d*"));
+            System.out.println(jedis.rename("dd", "cc"));
+            System.out.println(jedis.get("cc"));
+
+
+            //原子set操作
+            System.out.println(jedis.getSet("cc", "ff"));
+            System.out.println(jedis.get("cc"));
+
+            System.out.println(jedis.mget("cc", "dd"));
+
+
+            //原子操作
+            System.out.println(jedis.mset("cc", "aa", "dd", "ww"));
+            System.out.println(jedis.get("dd"));
+
+
+            System.out.println(jedis.decr("ss"));
+
+        } catch (Exception e) {
+
+        } finally {
+            RedisUtil.getPool(ip, port).returnResource(jedis);
+        }
+
+    }
+
+
+    @Test
+    public void hsetTest() {
+        Jedis jedis = RedisUtil.getJedis(ip, port);
+        try {
+
+            //存在更新，返回0，不存在，创建返回1
+            System.out.println(jedis.hset("set", "ww", "ss"));
+            System.out.println(jedis.hget("set","ww"));
+        } catch (Exception e) {
+
+        } finally {
+            RedisUtil.getPool(ip, port).returnResource(jedis);
+
+        }
+    }
+
+    @Test
+    public void Hello() {
+        Jedis jedis = RedisUtil.getJedis(ip, port);
         try {
             // 向key-->name中放入了value-->minxr
             jedis.set("name", "minxr");
@@ -60,14 +130,14 @@ public class TestCase {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            RedisUtil.getPool(ip,port).returnResource(jedis);
+            RedisUtil.getPool(ip, port).returnResource(jedis);
         }
 
     }
 
     @Test
     public void testKey() {
-        Jedis jedis = RedisUtil.getJedis(ip,port);
+        Jedis jedis = RedisUtil.getJedis(ip, port);
         System.out.println("=============key==========================");
         // 清空数据
 //        System.out.println(jedis.flushDB());
@@ -77,10 +147,11 @@ public class TestCase {
         jedis.set("key", "values");
         System.out.println(jedis.exists("key"));
     }
+
     @Test
-    public  void testString() {
+    public void testString() {
         System.out.println("==String==");
-        Jedis jedis = RedisUtil.getJedis(ip,port);
+        Jedis jedis = RedisUtil.getJedis(ip, port);
         try {
             // String
             jedis.set("key", "Hello World!");
@@ -89,7 +160,7 @@ public class TestCase {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            RedisUtil.getPool(ip,port).returnResource(jedis);
+            RedisUtil.getPool(ip, port).returnResource(jedis);
         }
 
         System.out.println("=============String==========================");
@@ -123,14 +194,14 @@ public class TestCase {
         System.out.println(jedis.mset("mset1", "mvalue1", "mset2", "mvalue2",
                 "mset3", "mvalue3", "mset4", "mvalue4"));
         System.out.println(jedis.mget("mset1", "mset2", "mset3", "mset4"));
-        System.out.println(jedis.del(new String[] { "foo", "foo1", "foo3" }));
+        System.out.println(jedis.del(new String[]{"foo", "foo1", "foo3"}));
     }
 
     //从右到左添加元素
     @Test
-    public  void testList() {
+    public void testList() {
         System.out.println("==List==");
-        Jedis jedis = RedisUtil.getJedis(ip,port);
+        Jedis jedis = RedisUtil.getJedis(ip, port);
         try {
             // 开始前，先移除所有的内容
             jedis.del("messages");
@@ -146,7 +217,7 @@ public class TestCase {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            RedisUtil.getPool(ip,port).returnResource(jedis);
+            RedisUtil.getPool(ip, port).returnResource(jedis);
         }
 
         // 清空数据
@@ -174,10 +245,11 @@ public class TestCase {
         // 整个列表值
         System.out.println(jedis.lrange("lists", 0, -1));
     }
+
     @Test
-    public  void testSet() {
+    public void testSet() {
         System.out.println("==Set==");
-        Jedis jedis = RedisUtil.getJedis(ip,port);
+        Jedis jedis = RedisUtil.getJedis(ip, port);
         try {
             jedis.sadd("myset", "1");
             jedis.sadd("myset", "2");
@@ -195,7 +267,7 @@ public class TestCase {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            RedisUtil.getPool(ip,port).returnResource(jedis);
+            RedisUtil.getPool(ip, port).returnResource(jedis);
         }
 
         // 清空数据
@@ -228,10 +300,11 @@ public class TestCase {
         // 差集
         System.out.println(jedis.sdiff("sets1", "sets2"));
     }
+
     @Test
-    public  void sortedSet() {
+    public void sortedSet() {
         System.out.println("==SoretedSet==");
-        Jedis jedis = RedisUtil.getJedis(ip,port);
+        Jedis jedis = RedisUtil.getJedis(ip, port);
         try {
             jedis.zadd("hackers", 1940, "Alan Kay");
             jedis.zadd("hackers", 1953, "Richard Stallman");
@@ -246,7 +319,7 @@ public class TestCase {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            RedisUtil.getPool(ip,port).returnResource(jedis);
+            RedisUtil.getPool(ip, port).returnResource(jedis);
         }
 
         // 清空数据
@@ -268,10 +341,11 @@ public class TestCase {
         // 整个集合值
         System.out.println(jedis.zrange("zset", 0, -1));
     }
+
     @Test
-    public  void testHsh() {
+    public void testHsh() {
         System.out.println("==Hash==");
-        Jedis jedis = RedisUtil.getJedis(ip,port);
+        Jedis jedis = RedisUtil.getJedis(ip, port);
         try {
             Map<String, String> pairs = new HashMap<String, String>();
             pairs.put("name", "Akshi");
@@ -293,7 +367,7 @@ public class TestCase {
             }
 
             List<String> values = jedis.lrange("messages", 0, -1);
-            values = jedis.hmget("kid", new String[] { "name", "age", "sex" });
+            values = jedis.hmget("kid", new String[]{"name", "age", "sex"});
             System.out.println(values);
             Set<String> setValues = jedis.zrange("hackers", 0, -1);
             setValues = jedis.hkeys("kid");
@@ -305,7 +379,7 @@ public class TestCase {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            RedisUtil.getPool(ip,port).returnResource(jedis);
+            RedisUtil.getPool(ip, port).returnResource(jedis);
         }
 
         // 清空数据
@@ -328,9 +402,10 @@ public class TestCase {
         // 获取所有的values
         System.out.println(jedis.hvals("hashs"));
     }
+
     @Test
-    public  void testOther() throws InterruptedException {
-        Jedis jedis = RedisUtil.getJedis(ip,port);
+    public void testOther() throws InterruptedException {
+        Jedis jedis = RedisUtil.getJedis(ip, port);
 
         try {
             // keys中传入的可以用通配符
@@ -365,16 +440,16 @@ public class TestCase {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            RedisUtil.getPool(ip,port).returnResource(jedis);
+            RedisUtil.getPool(ip, port).returnResource(jedis);
         }
 
     }
 
     @org.junit.Test
     public void testUnUsePipeline() {
-        long start =System.currentTimeMillis();
+        long start = System.currentTimeMillis();
 
-        Jedis jedis = RedisUtil.getJedis(ip,port);
+        Jedis jedis = RedisUtil.getJedis(ip, port);
         for (int i = 0; i < 10000; i++) {
             jedis.set("age1" + i, i + "");
             jedis.get("age1" + i);// 每个操作都发送请求给redis-server
@@ -383,7 +458,7 @@ public class TestCase {
 
         System.out.println("unuse pipeline cost:" + (end - start) + "ms");
 
-        RedisUtil.getPool(ip,port).returnResource(jedis);
+        RedisUtil.getPool(ip, port).returnResource(jedis);
     }
 
     @org.junit.Test
@@ -391,9 +466,9 @@ public class TestCase {
      * 参考:http://blog.csdn.net/freebird_lb/article/details/7778919
      */
     public void testUsePipeline() {
-        long start =System.currentTimeMillis();
+        long start = System.currentTimeMillis();
 
-        Jedis jedis = RedisUtil.getJedis(ip,port);
+        Jedis jedis = RedisUtil.getJedis(ip, port);
 //        jedis.flushDB();
         Pipeline p = jedis.pipelined();
         for (int i = 0; i < 10000; i++) {
@@ -406,7 +481,7 @@ public class TestCase {
 
         System.out.println("use pipeline cost:" + (end - start) + "ms");
 
-        RedisUtil.getPool(ip,port).returnResource(jedis);
+        RedisUtil.getPool(ip, port).returnResource(jedis);
     }
 
 
@@ -418,7 +493,7 @@ public class TestCase {
      */
     public void testSort1() {
         // 排序默认以数字作为对象，值被解释为双精度浮点数，然后进行比较
-        Jedis redis = RedisUtil.getJedis(ip,port);
+        Jedis redis = RedisUtil.getJedis(ip, port);
         // 一般SORT用法 最简单的SORT使用方法是SORT key。
         redis.lpush("mylist", "1");
         redis.lpush("mylist", "4");
@@ -436,7 +511,7 @@ public class TestCase {
             System.out.println(list.get(i));
         }
 //        redis.flushDB();
-        RedisUtil.closeJedis(redis,ip,port);
+        RedisUtil.closeJedis(redis, ip, port);
     }
 
     @org.junit.Test
@@ -445,7 +520,7 @@ public class TestCase {
      * LIST结合hash的排序
      */
     public void testSort2() {
-        Jedis jedis = RedisUtil.getJedis(ip,port);
+        Jedis jedis = RedisUtil.getJedis(ip, port);
         jedis.del("user:66", "user:55", "user:33", "user:22", "user:11",
                 "userlist");
         jedis.lpush("userlist", "33");
@@ -486,7 +561,7 @@ public class TestCase {
      * SET结合String的排序
      */
     public void testSort3() {
-        Jedis jedis = RedisUtil.getJedis(ip,port);
+        Jedis jedis = RedisUtil.getJedis(ip, port);
         jedis.del("tom:friend:list", "score:uid:123", "score:uid:456",
                 "score:uid:789", "score:uid:101", "uid:123", "uid:456",
                 "uid:789", "uid:101");
@@ -527,7 +602,6 @@ public class TestCase {
     }
 
     /**
-     *
      * 只获取对象而不排序 BY 修饰符可以将一个不存在的 key 当作权重，让 SORT 跳过排序操作。
      * 该方法用于你希望获取外部对象而又不希望引起排序开销时使用。 # 确保fake_key不存在 redis> EXISTS fake_key
      * (integer) 0 # 以fake_key作BY参数，不排序，只GET name 和 GET password redis> SORT
@@ -541,8 +615,7 @@ public class TestCase {
     }
 
     /**
-     *
-     保存排序结果 默认情况下， SORT 操作只是简单地返回排序结果，如果你希望保存排序结果，可以给 STORE 选项指定一个 key
+     * 保存排序结果 默认情况下， SORT 操作只是简单地返回排序结果，如果你希望保存排序结果，可以给 STORE 选项指定一个 key
      * 作为参数，排序结果将以列表的形式被保存到这个 key 上。(若指定 key 已存在，则覆盖。) redis> EXISTS
      * user_info_sorted_by_level # 确保指定key不存在 (integer) 0 redis> SORT user_id BY
      * user_level_* GET # GET user_name_* GET user_password_* STORE
@@ -558,7 +631,7 @@ public class TestCase {
     @Test
     public void testSort5() {
         // 排序默认以数字作为对象，值被解释为双精度浮点数，然后进行比较
-        Jedis jedis = RedisUtil.getJedis(ip,port);
+        Jedis jedis = RedisUtil.getJedis(ip, port);
         // 一般SORT用法 最简单的SORT使用方法是SORT key。
         jedis.lpush("mylist", "1");
         jedis.lpush("mylist", "4");
@@ -608,11 +681,11 @@ public class TestCase {
         }
 
 //        jedis.flushDB();
-        RedisUtil.closeJedis(jedis,ip,port);
+        RedisUtil.closeJedis(jedis, ip, port);
     }
 
 
-    public void testMore(){
+    public void testMore() {
         //ZRANGE取出最新的10个项目。
         //使用LPUSH + LTRIM，确保只取出最新的1000条项目。
         //HINCRBY key field increment,为哈希表 key 中的域 field 的值加上增量 increment
@@ -626,26 +699,25 @@ public class TestCase {
         //zrem test one删除sorted set中某个元素
     }
 
-    public List<String> get_latest_comments(int start, int num_items){
+    public List<String> get_latest_comments(int start, int num_items) {
         //获取最新评论
         //LPUSH latest.comments <ID>
         //-我们将列表裁剪为指定长度，因此Redis只需要保存最新的5000条评论：
         //LTRIM latest.comments 0 5000
         //们做了限制不能超过5000个ID，因此我们的获取ID函数会一直询问Redis。只有在start/count参数超出了这个范围的时候，才需要去访问数据库。
-        Jedis jedis = RedisUtil.getJedis(ip,port);
-        List<String> id_list = jedis.lrange("latest.comments",start,start+num_items-1) ;
+        Jedis jedis = RedisUtil.getJedis(ip, port);
+        List<String> id_list = jedis.lrange("latest.comments", start, start + num_items - 1);
 
-        if(id_list.size()<num_items){
+        if (id_list.size() < num_items) {
             //id_list = SQL.EXECUTE("SELECT ... ORDER BY time LIMIT ...");
         }
         return id_list;
     }
 
 
-
     @Test
     public void testDB() {
-        Jedis jedis = RedisUtil.getJedis(ip,port);
+        Jedis jedis = RedisUtil.getJedis(ip, port);
         System.out.println(jedis.select(0));// select db-index
         // 通过索引选择数据库，默认连接的数据库所有是0,默认数据库数是16个。返回1表示成功，0失败
         System.out.println(jedis.dbSize());// dbsize 返回当前数据库的key数量
@@ -659,7 +731,7 @@ public class TestCase {
     @Test
     public void testMget() {
 
-        Jedis jedis = RedisUtil.getJedis(ip,port);
+        Jedis jedis = RedisUtil.getJedis(ip, port);
 //        jedis.flushDB();// 删除当前数据库中所有key,此方法不会失败。慎用
 
         jedis.rpush("ids", "aa");
@@ -682,7 +754,7 @@ public class TestCase {
     public void queryPageBy() {
         int pageNo = 6;
         int pageSize = 6;
-        Jedis jedis = RedisUtil.getJedis(ip,port);
+        Jedis jedis = RedisUtil.getJedis(ip, port);
         jedis.del("a");
         for (int i = 1; i <= 30; i++) {
             jedis.rpush("a", i + "");
@@ -718,7 +790,7 @@ public class TestCase {
     public void testListStrUsage() {
         String title = "太阳能是绿色能源4";
         String url = "http://javacreazyer.iteye.com";
-        Jedis jedis = RedisUtil.getJedis(ip,port);
+        Jedis jedis = RedisUtil.getJedis(ip, port);
 
         long adInfoId = jedis.incr("ad:adinfo:next.id");
         jedis.set("ad:adinfo:" + adInfoId + ":title", title);
@@ -757,7 +829,7 @@ public class TestCase {
      */
     @Test
     public void testSetUsage() {
-        Jedis jedis = RedisUtil.getJedis(ip,port);
+        Jedis jedis = RedisUtil.getJedis(ip, port);
         jedis.sadd("zhongsou:news:1000:tags", "1");
         jedis.sadd("zhongsou:news:1000:tags", "2");
         jedis.sadd("zhongsou:news:1000:tags", "5");
@@ -790,7 +862,7 @@ public class TestCase {
 
     @Test
     public void testSortedSetUsage() {
-        Jedis jedis = RedisUtil.getJedis(ip,port);
+        Jedis jedis = RedisUtil.getJedis(ip, port);
         jedis.zadd("zhongsou:hackers", 1940, "Alan Kay");
         jedis.zadd("zhongsou:hackers", 1953, "Richard Stallman");
         jedis.zadd("zhongsou:hackers", 1943, "Jay");

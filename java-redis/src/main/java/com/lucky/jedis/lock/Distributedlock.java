@@ -8,8 +8,7 @@ import java.util.Collections;
 
 /**
  * @Author:chaoqiang.zhou
- * @Description:http://mp.weixin.qq.com/s/qJK61ew0kCExvXrqb7-RSg
- * https://www.cnblogs.com/yanghuahui/p/3697996.html
+ * @Description:http://mp.weixin.qq.com/s/qJK61ew0kCExvXrqb7-RSg https://www.cnblogs.com/yanghuahui/p/3697996.html
  * @Date:Create in 11:19 2017/12/4
  */
 public class Distributedlock {
@@ -25,7 +24,7 @@ public class Distributedlock {
         Jedis jedis = RedisUtil.getJedis(ip, port);
         try {
             boolean result = tryGetDistributedLock(jedis, "haha", "123", 3000000);
-            releaseDistributedLock(jedis,"haha","123");
+            releaseDistributedLock(jedis, "haha", "123");
         } finally {
             RedisUtil.getPool(ip, port).returnResource(jedis);
 
@@ -38,7 +37,7 @@ public class Distributedlock {
      * @param jedis      Redis客户端
      * @param lockKey    锁
      * @param requestId  请求标识
-     * @param expireTime 超期时间
+     * @param expireTime 超期时间 expx的值只能取EX或者PX，代表数据过期时间的单位，EX代表秒，PX代表毫秒。
      * @return 是否获取成功
      */
     public static boolean tryGetDistributedLock(Jedis jedis, String lockKey, String requestId, int expireTime) {
