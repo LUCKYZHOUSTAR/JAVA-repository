@@ -28,6 +28,7 @@
         <module>java-jctools</module>
         <module>java-encrypt</module>
         <module>java-spring-boot-test</module>
+        <module>com-lucky-jupiter</module>
     </modules>
     <packaging>pom</packaging>
     <properties>
