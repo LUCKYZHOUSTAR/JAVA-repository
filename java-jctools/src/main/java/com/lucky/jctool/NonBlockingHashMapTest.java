@@ -2,6 +2,7 @@ package com.lucky.jctool;
 
 import org.jctools.maps.NonBlockingHashMap;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -16,6 +17,8 @@ import java.util.Map;
  */
 public class NonBlockingHashMapTest {
 
+
+    Map map=new HashMap();
     public static void main(String[] args) {
         Map map = new NonBlockingHashMap();
 
