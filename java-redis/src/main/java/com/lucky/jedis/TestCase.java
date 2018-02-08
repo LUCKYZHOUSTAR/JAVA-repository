@@ -38,6 +38,12 @@ public class TestCase {
 
         try {
 
+            String val = jedis.set("qiang", "1");
+            System.out.println(val);
+            long dff = jedis.incr("qiang");
+            System.out.println(dff);
+            long a = jedis.incr("chao");
+            System.out.println(a);
             jedis.set("aa", "bb");
             System.out.println(jedis.get("aa"));
 
@@ -91,7 +97,7 @@ public class TestCase {
 
             //存在更新，返回0，不存在，创建返回1
             System.out.println(jedis.hset("set", "ww", "ss"));
-            System.out.println(jedis.hget("set","ww"));
+            System.out.println(jedis.hget("set", "ww"));
         } catch (Exception e) {
 
         } finally {

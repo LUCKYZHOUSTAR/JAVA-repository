@@ -13,7 +13,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 @ChannelHandler.Sharable
 public abstract class ConnectionWatchdog extends ChannelInboundHandlerAdapter implements TimerTask, ChannelHandlerHolder {
 
-	private static final Logger logger = LoggerFactory.getLogger(ConnectionWatchdog.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConnectionWatchdog.class);
 
     private final Bootstrap bootstrap;
     private final Timer timer;
@@ -62,10 +62,12 @@ public abstract class ConnectionWatchdog extends ChannelInboundHandlerAdapter im
             timer.newTimeout(this, timeout, MILLISECONDS);
         }
 
-        logger.warn("Disconnects with {}, port: {},host {}, reconnect: {}.", ctx.channel(), port,host, doReconnect);
+        logger.warn("Disconnects with {}, port: {},host {}, reconnect: {}.", ctx.channel(), port, host, doReconnect);
 
+        //继续向后传递
         ctx.fireChannelInactive();
     }
+
     @Override
     public void run(Timeout timeout) throws Exception {
 
@@ -78,14 +80,14 @@ public abstract class ConnectionWatchdog extends ChannelInboundHandlerAdapter im
                     ch.pipeline().addLast(handlers());
                 }
             });
-            future = bootstrap.connect(host,port);
+            future = bootstrap.connect(host, port);
         }
 
         future.addListener(new ChannelFutureListener() {
             @Override
             public void operationComplete(ChannelFuture f) throws Exception {
                 boolean succeed = f.isSuccess();
-                logger.warn("Reconnects with {}, {}.", host+":"+port, succeed ? "succeed" : "failed");
+                logger.warn("Reconnects with {}, {}.", host + ":" + port, succeed ? "succeed" : "failed");
                 if (!succeed) {
                     f.channel().pipeline().fireChannelInactive();
                 }
