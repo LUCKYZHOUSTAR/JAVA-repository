@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>rpc-transport</module>
+        <module>rpc-net</module>
     </modules>
     <properties>
         <netty.version>4.1.15.Final</netty.version>
@@ -36,6 +37,8 @@
         <spring-framework.version>4.3.0.RELEASE</spring-framework.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jupiter-common.version>1.2.11</jupiter-common.version>
+        <reflect.asm>1.11.0</reflect.asm>
+        <version.lombok>1.16.8</version.lombok>
     </properties>
 
     <dependencyManagement>
@@ -136,7 +139,11 @@
                 <version>${protostuff.version}</version>
             </dependency>
             <!-- # serialization dependency: end -->
-
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${version.lombok}</version>
+            </dependency>
             <!-- # common dependency: begin -->
             <!-- ## required dependency: begin -->
             <dependency>
@@ -187,7 +194,11 @@
                 </exclusions>
             </dependency>
             <!-- ## required dependency: end -->
-
+            <dependency>
+                <groupId>com.esotericsoftware</groupId>
+                <artifactId>reflectasm</artifactId>
+                <version>${reflect.asm}</version>
+            </dependency>
             <!-- ## optional dependency: begin -->
             <dependency>
                 <!-- scope: provided  -->
