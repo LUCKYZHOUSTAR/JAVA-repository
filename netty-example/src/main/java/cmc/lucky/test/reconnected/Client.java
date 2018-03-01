@@ -1,4 +1,4 @@
-package cmc.lucky.basic.heartbeats;
+package cmc.lucky.test.reconnected;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -13,14 +13,19 @@ import io.netty.handler.timeout.IdleStateHandler;
 
 import java.util.concurrent.TimeUnit;
 
-public class HeartBeatsClient {
+/**
+ * @Author:chaoqiang.zhou
+ * @Description:
+ * @Date:Create in 11:29 2018/3/1
+ */
+public class Client {
+
 
     public void connect(int port, String host) throws Exception {
-
-
-        // Configure the client.
         EventLoopGroup group = new NioEventLoopGroup();
+
         ChannelFuture future = null;
+
         try {
             Bootstrap b = new Bootstrap();
             b.group(group)
@@ -29,45 +34,37 @@ public class HeartBeatsClient {
                     .handler(new LoggingHandler(LogLevel.INFO))
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
-                        public void initChannel(SocketChannel ch) throws Exception {
+                        protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline p = ch.pipeline();
-                            p.addLast("ping", new IdleStateHandler(0, 4, 0, TimeUnit.SECONDS));
-                            p.addLast("decoder", new StringDecoder());
-                            p.addLast("encoder", new StringEncoder());
-                            p.addLast(new HeartBeatClientHandler());
+                            p.addLast("ping", new IdleStateHandler(0, 4, 0, TimeUnit.SECONDS))
+                                    .addLast("decoder", new StringDecoder())
+                                    .addLast("encoder", new StringEncoder())
+                                    .addLast(new ClientHandler());
                         }
                     });
 
             future = b.connect(host, port).sync();
-            //阻塞等待该channel关闭操作
+            //阻塞直到关闭
             future.channel().closeFuture().sync();
+
         } finally {
-//          group.shutdownGracefully();
             if (null != future) {
                 if (future.channel() != null && future.channel().isOpen()) {
                     future.channel().close();
                 }
             }
-            System.out.println("准备重连");
+
+            System.out.println("服务端把我给关闭了，准备重连操作");
             connect(port, host);
-            System.out.println("重连成功");
+            System.out.println("服务端把我给关闭了，重连成功");
         }
     }
 
-    /**
-     * @param args
-     * @throws Exception
-     */
+
     public static void main(String[] args) throws Exception {
         int port = 8080;
-        if (args != null && args.length > 0) {
-            try {
-                port = Integer.valueOf(args[0]);
-            } catch (NumberFormatException e) {
-                // 采用默认值
-            }
-        }
-        new HeartBeatsClient().connect(port, "127.0.0.1");
-    }
+        new Client().connect(port, "127.0.0.1");
 
+    }
 }
+
