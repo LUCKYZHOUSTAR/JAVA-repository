@@ -89,7 +89,7 @@ public class Client {
         try {
 
             Client client = new Client("127.0.0.1", 8989);
-            client.send();
+            client.initGroup();
             client.send("haha");
             System.in.read();
         } catch (IOException e) {
