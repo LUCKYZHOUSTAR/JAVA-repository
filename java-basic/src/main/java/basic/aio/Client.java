@@ -1,5 +1,7 @@
 package basic.aio;
 
+import sun.management.Sensor;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -36,7 +38,7 @@ public class Client {
             }
         }
 
-        initGroup();
+        send();
         read();
     }
 
