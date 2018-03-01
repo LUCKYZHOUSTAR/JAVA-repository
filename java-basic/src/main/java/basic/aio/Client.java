@@ -58,7 +58,7 @@ public class Client {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }finally {
-                    read();
+//                    read();
                 }
             }
 
@@ -90,6 +90,10 @@ public class Client {
 
             Client client = new Client("127.0.0.1", 8989);
             client.initGroup();
+            client.send("haha");
+            client.send("haha");
+            client.send("haha");
+            client.send("haha");
             client.send("haha");
             System.in.read();
         } catch (IOException e) {
