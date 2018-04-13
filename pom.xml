@@ -30,6 +30,7 @@
         <module>java-spring-boot-test</module>
         <module>com-lucky-jupiter</module>
         <module>java-rpc</module>
+      <module>elastic-search</module>
     </modules>
     <packaging>pom</packaging>
     <properties>

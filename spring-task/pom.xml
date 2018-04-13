@@ -11,6 +11,7 @@
 
     <artifactId>spring-task</artifactId>
     <packaging>pom</packaging>
+<!--modify-->
     <modules>
         <module>spring-task-core</module>
         <module>spring-task-client</module>
