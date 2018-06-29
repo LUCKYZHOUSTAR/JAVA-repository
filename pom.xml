@@ -31,6 +31,7 @@
         <module>com-lucky-jupiter</module>
         <module>java-rpc</module>
       <module>elastic-search</module>
+      <module>java-disrupt</module>
     </modules>
     <packaging>pom</packaging>
     <properties>

@@ -28,7 +28,7 @@ public class BeanToXml {
     JAXBContext context = JAXBContext.newInstance(load);
     Marshaller marshaller = context.createMarshaller();
     marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-    marshaller.setProperty(Marshaller.JAXB_ENCODING, "GBK");
+    marshaller.setProperty(Marshaller.JAXB_ENCODING, "utf-8");
     StringWriter writer = new StringWriter();
     marshaller.marshal(obj, writer);
     return writer.toString();
