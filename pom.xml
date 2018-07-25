@@ -30,6 +30,8 @@
         <module>java-spring-boot-test</module>
         <module>com-lucky-jupiter</module>
         <module>java-rpc</module>
+
+        <!--测试-->
       <module>elastic-search</module>
       <module>java-disrupt</module>
     </modules>
