@@ -23,3 +23,53 @@
 BatchEventProcessor和前面的WorkProcessor大部分相同,不同的地方是:
 1 处理的是EventHandler,后面执行的时候也是一个EventHandler一个线程
 2 少了排队取任务的过程,所以线程是并行的.这样多个线程都会同时去检查生产者的位置信息,竞争压力会更大一点.
+
+
+
+
+WorkProcessor 和BatchEventProcessor 用来处理具体的event
+也就是handlerwithevent后，放入的consumerreposity中的是处理器
+
+      this.consumerRepository.add(batchEventProcessor, eventHandler, barrier);
+
+
+
+ConsumerRepository<T> implements Iterable<ConsumerInfo>
+
+
+
+
+一个consumerinfo由workerpoolinfo和eventprocessorinf来组成
+
+每一个EventHandler都被包装成了EventProcessor（WorkProcessor，BatchEventProcessor），最后放到了consumerRepository中
+最后被包装成  EventHandlerGroup消费者组
+
+
+多个WorkerProcessor可以组成一个WorkerPool：
+里面的 workHandlers[i]共享同一个workSequence，所以，同一个WorkerPool内，是互斥消费。
+
+
+
+dependentSequence用来代表消费者的位移操作，
+比如12消费完后  3开始消费，那么需要通过dependentSequence来获取1 2 消费到的最小的位移信息
+1和2就是通过ProcessingSequenceBarrier 来同步   3也是ProcessingSequenceBarrier，cursorSequence就是当前生产者的序号
+
+还需要根据生产者来
+
+
+addGatingSequences保存了每个消费者的位移指针
+
+
+
+处理的过程中一定要处理好异常信息，参照：https://blog.csdn.net/software2005/article/details/64440439
+防止，消费一直进行不下去
+
+
+
+就是通过序号来传递，所有的生产者和消费者都维护了sequence
+比如一个生产者和多个消费者
+那么生产者维护了一个sequence组，每次生产的时候，需要判断最小的序号，看当前的位置是否可以放置
+
+而每个消费者都有一个sequence，每个消费者消费的时候也需要依赖判断关系
+
+单个生产者的时候有那个sing多个用multi，单个和多个的区别就是ringbuffer，是否有两个地方调用publishevent

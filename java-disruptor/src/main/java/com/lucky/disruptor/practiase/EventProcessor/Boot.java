@@ -53,6 +53,13 @@ public class Boot {
         Producer producer = new Producer(disruptor.getRingBuffer());
         for (int i = 0; i < 1000; i++) {
             producer.publish();
+            try {
+                Thread.sleep(5000l);
+                producer.publish();
+
+            }catch (Exception e){
+
+            }
         }
     }
 

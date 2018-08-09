@@ -1,0 +1,42 @@
+ public void run() {
+    if (!this.running.compareAndSet(false, true)) {
+      throw new IllegalStateException("Thread is already running");
+    } else {
+      this.sequenceBarrier.clearAlert();
+      this.notifyStart();
+      T event = null;
+
+      //默认是-1，所以-1+1是0，数组的第一个
+      long nextSequence = this.sequence.get() + 1L;
+
+      try {
+        while(true) {
+          try {
+            long availableSequence;
+            //通过屏障，来获取可以用的位置信息，当可用的位置大于nextsequence的时候，就开始进行消费
+            for(availableSequence = this.sequenceBarrier.waitFor(nextSequence); nextSequence <= availableSequence; ++nextSequence) {
+
+              //获取数据操作
+              event = this.dataProvider.get(nextSequence);
+              this.eventHandler.onEvent(event, nextSequence, nextSequence == availableSequence);
+            }
+
+            this.sequence.set(availableSequence);
+          } catch (TimeoutException var11) {
+            this.notifyTimeout(this.sequence.get());
+          } catch (AlertException var12) {
+            if (!this.running.get()) {
+              return;
+            }
+          } catch (Throwable var13) {
+            this.exceptionHandler.handleEventException(var13, nextSequence, event);
+            this.sequence.set(nextSequence);
+            ++nextSequence;
+          }
+        }
+      } finally {
+        this.notifyShutdown();
+        this.running.set(false);
+      }
+    }
+  }

@@ -12,6 +12,13 @@ public class ParkingDataInDbHandler implements EventHandler<InParkingDataEvent>,
 
     @Override
     public void onEvent(InParkingDataEvent event) throws Exception {
+
+        try {
+
+            Thread.sleep(1000l);
+        }catch (Exception e){
+
+        }
         long threadId = Thread.currentThread().getId();
         String carLicense = event.getCarLicense();
         System.out.println(String.format("Thread Id %s save %s into db ....",threadId,carLicense));
