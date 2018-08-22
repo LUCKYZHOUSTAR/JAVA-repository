@@ -51,8 +51,7 @@ public class SortTest {
 
   /**
    * /** 3 3 5==>   3 1 5==>1 3 5 1 3 5 1 3 5 7 1 3 4 5 7 1 3 4 5 6 7 1 3 4 5 6 7 9
-   * 做算法，后面的值操作，从1开始传递进去一个数字即可
-   * 时间复杂度：O (n^2)
+   * 做算法，后面的值操作，从1开始传递进去一个数字即可 时间复杂度：O (n^2)
    */
   public static void insertSorter(int[] a) {
     for (int i = 1; i < a.length; i++) {
@@ -67,10 +66,45 @@ public class SortTest {
 
   }
 
+
+  public static void quickSort(int[] a, int left, int right) {
+
+    int i, j, t, temp;
+    if (left > right) {
+      return;
+    }
+
+    temp = a[left]; //temp中存的就是基准数
+    i = left;
+    j = right;
+    while (i != j) {
+      //顺序很重要，要先从右边开始找
+      while (a[j] >= temp && i < j) {
+        j--;
+      }
+      //再找右边的
+      while (a[i] <= temp && i < j) {
+        i++;
+      }
+      //交换两个数在数组中的位置
+      if (i < j) {
+        t = a[i];
+        a[i] = a[j];
+        a[j] = t;
+      }
+    }
+    //最终将基准数归位
+    a[left] = a[i];
+    a[i] = temp;
+
+    quickSort(a, left, i - 1);//继续处理左边的，这里是一个递归的过程
+    quickSort(a, i + 1, right);//继续处理右边的 ，这里是一个递归的过程
+  }
+
   public static void main(String[] args) {
     int a[] = new int[]{3, 4, 5, 6, 7, 8};
 
-    insertSorter(a);
+    quickSort(a, 1, a.length-1);
     print(a);
   }
 }
