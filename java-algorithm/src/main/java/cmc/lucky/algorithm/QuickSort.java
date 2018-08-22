@@ -4,6 +4,8 @@ package cmc.lucky.algorithm;
  * @Author:chaoqiang.zhou
  * @Description:快速排序算法 参考：http://developer.51cto.com/art/201403/430986.htm
  * http://www.jianshu.com/p/3bf70aac0bef
+ * 10.68.79.154:8080
+ * 因此快速排序的最差时间复杂度和冒泡排序是一样的都是O(N2)，它的平均时间复杂度为O(NlogN)。
  * @Date:Create in 15:20 2017/9/21
  */
 public class QuickSort {
