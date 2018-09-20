@@ -12,4 +12,12 @@
   <artifactId>log-agent</artifactId>
 
 
+  <dependencies>
+    <dependency>
+      <groupId>io.thekraken</groupId>
+      <artifactId>grok</artifactId>
+      <version>0.1.5</version>
+    </dependency>
+  </dependencies>
+
 </project>

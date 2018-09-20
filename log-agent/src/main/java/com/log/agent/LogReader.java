@@ -44,14 +44,12 @@ public class LogReader implements Runnable {
           randomFile.close();
         }
       } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+
       }
 
       try {
         Thread.sleep(50);
       } catch (InterruptedException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
       }
     }
