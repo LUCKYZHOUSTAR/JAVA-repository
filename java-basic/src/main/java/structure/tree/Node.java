@@ -8,9 +8,9 @@ public class Node {
 
   private int data;
 
-  private Node leftNode;
+  public Node leftNode;
 
-  private Node rightNode;
+  public Node rightNode;
 
 
   public Node(int data, Node leftNode, Node rightNode) {
