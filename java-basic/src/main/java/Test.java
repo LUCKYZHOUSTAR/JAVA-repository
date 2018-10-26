@@ -1,3 +1,5 @@
+import java.util.concurrent.CopyOnWriteArrayList;
+
 /**
  * @Author:chaoqiang.zhou
  * @Date:Create in 下午4:52 2018/10/9
@@ -74,6 +76,30 @@ public class Test {
     new Test().insertSort(a);
 
     printResult(a, a.length);
+
+    System.out.println(tryTest());
+
+
+  }
+
+
+  public static int tryTest(){
+
+    int d = 5;
+
+    try{
+
+      d = d + 1;
+      return d;
+    }catch (Exception e){
+      d = d + 1;
+
+    }finally {
+      d = d + 1;
+      System.out.println(d);
+      return d;
+
+    }
   }
 
 }

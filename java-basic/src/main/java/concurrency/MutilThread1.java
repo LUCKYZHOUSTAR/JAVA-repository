@@ -25,8 +25,6 @@ public class MutilThread1 {
 
         threadA.start();
         threadB.start();
-
-
         Thread.sleep(3000L);
     }
 

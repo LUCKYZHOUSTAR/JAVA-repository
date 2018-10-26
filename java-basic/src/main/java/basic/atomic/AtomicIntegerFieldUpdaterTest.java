@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
  * @Date:Create in 19:13 2017/11/28
  */
 public class AtomicIntegerFieldUpdaterTest {
+
     // 创建原子更新器，并设置需要更新的对象类和对象的属性
     private static AtomicIntegerFieldUpdater<User> a = AtomicIntegerFieldUpdater.
             newUpdater(User.class, "old");
