@@ -31,11 +31,7 @@ public class LambdaTest {
 
    // 5. 接受一个 string 对象,并在控制台打印,不返回任何值(看起来像是返回void)
    (String s) -> System.out.print(s)
-
-
    */
-
-
   public void testList() {
     String[] players = {"Rafael Nadal", "Novak Djokovic",
         "Stanislas Wawrinka", "David Ferrer",

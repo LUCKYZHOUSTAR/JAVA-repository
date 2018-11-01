@@ -10,10 +10,9 @@ public interface TestConver<T, F> {
 
   F convert(T t);
 
-
+  
   public static void main(String[] args) {
     TestConver<String, Integer> t = Integer::valueOf;
-
     Integer e = t.convert("23");
   }
 }
