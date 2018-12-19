@@ -6,7 +6,7 @@ import org.springframework.core.type.AnnotationMetadata;
 
 /**
  * @Author:chaoqiang.zhou
- * @Description:
+ * @Description:可以动态控制加载类
  * @Date:Create in 15:33 2017/12/12
  */
 public class ContentImportSelector implements ImportSelector {
