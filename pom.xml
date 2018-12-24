@@ -36,6 +36,7 @@
       <module>java-disrupt</module>
       <module>log-agent</module>
       <module>squirrel-foundation</module>
+        <module>java-design-patterns</module>
     </modules>
     <packaging>pom</packaging>
     <properties>

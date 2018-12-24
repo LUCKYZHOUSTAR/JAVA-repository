@@ -1,8 +1,5 @@
 package basic.netty.common;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.objects.annotations.Setter;
-
 import java.util.concurrent.ThreadFactory;
 
 /**
