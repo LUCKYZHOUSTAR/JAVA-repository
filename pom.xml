@@ -37,6 +37,7 @@
       <module>log-agent</module>
       <module>squirrel-foundation</module>
         <module>java-design-patterns</module>
+        <module>spring-machine</module>
     </modules>
     <packaging>pom</packaging>
     <properties>

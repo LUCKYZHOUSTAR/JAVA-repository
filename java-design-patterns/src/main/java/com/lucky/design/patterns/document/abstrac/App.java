@@ -28,9 +28,7 @@ public class App {
         doorProperties.put(HasType.PROPERTY, "door");
         doorProperties.put(HasModel.PROPERTY, "Lambo");
         doorProperties.put(HasPrice.PROPERTY, 300L);
-
         carProperties.put(HasParts.PROPERTY, Arrays.asList(wheelProperties, doorProperties));
-
         Car car = new Car(carProperties);
 
     }
