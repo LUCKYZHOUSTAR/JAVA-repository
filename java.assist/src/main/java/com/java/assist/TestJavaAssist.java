@@ -62,6 +62,8 @@ public class TestJavaAssist {
             CtClass ctClass = pool.get("com.java.assist.OrderService");
             CtMethod ctMethod = ctClass.getDeclaredMethod("test1");
             ctMethod.insertBefore("System.out.println(\"我要执行了\");");
+            //在返回语句前插入代码片
+            //在返回语句前插入代码片
             ctMethod.insertAfter("System.out.println(\"我要执行了\");");
 
             Class clazzOrder = ctClass.toClass();
