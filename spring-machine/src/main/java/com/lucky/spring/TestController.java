@@ -24,6 +24,7 @@ public class TestController {
     public void testMachine() {
         stateMachine.start();
         stateMachine.sendEvent(Events.PAY);
+        stateMachine.sendEvent(Events.PAY);
         stateMachine.sendEvent(Events.RECEIVE);
     }
 

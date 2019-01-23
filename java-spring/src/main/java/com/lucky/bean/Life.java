@@ -23,6 +23,9 @@ public class Life implements BeanNameAware,BeanFactoryAware {
         return name;
     }
 
+    public Life(String name) {
+        System.out.println("开始走有参数的构造函数");
+    }
     public void setName(String name) {
         System.out.println("调用setName方法");
         this.name = name;

@@ -1,6 +1,7 @@
 package com.lucky.boot.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 /**
  * @Author:chaoqiang.zhou
@@ -8,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
  * @Date:Create in 14:24 2017/12/12
  */
 @Slf4j
+@Component
 public class HelloService {
 
     public void sayHello() {

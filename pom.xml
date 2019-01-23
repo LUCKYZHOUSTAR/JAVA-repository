@@ -38,6 +38,7 @@
       <module>squirrel-foundation</module>
         <module>java-design-patterns</module>
         <module>spring-machine</module>
+        <module>java.assist</module>
     </modules>
     <packaging>pom</packaging>
     <properties>
