@@ -13,12 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.xml.transform.Result;
 
 
-/**
- * @ClassName BusCfgTask
- * @Description 同步商户配置
- * @Author buyixuan
- * @Date 2018-12-28 15:38
- */
+
 
 @Component
 @Path("/busCfg")
