@@ -3,7 +3,7 @@ package com.java.assist;
 /**
  * @Auther: chaoqiang.zhou
  * @Date: 2019/1/23 18:16
- * @Description:
+ * @Description:http://www.360doc.com/content/14/0801/14/1073512_398598312.shtml
  */
 
 import javassist.*;
