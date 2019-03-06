@@ -40,6 +40,7 @@
         <module>spring-machine</module>
         <module>java.assist</module>
         <module>java-swagger</module>
+        <module>web-mertric</module>
     </modules>
     <packaging>pom</packaging>
     <properties>
