@@ -21,11 +21,12 @@ public class TestController {
 
     @RequestMapping("/testMachine")
     @ResponseBody
-    public void testMachine() {
+    public String testMachine() {
         stateMachine.start();
         stateMachine.sendEvent(Events.PAY);
-        stateMachine.sendEvent(Events.PAY);
+//        stateMachine.sendEvent(Events.PAY);
         stateMachine.sendEvent(Events.RECEIVE);
+        return "success";
     }
 
 

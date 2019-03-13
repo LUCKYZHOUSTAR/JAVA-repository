@@ -21,6 +21,7 @@ import java.util.EnumSet;
  * @Auther: chaoqiang.zhou
  * @Date: 2018/12/28 11:49
  * @Description:状态机的配置类信息
+ * 详细解读：https://www.jianshu.com/p/9ee887e045dd
  */
 @Configuration
 @EnableStateMachine
@@ -30,6 +31,7 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
     /***
      * 通过上面的入门示例以及最后的小结，我们可以看到使用Spring StateMachine来实现状态机的时候，
      * 代码逻辑变得非常简单并且具有层次化。整个状态的调度逻辑主要依靠配置方式的定义，而所有的业务逻辑操作都被定义在了状态监听器中，其实状态监听器可以实现的功能远不止上面我们所述的内容，它还有更多的事件捕获，我们可以通过查看StateMachineListener接口来了解它所有的事件定义：
+     * 还可以配置整个的线程池的信息
      * @param config
      * @throws Exception
      */
@@ -46,6 +48,7 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
      *
      * @param: configure(StateMachineTransitionConfigurer < States, Events > transitions)方法用来初始化当前状态机有哪些状态迁移动作
      * ，其中命名中我们很容易理解每一个迁移动作，都有来源状态source，目标状态target以及触发事件event。s
+     * 就是整个流程的变化过程
      * @return:
      * @auther: zhou
      * @date: 2018/12/28 下午12:01
@@ -65,6 +68,9 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
     }
 
 
+
+    //如果有erroraction，那么是不会影响后续的操作流程的，如果没有的话，一旦出错，会影响后续的业务流程，其实就是抛出异常了
+    //stateEntry>stateDo
     @Override
     public void configure(StateMachineStateConfigurer<States, Events> states) throws Exception {
 
@@ -73,7 +79,8 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
                 .withStates()
                 .initial(States.UNPAID)
                 .stateEntry(States.UNPAID, action(), errorAction())
-                .stateDo(States.UNPAID, action())
+                .stateDo(States.UNPAID, action2())
+                .stateDo(States.UNPAID, action3())
                 .states(EnumSet.allOf(States.class));
     }
 
@@ -110,7 +117,7 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
 
             @Override
             public void execute(StateContext<States, Events> context) {
-                System.out.println("开始执行了" + context);
+                System.out.println("action()开始执行了" + context);
                 // do something
                 int i = 3 / 0;
             }
@@ -118,6 +125,32 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
     }
 
 
+
+    @Bean
+    public Action<States, Events> action2() {
+        return new Action<States, Events>() {
+
+            @Override
+            public void execute(StateContext<States, Events> context) {
+                System.out.println("action(2)开始走我的流程了哈，执行了" + context);
+                // do something
+                int i = 3 / 0;
+            }
+        };
+    }
+
+    @Bean
+    public Action<States, Events> action3() {
+        return new Action<States, Events>() {
+
+            @Override
+            public void execute(StateContext<States, Events> context) {
+                System.out.println("action(3)开始走我的流程了哈，执行了" + context);
+                // do something
+                int i = 3 / 0;
+            }
+        };
+    }
     /***
      * 异常不错的错误信息
      * @return
@@ -131,7 +164,8 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
                 // RuntimeException("MyError") added to context
                 Exception exception = context.getException();
                 exception.getMessage();
-                System.out.println("捕获到错误了" + context);
+                System.out.println("errorAction");
+//                System.out.println("捕获到错误了" + context);
             }
         };
     }
