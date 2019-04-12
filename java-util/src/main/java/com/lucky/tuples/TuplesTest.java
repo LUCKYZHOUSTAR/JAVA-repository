@@ -36,6 +36,7 @@ public class TuplesTest {
         KeyValue<String, String> kv = KeyValue.with("rensanning.iteye.com", "9527");
         LabelValue<String, String> lv = LabelValue.with("rensanning.iteye.com", "9527");
 
+        triplet.getValue(0);
         System.out.println(u.getValue0());
     }
 

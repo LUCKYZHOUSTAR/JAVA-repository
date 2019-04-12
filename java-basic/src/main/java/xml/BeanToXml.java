@@ -48,7 +48,6 @@ public class BeanToXml {
     studentList.add(st1);
     Student st2 = new Student("莉莉", "女", 10003, "普通班", hobby);
     studentList.add(st2);
-
     StudentList students = new StudentList();
     students.setStudents(studentList);
     String str = BeanToXml.beanToXml(students, StudentList.class);

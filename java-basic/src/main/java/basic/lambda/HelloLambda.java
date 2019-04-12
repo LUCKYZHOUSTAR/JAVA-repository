@@ -30,7 +30,6 @@ public class HelloLambda {
     HelloLambda helloLambda = new HelloLambda();
     helloLambda.function(() -> new String("hello"));
 
-
   }
 
 
