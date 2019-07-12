@@ -32,10 +32,21 @@ public class OrderService {
         StateMachine<OrderStates, OrderEvents> sm = this.factory.getStateMachine("orderId");
         sm.stop();
         sm.getStateMachineAccessor().doWithAllRegions(new StateMachineFunction<StateMachineAccess<OrderStates, OrderEvents>>() {
+
+
             @Override
             public void apply(StateMachineAccess<OrderStates, OrderEvents> sma) {
 
+
                 sma.addStateMachineInterceptor(new StateMachineInterceptorAdapter<OrderStates, OrderEvents>() {
+
+                    @Override
+                    public Exception stateMachineError(StateMachine<OrderStates, OrderEvents> stateMachine, Exception exception) {
+                        // return null indicating handled error
+                        System.out.println("能走到我这里吗");
+                        return exception;
+                    }
+
                     @Override
                     public void preStateChange(State<OrderStates, OrderEvents> state, Message<OrderEvents> message, Transition<OrderStates, OrderEvents> transition, StateMachine<OrderStates, OrderEvents> stateMachine) {
 //                        //DO BUSINESS 做业务逻辑操作,持久化操作
@@ -45,6 +56,9 @@ public class OrderService {
 
 
                         System.out.println("状态发生变化了");
+
+                        //这里抛出异常，外层还是true
+//                        System.out.println(1 / 0);
                     }
 
                 });

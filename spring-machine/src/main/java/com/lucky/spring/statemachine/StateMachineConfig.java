@@ -24,7 +24,6 @@ import java.util.EnumSet;
  * 详细解读：https://www.jianshu.com/p/9ee887e045dd
  */
 @Configuration
-@EnableStateMachine
 public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States, Events> {
 
 
@@ -113,17 +112,23 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
 
     @Bean
     public Action<States, Events> action() {
-        return new Action<States, Events>() {
 
-            @Override
-            public void execute(StateContext<States, Events> context) {
-                System.out.println("action()开始执行了" + context);
-                // do something
-                int i = 3 / 0;
-            }
-        };
+        return context -> dd();
+//        return new Action<States, Events>() {
+//
+//            @Override
+//            public void execute(StateContext<States, Events> context) {
+//                System.out.println("action()开始执行了" + context);
+//                // do something
+//                int i = 3 / 0;
+//            }
+//        };
     }
 
+
+    private String dd() {
+        return "";
+    }
 
 
     @Bean

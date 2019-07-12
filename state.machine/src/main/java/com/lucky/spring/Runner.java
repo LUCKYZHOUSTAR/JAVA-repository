@@ -38,7 +38,16 @@ public class Runner implements ApplicationRunner {
         System.out.println("当前状态机+！1" + machine.getState().getId().name());
 
         //listenre是同步的状态，不是异步的
-        machine.sendEvent(OrderEvents.PAY);
+        boolean result = machine.sendEvent(OrderEvents.PAY);
+
+
+        //只能通过这样来进行操作了
+        RuntimeException runtimeException = machine.getExtendedState().get(RuntimeException.class, RuntimeException.class);
+
+        System.out.println("出现异常了");
+        System.out.println("是否有异常" + machine.hasStateMachineError());
+        System.out.println("里面报错后，状态变了吗" + machine.getState().getId().name());
+        System.out.println("jieguoshi " + result);
 
         System.out.println("当前状态机+234" + machine.getState().getId().name());
 
