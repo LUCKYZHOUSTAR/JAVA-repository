@@ -10,7 +10,8 @@ import java.util.concurrent.Future;
 /**
  * @Auther: chaoqiang.zhou
  * @Date: 2019/8/1 15:30
- * @Description:
+ * @Description: RecursiveAction：用于没有返回结果的任务。
+ * RecursiveTask ：用于有返回结果的任务。
  */
 public class ExecutorServiceCalculator implements Calculator {
     private int parallism;

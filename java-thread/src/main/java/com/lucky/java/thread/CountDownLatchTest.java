@@ -1,4 +1,4 @@
-package basic.concurrent;
+package com.lucky.java.thread;
 
 import java.util.concurrent.CountDownLatch;
 

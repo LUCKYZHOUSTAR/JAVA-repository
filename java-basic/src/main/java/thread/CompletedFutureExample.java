@@ -188,12 +188,12 @@ public class CompletedFutureExample {
      * @auther: zhou
      * @date: 2019/8/1 下午12:02
      */
-    static void completeExceptionallyExample() {
-
-        CompletableFuture<String> cf = CompletableFuture.completedFuture("message").thenApplyAsync(String::toUpperCase,CompletableFuture.delayedExecutor(1, TimeUnit.SECONDS));
-
-
-    }
+//    static void completeExceptionallyExample() {
+//
+//        CompletableFuture<String> cf = CompletableFuture.completedFuture("message").thenApplyAsync(String::toUpperCase,CompletableFuture.delayedExecutor(1, TimeUnit.SECONDS));
+//
+//
+//    }
 
 
     private static void randomSleep() {

@@ -1,7 +1,5 @@
 package basic.threadpool;
 
-import sun.rmi.runtime.Log;
-
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 

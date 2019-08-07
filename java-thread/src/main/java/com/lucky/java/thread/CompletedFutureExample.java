@@ -3,7 +3,10 @@ package com.lucky.java.thread;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
@@ -40,8 +43,10 @@ public class CompletedFutureExample {
 
 //        cancelExample();
 
-        applyToEitherExample();
+//        applyToEitherExample();
+        thenApplyAsyncWithExecutorExample();
     }
+
 
     static void completedFutureExample() {
 
@@ -141,7 +146,13 @@ public class CompletedFutureExample {
      */
     static void thenApplyAsyncWithExecutorExample() {
         CompletableFuture<String> cf = CompletableFuture.completedFuture("message").thenApplyAsync(s -> {
+
+            for (int i = 0; i < 10; i++) {
+                System.out.println(Thread.currentThread().getName());
+
+            }
             assertTrue(Thread.currentThread().getName().startsWith("custom-executor-"));
+
 
             assertFalse(Thread.currentThread().isDaemon());
             randomSleep();
@@ -198,57 +209,57 @@ public class CompletedFutureExample {
      * @auther: zhou
      * @date: 2019/8/1 下午12:02
      */
-    static void completeExceptionallyExample() {
-        CompletableFuture cf = CompletableFuture.completedFuture("message").thenApplyAsync(String::toUpperCase,
-                CompletableFuture.delayedExecutor(3, TimeUnit.SECONDS));
-        CompletableFuture exceptionHandler = cf.handle((s, th) -> {
-            return (th != null) ? "message upon cancel" : "";
-        });
-        cf.completeExceptionally(new RuntimeException("completed exceptionally"));
-        assertTrue("Was not completed exceptionally", cf.isCompletedExceptionally());
-        try {
-            cf.join();
-            fail("Should have thrown an exception");
-        } catch (CompletionException ex) { // just for testing
-            assertEquals("completed exceptionally", ex.getCause().getMessage());
-        }
-
-        assertEquals("message upon cancel", exceptionHandler.join());
-
-
-    }
-
-
-    static void cancelExample() {
-        CompletableFuture cf = CompletableFuture.completedFuture("message").thenApplyAsync(s -> {
-                    for (int i = 0; i < 2; i++) {
-//                        sleepEnough();
-                        System.out.println(i);
-                    }
-                    return "测试信息";
-                },
-                CompletableFuture.delayedExecutor(0, TimeUnit.SECONDS));
-
-        CompletableFuture cf2 = cf.exceptionally(throwable -> "canceled message");
-        sleepEnough();
-        try {
-            //这种方法，只是把结果set了一个异常的结果，当调用join的时候，就判断结果的类型，如果是异常就直接抛出来了，那么在执行异常之前，上述的过程是否终止呢
-            //经过测试当执行exceptional后，只是把结果给set了，result设置了一个异常值，中间的异步过程，还是会执行的，只不过join的时候，会报出异常
-            //最终的result值，会设置两次
-            System.out.println(cf.cancel(true));
-        } catch (CancellationException e) {
-            System.out.println(e.getMessage());
-        }
-//        System.out.println(cf.isCompletedExceptionally());
-//        System.out.println(cf.isCancelled());
-//        assertTrue("Was not canceled", cf.cancel(true));
+//    static void completeExceptionallyExample() {
+//        CompletableFuture cf = CompletableFuture.completedFuture("message").thenApplyAsync(String::toUpperCase,
+//                CompletableFuture.delayedExecutor(3, TimeUnit.SECONDS));
+//        CompletableFuture exceptionHandler = cf.handle((s, th) -> {
+//            return (th != null) ? "message upon cancel" : "";
+//        });
+//        cf.completeExceptionally(new RuntimeException("completed exceptionally"));
 //        assertTrue("Was not completed exceptionally", cf.isCompletedExceptionally());
-        sleepEnough();
-        //该值可能是canceled message ，也可能是测试信息，看谁先设置了
-        System.out.println(cf2.getNow("2323"));
-//        cf.join();
-//        assertEquals("canceled message", cf.join());
-    }
+//        try {
+//            cf.join();
+//            fail("Should have thrown an exception");
+//        } catch (CompletionException ex) { // just for testing
+//            assertEquals("completed exceptionally", ex.getCause().getMessage());
+//        }
+//
+//        assertEquals("message upon cancel", exceptionHandler.join());
+//
+//
+//    }
+
+
+//    static void cancelExample() {
+//        CompletableFuture cf = CompletableFuture.completedFuture("message").thenApplyAsync(s -> {
+//                    for (int i = 0; i < 2; i++) {
+////                        sleepEnough();
+//                        System.out.println(i);
+//                    }
+//                    return "测试信息";
+//                },
+//                CompletableFuture.delayedExecutor(0, TimeUnit.SECONDS));
+//
+//        CompletableFuture cf2 = cf.exceptionally(throwable -> "canceled message");
+//        sleepEnough();
+//        try {
+//            //这种方法，只是把结果set了一个异常的结果，当调用join的时候，就判断结果的类型，如果是异常就直接抛出来了，那么在执行异常之前，上述的过程是否终止呢
+//            //经过测试当执行exceptional后，只是把结果给set了，result设置了一个异常值，中间的异步过程，还是会执行的，只不过join的时候，会报出异常
+//            //最终的result值，会设置两次
+//            System.out.println(cf.cancel(true));
+//        } catch (CancellationException e) {
+//            System.out.println(e.getMessage());
+//        }
+////        System.out.println(cf.isCompletedExceptionally());
+////        System.out.println(cf.isCancelled());
+////        assertTrue("Was not canceled", cf.cancel(true));
+////        assertTrue("Was not completed exceptionally", cf.isCompletedExceptionally());
+//        sleepEnough();
+//        //该值可能是canceled message ，也可能是测试信息，看谁先设置了
+//        System.out.println(cf2.getNow("2323"));
+////        cf.join();
+////        assertEquals("canceled message", cf.join());
+//    }
 
 
     /**
@@ -354,8 +365,7 @@ public class CompletedFutureExample {
 
 
     /**
-     *
-     * 功能描述: 
+     * 功能描述:
      *
      * @param: 用来传递结果
      * @return: 我们可以使用thenCompose()完成上面两个例子。这个方法等待第一个阶段的完成(大写转换)， 它的结果传给一个指定的返回CompletableFuture函数，它的结果就是返回的CompletableFuture的结果。

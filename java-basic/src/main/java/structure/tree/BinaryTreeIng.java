@@ -1,7 +1,5 @@
 package structure.tree;
 
-import com.sun.source.tree.BinaryTree;
-
 /**
  * @Author:chaoqiang.zhou
  * @Date:Create in 下午2:32 2018/10/9
