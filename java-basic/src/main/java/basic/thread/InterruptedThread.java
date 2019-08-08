@@ -14,15 +14,19 @@ public class InterruptedThread extends Thread {
   public void run() {
     while (true) {
       if (Thread.currentThread().isInterrupted()) {
+        //false状态
         System.out.println("Someone interrupted me.");
       } else {
         System.out.println("Thread is Going...");
       }
       try {
-        Thread.sleep(3000l);
+        Thread.sleep(1000l);
       } catch (InterruptedException e) {
 
-        //在这里会立马的清除标志位的信息
+        //在这里会立马的清除标志位的信息，还是为false，代表没有被中断
+        System.out.println("current thread status is"+Thread.currentThread().isInterrupted());
+        //再次中断
+//        Thread.currentThread().interrupt();
       }
     }
   }
@@ -50,7 +54,7 @@ public class InterruptedThread extends Thread {
     // 而且线程并不会因为中断信号而停止运行。因为它只是被修改一个中断信号而已。
     InterruptedThread t = new InterruptedThread();
     t.start();
-
+    System.out.println(Thread.currentThread().isInterrupted());
     try {
       Thread.sleep(3000);
       //只是更改了一个标志位而已，并没有中断线程
