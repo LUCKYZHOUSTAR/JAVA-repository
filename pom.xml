@@ -8,7 +8,7 @@
     <version>1.0.1-SNAPSHOT</version>
     <modules>
         <!--<module>java-guava</module>-->
-        <!--<module>java-basic</module>-->
+        <module>java-basic</module>
         <!--<module>java-thread</module>-->
         <!--<module>netty-example</module>-->
         <!--<module>java-spring</module>-->
