@@ -8,8 +8,8 @@
     <version>1.0.1-SNAPSHOT</version>
     <modules>
         <!--<module>java-guava</module>-->
-        <module>java-basic</module>
-        <module>java-thread</module>
+        <!--<module>java-basic</module>-->
+        <!--<module>java-thread</module>-->
         <!--<module>netty-example</module>-->
         <!--<module>java-spring</module>-->
         <!--<module>java-junit</module>-->
@@ -26,9 +26,9 @@
         <!--<module>java-task</module>-->
         <!--<module>spring-task</module>-->
         <!--<module>java-metrics-boot</module>-->
-        <!--<module>java-jctools</module>-->
-        <!--<module>java-encrypt</module>-->
-        <!--<module>java-spring-boot-test</module>-->
+        <module>java-jctools</module>
+        <module>java-encrypt</module>
+        <module>java-spring-boot-test</module>
         <!--<module>com-lucky-jupiter</module>-->
         <!--<module>java-rpc</module>-->
 

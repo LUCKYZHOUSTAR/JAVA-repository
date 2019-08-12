@@ -16,7 +16,7 @@ public class LockSuportUtils {
         Thread thread = new Thread(new run());
         thread.start();
 
-        Thread.sleep(20000);
+        Thread.sleep(2000);
         LockSupport.unpark(thread);
     }
 
@@ -25,8 +25,8 @@ public class LockSuportUtils {
 
         @Override
         public void run() {
-            for (int i = 0; i < 100000; i++) {
-                if (i == 10000) {
+            for (int i = 0; i < 1000; i++) {
+                if (i == 999) {
                     LockSupport.park(this);
                 }
                 System.out.println("hahaha" + i);

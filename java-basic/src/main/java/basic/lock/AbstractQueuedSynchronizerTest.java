@@ -13,10 +13,18 @@ import java.util.concurrent.locks.ReentrantLock;
  * @Description:
  */
 public class AbstractQueuedSynchronizerTest {
+    static final int SHARED_SHIFT   = 16;
+    static final int SHARED_UNIT    = (1 << SHARED_SHIFT);
+    static final int MAX_COUNT      = (1 << SHARED_SHIFT) - 1;
+    static final int EXCLUSIVE_MASK = (1 << SHARED_SHIFT) - 1;
 
 
     private static final Lock lock = new ReentrantLock();
     public static void main(String[] args) throws Exception{
+
+
+        System.out.println(1 & EXCLUSIVE_MASK);
+        System.out.println(12 >>> SHARED_SHIFT);
 
         ExecutorService executorService = Executors.newFixedThreadPool(2);
 
