@@ -48,13 +48,15 @@ public class AddTwoNumbers {
             ListNode next = new ListNode((a + b + carried) % 10);
             carried = (a + b + carried) / 10;
             cur.next = next;
+            //用两个指针来操作
             cur = cur.next;
             p1 = p1 != null ? p1 = p1.next : null;
             p2 = p2 != null ? p2 = p2.next : null;
         }
 
 
-        //需要判断进位问题
+        //需要判断进位问题，两个链表都没有了，但是最后一位，可能有进位的数值
+
         if (carried > 0) {
             ListNode tail = new ListNode(1);
             cur.next = tail;
