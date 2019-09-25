@@ -48,12 +48,20 @@ public class AddTwoNumbers {
             ListNode next = new ListNode((a + b + carried) % 10);
             carried = (a + b + carried) / 10;
             cur.next = next;
+            cur = cur.next;
             p1 = p1 != null ? p1 = p1.next : null;
             p2 = p2 != null ? p2 = p2.next : null;
         }
 
 
-        return null;
+        //需要判断进位问题
+        if (carried > 0) {
+            ListNode tail = new ListNode(1);
+            cur.next = tail;
+
+        }
+
+        return dummyHead.next;
 
     }
 
@@ -66,9 +74,9 @@ public class AddTwoNumbers {
         b.next = c;
 
 
-        ListNode v1 = new ListNode(2);
+        ListNode v1 = new ListNode(9);
         ListNode v2 = new ListNode(4);
-        ListNode v3 = new ListNode(3);
+        ListNode v3 = new ListNode(7);
 
         v1.next = v2;
         v2.next = v3;
