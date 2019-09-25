@@ -29,6 +29,7 @@
         <module>java-jctools</module>
         <module>java-encrypt</module>
         <module>java-spring-boot-test</module>
+        <module>leet-code</module>
         <!--<module>com-lucky-jupiter</module>-->
         <!--<module>java-rpc</module>-->
 
