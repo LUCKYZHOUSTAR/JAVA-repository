@@ -2,20 +2,20 @@ package com.atguigu.linkedlist;
 
 import java.util.Stack;
 
-//ÑİÊ¾Õ»StackµÄ»ù±¾Ê¹ÓÃ
+//æ¼”ç¤ºæ ˆStackçš„åŸºæœ¬ä½¿ç”¨
 public class TestStack {
 
 	public static void main(String[] args) {
 		Stack<String> stack = new Stack();
-		// ÈëÕ»
+		// å…¥æ ˆ
 		stack.add("jack");
 		stack.add("tom");
 		stack.add("smith");
 
-		// ³öÕ»
+		// å‡ºæ ˆ
 		// smith, tom , jack
 		while (stack.size() > 0) {
-			System.out.println(stack.pop());//pop¾ÍÊÇ½«Õ»¶¥µÄÊı¾İÈ¡³ö
+			System.out.println(stack.pop());//popå°±æ˜¯å°†æ ˆé¡¶çš„æ•°æ®å–å‡º
 		}
 	}
 
