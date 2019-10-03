@@ -2,193 +2,200 @@ package com.atguigu.stack;
 
 public class Calculator {
 
-	public static void main(String[] args) {
-		//¸ù¾İÇ°ÃæÀÏÊ¦Ë¼Â·£¬Íê³É±í´ïÊ½µÄÔËËã
-		String expression = "7*2*2-5+1-5+3-4"; // 15//ÈçºÎ´¦Àí¶àÎ»ÊıµÄÎÊÌâ£¿
-		//´´½¨Á½¸öÕ»£¬ÊıÕ»£¬Ò»¸ö·ûºÅÕ»
-		ArrayStack2 numStack = new ArrayStack2(10);
-		ArrayStack2 operStack = new ArrayStack2(10);
-		//¶¨ÒåĞèÒªµÄÏà¹Ø±äÁ¿
-		int index = 0;//ÓÃÓÚÉ¨Ãè
-		int num1 = 0; 
-		int num2 = 0;
-		int oper = 0;
-		int res = 0;
-		char ch = ' '; //½«Ã¿´ÎÉ¨ÃèµÃµ½char±£´æµ½ch
-		String keepNum = ""; //ÓÃÓÚÆ´½Ó ¶àÎ»Êı
-		//¿ªÊ¼whileÑ­»·µÄÉ¨Ãèexpression
-		while(true) {
-			//ÒÀ´ÎµÃµ½expression µÄÃ¿Ò»¸ö×Ö·û
-			ch = expression.substring(index, index+1).charAt(0);
-			//ÅĞ¶ÏchÊÇÊ²Ã´£¬È»ºó×öÏàÓ¦µÄ´¦Àí
-			if(operStack.isOper(ch)) {//Èç¹ûÊÇÔËËã·û
-				//ÅĞ¶Ïµ±Ç°µÄ·ûºÅÕ»ÊÇ·ñÎª¿Õ
-				if(!operStack.isEmpty()) {
-					//Èç¹û·ûºÅÕ»ÓĞ²Ù×÷·û£¬¾Í½øĞĞ±È½Ï,Èç¹ûµ±Ç°µÄ²Ù×÷·ûµÄÓÅÏÈ¼¶Ğ¡ÓÚ»òÕßµÈÓÚÕ»ÖĞµÄ²Ù×÷·û,¾ÍĞèÒª´ÓÊıÕ»ÖĞpop³öÁ½¸öÊı,
-					//ÔÚ´Ó·ûºÅÕ»ÖĞpop³öÒ»¸ö·ûºÅ£¬½øĞĞÔËËã£¬½«µÃµ½½á¹û£¬ÈëÊıÕ»£¬È»ºó½«µ±Ç°µÄ²Ù×÷·ûÈë·ûºÅÕ»
-					if(operStack.priority(ch) <= operStack.priority(operStack.peek())) {
-						num1 = numStack.pop();
-						num2 = numStack.pop();
-						oper = operStack.pop();
-						res = numStack.cal(num1, num2, oper);
-						//°ÑÔËËãµÄ½á¹ûÈçÊıÕ»
-						numStack.push(res);
-						//È»ºó½«µ±Ç°µÄ²Ù×÷·ûÈë·ûºÅÕ»
-						operStack.push(ch);
-					} else {
-						//Èç¹ûµ±Ç°µÄ²Ù×÷·ûµÄÓÅÏÈ¼¶´óÓÚÕ»ÖĞµÄ²Ù×÷·û£¬ ¾ÍÖ±½ÓÈë·ûºÅÕ».
-						operStack.push(ch);
-					}
-				}else {
-					//Èç¹ûÎª¿ÕÖ±½ÓÈë·ûºÅÕ»..
-					operStack.push(ch); // 1 + 3
-				}
-			} else { //Èç¹ûÊÇÊı£¬ÔòÖ±½ÓÈëÊıÕ»
-				
-				//numStack.push(ch - 48); //? "1+3" '1' => 1
-				//·ÖÎöË¼Â·
-				//1. µ±´¦Àí¶àÎ»ÊıÊ±£¬²»ÄÜ·¢ÏÖÊÇÒ»¸öÊı¾ÍÁ¢¼´ÈëÕ»£¬ÒòÎªËû¿ÉÄÜÊÇ¶àÎ»Êı
-				//2. ÔÚ´¦ÀíÊı£¬ĞèÒªÏòexpressionµÄ±í´ïÊ½µÄindex ºóÔÙ¿´Ò»Î»,Èç¹ûÊÇÊı¾Í½øĞĞÉ¨Ãè£¬Èç¹ûÊÇ·ûºÅ²ÅÈëÕ»
-				//3. Òò´ËÎÒÃÇĞèÒª¶¨ÒåÒ»¸ö±äÁ¿ ×Ö·û´®£¬ÓÃÓÚÆ´½Ó
-				
-				//´¦Àí¶àÎ»Êı
-				keepNum += ch;
-				
-				//Èç¹ûchÒÑ¾­ÊÇexpressionµÄ×îºóÒ»Î»£¬¾ÍÖ±½ÓÈëÕ»
-				if (index == expression.length() - 1) {
-					numStack.push(Integer.parseInt(keepNum));
-				}else{
-				
-					//ÅĞ¶ÏÏÂÒ»¸ö×Ö·ûÊÇ²»ÊÇÊı×Ö£¬Èç¹ûÊÇÊı×Ö£¬¾Í¼ÌĞøÉ¨Ãè£¬Èç¹ûÊÇÔËËã·û£¬ÔòÈëÕ»
-					//×¢ÒâÊÇ¿´ºóÒ»Î»£¬²»ÊÇindex++
-					if (operStack.isOper(expression.substring(index+1,index+2).charAt(0))) {
-						//Èç¹ûºóÒ»Î»ÊÇÔËËã·û£¬ÔòÈëÕ» keepNum = "1" »òÕß "123"
-						numStack.push(Integer.parseInt(keepNum));
-						//ÖØÒªµÄ!!!!!!, keepNumÇå¿Õ
-						keepNum = "";
-						
-					}
-				}
-			}
-			//ÈÃindex + 1, ²¢ÅĞ¶ÏÊÇ·ñÉ¨Ãèµ½expression×îºó.
-			index++;
-			if (index >= expression.length()) {
-				break;
-			}
-		}
-		
-		//µ±±í´ïÊ½É¨ÃèÍê±Ï£¬¾ÍË³ĞòµÄ´Ó ÊıÕ»ºÍ·ûºÅÕ»ÖĞpop³öÏàÓ¦µÄÊıºÍ·ûºÅ£¬²¢ÔËĞĞ.
-		while(true) {
-			//Èç¹û·ûºÅÕ»Îª¿Õ£¬Ôò¼ÆËãµ½×îºóµÄ½á¹û, ÊıÕ»ÖĞÖ»ÓĞÒ»¸öÊı×Ö¡¾½á¹û¡¿
-			if(operStack.isEmpty()) {
-				break;
-			}
-			num1 = numStack.pop();
-			num2 = numStack.pop();
-			oper = operStack.pop();
-			res = numStack.cal(num1, num2, oper);
-			numStack.push(res);//ÈëÕ»
-		}
-		//½«ÊıÕ»µÄ×îºóÊı£¬pop³ö£¬¾ÍÊÇ½á¹û
-		int res2 = numStack.pop();
-		System.out.printf("±í´ïÊ½ %s = %d", expression, res2);
-	}
+    public static void main(String[] args) {
+        //æ ¹æ®å‰é¢è€å¸ˆæ€è·¯ï¼Œå®Œæˆè¡¨è¾¾å¼çš„è¿ç®—
+        String expression = "7*2*2-5+1-5+3-4"; // 15//å¦‚ä½•å¤„ç†å¤šä½æ•°çš„é—®é¢˜ï¼Ÿ
+        //åˆ›å»ºä¸¤ä¸ªæ ˆï¼Œæ•°æ ˆï¼Œä¸€ä¸ªç¬¦å·æ ˆ
+        ArrayStack2 numStack = new ArrayStack2(10);
+        ArrayStack2 operStack = new ArrayStack2(10);
+        //å®šä¹‰éœ€è¦çš„ç›¸å…³å˜é‡
+        int index = 0;//ç”¨äºæ‰«æ
+        int num1 = 0;
+        int num2 = 0;
+        int oper = 0;
+        int res = 0;
+        char ch = ' '; //å°†æ¯æ¬¡æ‰«æå¾—åˆ°charä¿å­˜åˆ°ch
+        String keepNum = ""; //ç”¨äºæ‹¼æ¥ å¤šä½æ•°
+        //å¼€å§‹whileå¾ªç¯çš„æ‰«æexpression
+        while (true) {
+            //ä¾æ¬¡å¾—åˆ°expression çš„æ¯ä¸€ä¸ªå­—ç¬¦
+            ch = expression.substring(index, index + 1).charAt(0);
+            //åˆ¤æ–­chæ˜¯ä»€ä¹ˆï¼Œç„¶ååšç›¸åº”çš„å¤„ç†
+            if (operStack.isOper(ch)) {//å¦‚æœæ˜¯è¿ç®—ç¬¦
+                //åˆ¤æ–­å½“å‰çš„ç¬¦å·æ ˆæ˜¯å¦ä¸ºç©º
+                if (!operStack.isEmpty()) {
+                    //å¦‚æœç¬¦å·æ ˆæœ‰æ“ä½œç¬¦ï¼Œå°±è¿›è¡Œæ¯”è¾ƒ,å¦‚æœå½“å‰çš„æ“ä½œç¬¦çš„ä¼˜å…ˆçº§å°äºæˆ–è€…ç­‰äºæ ˆä¸­çš„æ“ä½œç¬¦,å°±éœ€è¦ä»æ•°æ ˆä¸­popå‡ºä¸¤ä¸ªæ•°,
+                    //åœ¨ä»ç¬¦å·æ ˆä¸­popå‡ºä¸€ä¸ªç¬¦å·ï¼Œè¿›è¡Œè¿ç®—ï¼Œå°†å¾—åˆ°ç»“æœï¼Œå…¥æ•°æ ˆï¼Œç„¶åå°†å½“å‰çš„æ“ä½œç¬¦å…¥ç¬¦å·æ ˆ
+                    if (operStack.priority(ch) <= operStack.priority(operStack.peek())) {
+                        num1 = numStack.pop();
+                        num2 = numStack.pop();
+                        oper = operStack.pop();
+                        res = numStack.cal(num1, num2, oper);
+                        //æŠŠè¿ç®—çš„ç»“æœå¦‚æ•°æ ˆ
+                        numStack.push(res);
+                        //ç„¶åå°†å½“å‰çš„æ“ä½œç¬¦å…¥ç¬¦å·æ ˆ
+                        operStack.push(ch);
+                    } else {
+                        //å¦‚æœå½“å‰çš„æ“ä½œç¬¦çš„ä¼˜å…ˆçº§å¤§äºæ ˆä¸­çš„æ“ä½œç¬¦ï¼Œ å°±ç›´æ¥å…¥ç¬¦å·æ ˆ.
+                        operStack.push(ch);
+                    }
+                } else {
+                    //å¦‚æœä¸ºç©ºç›´æ¥å…¥ç¬¦å·æ ˆ..
+                    operStack.push(ch); // 1 + 3
+                }
+            } else { //å¦‚æœæ˜¯æ•°ï¼Œåˆ™ç›´æ¥å…¥æ•°æ ˆ
+
+                //numStack.push(ch - 48); //? "1+3" '1' => 1
+                //åˆ†ææ€è·¯
+                //1. å½“å¤„ç†å¤šä½æ•°æ—¶ï¼Œä¸èƒ½å‘ç°æ˜¯ä¸€ä¸ªæ•°å°±ç«‹å³å…¥æ ˆï¼Œå› ä¸ºä»–å¯èƒ½æ˜¯å¤šä½æ•°
+                //2. åœ¨å¤„ç†æ•°ï¼Œéœ€è¦å‘expressionçš„è¡¨è¾¾å¼çš„index åå†çœ‹ä¸€ä½,å¦‚æœæ˜¯æ•°å°±è¿›è¡Œæ‰«æï¼Œå¦‚æœæ˜¯ç¬¦å·æ‰å…¥æ ˆ
+                //3. å› æ­¤æˆ‘ä»¬éœ€è¦å®šä¹‰ä¸€ä¸ªå˜é‡ å­—ç¬¦ä¸²ï¼Œç”¨äºæ‹¼æ¥
+
+                //å¤„ç†å¤šä½æ•°
+                keepNum += ch;
+
+                //å¦‚æœchå·²ç»æ˜¯expressionçš„æœ€åä¸€ä½ï¼Œå°±ç›´æ¥å…¥æ ˆ
+                if (index == expression.length() - 1) {
+                    numStack.push(Integer.parseInt(keepNum));
+                } else {
+
+                    //åˆ¤æ–­ä¸‹ä¸€ä¸ªå­—ç¬¦æ˜¯ä¸æ˜¯æ•°å­—ï¼Œå¦‚æœæ˜¯æ•°å­—ï¼Œå°±ç»§ç»­æ‰«æï¼Œå¦‚æœæ˜¯è¿ç®—ç¬¦ï¼Œåˆ™å…¥æ ˆ
+                    //æ³¨æ„æ˜¯çœ‹åä¸€ä½ï¼Œä¸æ˜¯index++
+                    if (operStack.isOper(expression.substring(index + 1, index + 2).charAt(0))) {
+                        //å¦‚æœåä¸€ä½æ˜¯è¿ç®—ç¬¦ï¼Œåˆ™å…¥æ ˆ keepNum = "1" æˆ–è€… "123"
+                        numStack.push(Integer.parseInt(keepNum));
+                        //é‡è¦çš„!!!!!!, keepNumæ¸…ç©º
+                        keepNum = "";
+
+                    }
+                }
+            }
+            //è®©index + 1, å¹¶åˆ¤æ–­æ˜¯å¦æ‰«æåˆ°expressionæœ€å.
+            index++;
+            if (index >= expression.length()) {
+                break;
+            }
+        }
+
+        //å½“è¡¨è¾¾å¼æ‰«æå®Œæ¯•ï¼Œå°±é¡ºåºçš„ä» æ•°æ ˆå’Œç¬¦å·æ ˆä¸­popå‡ºç›¸åº”çš„æ•°å’Œç¬¦å·ï¼Œå¹¶è¿è¡Œ.
+        while (true) {
+            //å¦‚æœç¬¦å·æ ˆä¸ºç©ºï¼Œåˆ™è®¡ç®—åˆ°æœ€åçš„ç»“æœ, æ•°æ ˆä¸­åªæœ‰ä¸€ä¸ªæ•°å­—ã€ç»“æœã€‘
+            if (operStack.isEmpty()) {
+                break;
+            }
+            num1 = numStack.pop();
+            num2 = numStack.pop();
+            oper = operStack.pop();
+            res = numStack.cal(num1, num2, oper);
+            numStack.push(res);//å…¥æ ˆ
+        }
+        //å°†æ•°æ ˆçš„æœ€åæ•°ï¼Œpopå‡ºï¼Œå°±æ˜¯ç»“æœ
+        int res2 = numStack.pop();
+        System.out.printf("è¡¨è¾¾å¼ %s = %d", expression, res2);
+    }
 
 }
 
-//ÏÈ´´½¨Ò»¸öÕ»,Ö±½ÓÊ¹ÓÃÇ°Ãæ´´½¨ºÃ
-//¶¨ÒåÒ»¸ö ArrayStack2 ±íÊ¾Õ», ĞèÒªÀ©Õ¹¹¦ÄÜ
+//å…ˆåˆ›å»ºä¸€ä¸ªæ ˆ,ç›´æ¥ä½¿ç”¨å‰é¢åˆ›å»ºå¥½
+//å®šä¹‰ä¸€ä¸ª ArrayStack2 è¡¨ç¤ºæ ˆ, éœ€è¦æ‰©å±•åŠŸèƒ½
 class ArrayStack2 {
-	private int maxSize; // Õ»µÄ´óĞ¡
-	private int[] stack; // Êı×é£¬Êı×éÄ£ÄâÕ»£¬Êı¾İ¾Í·ÅÔÚ¸ÃÊı×é
-	private int top = -1;// top±íÊ¾Õ»¶¥£¬³õÊ¼»¯Îª-1
-	
-	//¹¹ÔìÆ÷
-	public ArrayStack2(int maxSize) {
-		this.maxSize = maxSize;
-		stack = new int[this.maxSize];
-	}
-	
-	//Ôö¼ÓÒ»¸ö·½·¨£¬¿ÉÒÔ·µ»Øµ±Ç°Õ»¶¥µÄÖµ, µ«ÊÇ²»ÊÇÕæÕıµÄpop
-	public int peek() {
-		return stack[top];
-	}
-	
-	//Õ»Âú
-	public boolean isFull() {
-		return top == maxSize - 1;
-	}
-	//Õ»¿Õ
-	public boolean isEmpty() {
-		return top == -1;
-	}
-	//ÈëÕ»-push
-	public void push(int value) {
-		//ÏÈÅĞ¶ÏÕ»ÊÇ·ñÂú
-		if(isFull()) {
-			System.out.println("Õ»Âú");
-			return;
-		}
-		top++;
-		stack[top] = value;
-	}
-	//³öÕ»-pop, ½«Õ»¶¥µÄÊı¾İ·µ»Ø
-	public int pop() {
-		//ÏÈÅĞ¶ÏÕ»ÊÇ·ñ¿Õ
-		if(isEmpty()) {
-			//Å×³öÒì³£
-			throw new RuntimeException("Õ»¿Õ£¬Ã»ÓĞÊı¾İ~");
-		}
-		int value = stack[top];
-		top--;
-		return value;
-	}
-	//ÏÔÊ¾Õ»µÄÇé¿ö[±éÀúÕ»]£¬ ±éÀúÊ±£¬ĞèÒª´ÓÕ»¶¥¿ªÊ¼ÏÔÊ¾Êı¾İ
-	public void list() {
-		if(isEmpty()) {
-			System.out.println("Õ»¿Õ£¬Ã»ÓĞÊı¾İ~~");
-			return;
-		}
-		//ĞèÒª´ÓÕ»¶¥¿ªÊ¼ÏÔÊ¾Êı¾İ
-		for(int i = top; i >= 0 ; i--) {
-			System.out.printf("stack[%d]=%d\n", i, stack[i]);
-		}
-	}
-	//·µ»ØÔËËã·ûµÄÓÅÏÈ¼¶£¬ÓÅÏÈ¼¶ÊÇ³ÌĞòÔ±À´È·¶¨, ÓÅÏÈ¼¶Ê¹ÓÃÊı×Ö±íÊ¾
-	//Êı×ÖÔ½´ó£¬ÔòÓÅÏÈ¼¶¾ÍÔ½¸ß.
-	public int priority(int oper) {
-		if(oper == '*' || oper == '/'){
-			return 1;
-		} else if (oper == '+' || oper == '-') {
-			return 0;
-		} else {
-			return -1; // ¼Ù¶¨Ä¿Ç°µÄ±í´ïÊ½Ö»ÓĞ +, - , * , /
-		}
-	}
-	//ÅĞ¶ÏÊÇ²»ÊÇÒ»¸öÔËËã·û
-	public boolean isOper(char val) {
-		return val == '+' || val == '-' || val == '*' || val == '/';
-	}
-	//¼ÆËã·½·¨
-	public int cal(int num1, int num2, int oper) {
-		int res = 0; // res ÓÃÓÚ´æ·Å¼ÆËãµÄ½á¹û
-		switch (oper) {
-		case '+':
-			res = num1 + num2;
-			break;
-		case '-':
-			res = num2 - num1;// ×¢ÒâË³Ğò
-			break;
-		case '*':
-			res = num1 * num2;
-			break;
-		case '/':
-			res = num2 / num1;
-			break;
-		default:
-			break;
-		}
-		return res;
-	}
-	
+    private int maxSize; // æ ˆçš„å¤§å°
+    private int[] stack; // æ•°ç»„ï¼Œæ•°ç»„æ¨¡æ‹Ÿæ ˆï¼Œæ•°æ®å°±æ”¾åœ¨è¯¥æ•°ç»„
+    private int top = -1;// topè¡¨ç¤ºæ ˆé¡¶ï¼Œåˆå§‹åŒ–ä¸º-1
+
+    //æ„é€ å™¨
+    public ArrayStack2(int maxSize) {
+        this.maxSize = maxSize;
+        stack = new int[this.maxSize];
+    }
+
+    //å¢åŠ ä¸€ä¸ªæ–¹æ³•ï¼Œå¯ä»¥è¿”å›å½“å‰æ ˆé¡¶çš„å€¼, ä½†æ˜¯ä¸æ˜¯çœŸæ­£çš„pop
+    public int peek() {
+        return stack[top];
+    }
+
+    //æ ˆæ»¡
+    public boolean isFull() {
+        return top == maxSize - 1;
+    }
+
+    //æ ˆç©º
+    public boolean isEmpty() {
+        return top == -1;
+    }
+
+    //å…¥æ ˆ-push
+    public void push(int value) {
+        //å…ˆåˆ¤æ–­æ ˆæ˜¯å¦æ»¡
+        if (isFull()) {
+            System.out.println("æ ˆæ»¡");
+            return;
+        }
+        top++;
+        stack[top] = value;
+    }
+
+    //å‡ºæ ˆ-pop, å°†æ ˆé¡¶çš„æ•°æ®è¿”å›
+    public int pop() {
+        //å…ˆåˆ¤æ–­æ ˆæ˜¯å¦ç©º
+        if (isEmpty()) {
+            //æŠ›å‡ºå¼‚å¸¸
+            throw new RuntimeException("æ ˆç©ºï¼Œæ²¡æœ‰æ•°æ®~");
+        }
+        int value = stack[top];
+        top--;
+        return value;
+    }
+
+    //æ˜¾ç¤ºæ ˆçš„æƒ…å†µ[éå†æ ˆ]ï¼Œ éå†æ—¶ï¼Œéœ€è¦ä»æ ˆé¡¶å¼€å§‹æ˜¾ç¤ºæ•°æ®
+    public void list() {
+        if (isEmpty()) {
+            System.out.println("æ ˆç©ºï¼Œæ²¡æœ‰æ•°æ®~~");
+            return;
+        }
+        //éœ€è¦ä»æ ˆé¡¶å¼€å§‹æ˜¾ç¤ºæ•°æ®
+        for (int i = top; i >= 0; i--) {
+            System.out.printf("stack[%d]=%d\n", i, stack[i]);
+        }
+    }
+
+    //è¿”å›è¿ç®—ç¬¦çš„ä¼˜å…ˆçº§ï¼Œä¼˜å…ˆçº§æ˜¯ç¨‹åºå‘˜æ¥ç¡®å®š, ä¼˜å…ˆçº§ä½¿ç”¨æ•°å­—è¡¨ç¤º
+    //æ•°å­—è¶Šå¤§ï¼Œåˆ™ä¼˜å…ˆçº§å°±è¶Šé«˜.
+    public int priority(int oper) {
+        if (oper == '*' || oper == '/') {
+            return 1;
+        } else if (oper == '+' || oper == '-') {
+            return 0;
+        } else {
+            return -1; // å‡å®šç›®å‰çš„è¡¨è¾¾å¼åªæœ‰ +, - , * , /
+        }
+    }
+
+    //åˆ¤æ–­æ˜¯ä¸æ˜¯ä¸€ä¸ªè¿ç®—ç¬¦
+    public boolean isOper(char val) {
+        return val == '+' || val == '-' || val == '*' || val == '/';
+    }
+
+    //è®¡ç®—æ–¹æ³•
+    public int cal(int num1, int num2, int oper) {
+        int res = 0; // res ç”¨äºå­˜æ”¾è®¡ç®—çš„ç»“æœ
+        switch (oper) {
+            case '+':
+                res = num1 + num2;
+                break;
+            case '-':
+                res = num2 - num1;// æ³¨æ„é¡ºåº
+                break;
+            case '*':
+                res = num1 * num2;
+                break;
+            case '/':
+                res = num2 / num1;
+                break;
+            default:
+                break;
+        }
+        return res;
+    }
+
 }

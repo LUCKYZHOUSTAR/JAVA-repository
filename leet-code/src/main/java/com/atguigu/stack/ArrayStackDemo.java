@@ -5,103 +5,103 @@ import java.util.Scanner;
 public class ArrayStackDemo {
 
 	public static void main(String[] args) {
-		//²âÊÔÒ»ÏÂArrayStack ÊÇ·ñÕýÈ·
-		//ÏÈ´´½¨Ò»¸öArrayStack¶ÔÏó->±íÊ¾Õ»
+		//æµ‹è¯•ä¸€ä¸‹ArrayStack æ˜¯å¦æ­£ç¡®
+		//å…ˆåˆ›å»ºä¸€ä¸ªArrayStackå¯¹è±¡->è¡¨ç¤ºæ ˆ
 		ArrayStack stack = new ArrayStack(4);
 		String key = "";
-		boolean loop = true; //¿ØÖÆÊÇ·ñÍË³ö²Ëµ¥
+		boolean loop = true; //æŽ§åˆ¶æ˜¯å¦é€€å‡ºèœå•
 		Scanner scanner = new Scanner(System.in);
-		
+
 		while(loop) {
-			System.out.println("show: ±íÊ¾ÏÔÊ¾Õ»");
-			System.out.println("exit: ÍË³ö³ÌÐò");
-			System.out.println("push: ±íÊ¾Ìí¼ÓÊý¾Ýµ½Õ»(ÈëÕ»)");
-			System.out.println("pop: ±íÊ¾´ÓÕ»È¡³öÊý¾Ý(³öÕ»)");
-			System.out.println("ÇëÊäÈëÄãµÄÑ¡Ôñ");
+			System.out.println("show: è¡¨ç¤ºæ˜¾ç¤ºæ ˆ");
+			System.out.println("exit: é€€å‡ºç¨‹åº");
+			System.out.println("push: è¡¨ç¤ºæ·»åŠ æ•°æ®åˆ°æ ˆ(å…¥æ ˆ)");
+			System.out.println("pop: è¡¨ç¤ºä»Žæ ˆå–å‡ºæ•°æ®(å‡ºæ ˆ)");
+			System.out.println("è¯·è¾“å…¥ä½ çš„é€‰æ‹©");
 			key = scanner.next();
 			switch (key) {
-			case "show":
-				stack.list();
-				break;
-			case "push":
-				System.out.println("ÇëÊäÈëÒ»¸öÊý");
-				int value = scanner.nextInt();
-				stack.push(value);
-				break;
-			case "pop":
-				try {
-					int res = stack.pop();
-					System.out.printf("³öÕ»µÄÊý¾ÝÊÇ %d\n", res);
-				} catch (Exception e) {
-					// TODO: handle exception
-					System.out.println(e.getMessage());
-				}
-				break;
-			case "exit":
-				scanner.close();
-				loop = false;
-				break;
-			default:
-				break;
+				case "show":
+					stack.list();
+					break;
+				case "push":
+					System.out.println("è¯·è¾“å…¥ä¸€ä¸ªæ•°");
+					int value = scanner.nextInt();
+					stack.push(value);
+					break;
+				case "pop":
+					try {
+						int res = stack.pop();
+						System.out.printf("å‡ºæ ˆçš„æ•°æ®æ˜¯ %d\n", res);
+					} catch (Exception e) {
+						// TODO: handle exception
+						System.out.println(e.getMessage());
+					}
+					break;
+				case "exit":
+					scanner.close();
+					loop = false;
+					break;
+				default:
+					break;
 			}
 		}
-		
-		System.out.println("³ÌÐòÍË³ö~~~");
+
+		System.out.println("ç¨‹åºé€€å‡º~~~");
 	}
 
 }
 
-//¶¨ÒåÒ»¸ö ArrayStack ±íÊ¾Õ»
+//å®šä¹‰ä¸€ä¸ª ArrayStack è¡¨ç¤ºæ ˆ
 class ArrayStack {
-	private int maxSize; // Õ»µÄ´óÐ¡
-	private int[] stack; // Êý×é£¬Êý×éÄ£ÄâÕ»£¬Êý¾Ý¾Í·ÅÔÚ¸ÃÊý×é
-	private int top = -1;// top±íÊ¾Õ»¶¥£¬³õÊ¼»¯Îª-1
-	
-	//¹¹ÔìÆ÷
+	private int maxSize; // æ ˆçš„å¤§å°
+	private int[] stack; // æ•°ç»„ï¼Œæ•°ç»„æ¨¡æ‹Ÿæ ˆï¼Œæ•°æ®å°±æ”¾åœ¨è¯¥æ•°ç»„
+	private int top = -1;// topè¡¨ç¤ºæ ˆé¡¶ï¼Œåˆå§‹åŒ–ä¸º-1
+
+	//æž„é€ å™¨
 	public ArrayStack(int maxSize) {
 		this.maxSize = maxSize;
 		stack = new int[this.maxSize];
 	}
-	
-	//Õ»Âú
+
+	//æ ˆæ»¡
 	public boolean isFull() {
 		return top == maxSize - 1;
 	}
-	//Õ»¿Õ
+	//æ ˆç©º
 	public boolean isEmpty() {
 		return top == -1;
 	}
-	//ÈëÕ»-push
+	//å…¥æ ˆ-push
 	public void push(int value) {
-		//ÏÈÅÐ¶ÏÕ»ÊÇ·ñÂú
+		//å…ˆåˆ¤æ–­æ ˆæ˜¯å¦æ»¡
 		if(isFull()) {
-			System.out.println("Õ»Âú");
+			System.out.println("æ ˆæ»¡");
 			return;
 		}
 		top++;
 		stack[top] = value;
 	}
-	//³öÕ»-pop, ½«Õ»¶¥µÄÊý¾Ý·µ»Ø
+	//å‡ºæ ˆ-pop, å°†æ ˆé¡¶çš„æ•°æ®è¿”å›ž
 	public int pop() {
-		//ÏÈÅÐ¶ÏÕ»ÊÇ·ñ¿Õ
+		//å…ˆåˆ¤æ–­æ ˆæ˜¯å¦ç©º
 		if(isEmpty()) {
-			//Å×³öÒì³£
-			throw new RuntimeException("Õ»¿Õ£¬Ã»ÓÐÊý¾Ý~");
+			//æŠ›å‡ºå¼‚å¸¸
+			throw new RuntimeException("æ ˆç©ºï¼Œæ²¡æœ‰æ•°æ®~");
 		}
 		int value = stack[top];
 		top--;
 		return value;
 	}
-	//ÏÔÊ¾Õ»µÄÇé¿ö[±éÀúÕ»]£¬ ±éÀúÊ±£¬ÐèÒª´ÓÕ»¶¥¿ªÊ¼ÏÔÊ¾Êý¾Ý
+	//æ˜¾ç¤ºæ ˆçš„æƒ…å†µ[éåŽ†æ ˆ]ï¼Œ éåŽ†æ—¶ï¼Œéœ€è¦ä»Žæ ˆé¡¶å¼€å§‹æ˜¾ç¤ºæ•°æ®
 	public void list() {
 		if(isEmpty()) {
-			System.out.println("Õ»¿Õ£¬Ã»ÓÐÊý¾Ý~~");
+			System.out.println("æ ˆç©ºï¼Œæ²¡æœ‰æ•°æ®~~");
 			return;
 		}
-		//ÐèÒª´ÓÕ»¶¥¿ªÊ¼ÏÔÊ¾Êý¾Ý
+		//éœ€è¦ä»Žæ ˆé¡¶å¼€å§‹æ˜¾ç¤ºæ•°æ®
 		for(int i = top; i >= 0 ; i--) {
 			System.out.printf("stack[%d]=%d\n", i, stack[i]);
 		}
 	}
-	
+
 }
