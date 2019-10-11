@@ -4,183 +4,185 @@ import java.util.Scanner;
 
 public class HashTabDemo {
 
-	public static void main(String[] args) {
-		
-		//´´½¨¹şÏ£±í
-		HashTab hashTab = new HashTab(7);
-		
-		//Ğ´Ò»¸ö¼òµ¥µÄ²Ëµ¥
-		String key = "";
-		Scanner scanner = new Scanner(System.in);
-		while(true) {
-			System.out.println("add:  Ìí¼Ó¹ÍÔ±");
-			System.out.println("list: ÏÔÊ¾¹ÍÔ±");
-			System.out.println("find: ²éÕÒ¹ÍÔ±");
-			System.out.println("exit: ÍË³öÏµÍ³");
-			
-			key = scanner.next();
-			switch (key) {
-			case "add":
-				System.out.println("ÊäÈëid");
-				int id = scanner.nextInt();
-				System.out.println("ÊäÈëÃû×Ö");
-				String name = scanner.next();
-				//´´½¨ ¹ÍÔ±
-				Emp emp = new Emp(id, name);
-				hashTab.add(emp);
-				break;
-			case "list":
-				hashTab.list();
-				break;
-			case "find":
-				System.out.println("ÇëÊäÈëÒª²éÕÒµÄid");
-				id = scanner.nextInt();
-				hashTab.findEmpById(id);
-				break;
-			case "exit":
-				scanner.close();
-				System.exit(0);
-			default:
-				break;
-			}
-		}
-		
-	}
+    public static void main(String[] args) {
+
+        //åˆ›å»ºå“ˆå¸Œè¡¨
+        HashTab hashTab = new HashTab(7);
+
+        //å†™ä¸€ä¸ªç®€å•çš„èœå•
+        String key = "";
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("add:  æ·»åŠ é›‡å‘˜");
+            System.out.println("list: æ˜¾ç¤ºé›‡å‘˜");
+            System.out.println("find: æŸ¥æ‰¾é›‡å‘˜");
+            System.out.println("exit: é€€å‡ºç³»ç»Ÿ");
+
+            key = scanner.next();
+            switch (key) {
+                case "add":
+                    System.out.println("è¾“å…¥id");
+                    int id = scanner.nextInt();
+                    System.out.println("è¾“å…¥åå­—");
+                    String name = scanner.next();
+                    //åˆ›å»º é›‡å‘˜
+                    Emp emp = new Emp(id, name);
+                    hashTab.add(emp);
+                    break;
+                case "list":
+                    hashTab.list();
+                    break;
+                case "find":
+                    System.out.println("è¯·è¾“å…¥è¦æŸ¥æ‰¾çš„id");
+                    id = scanner.nextInt();
+                    hashTab.findEmpById(id);
+                    break;
+                case "exit":
+                    scanner.close();
+                    System.exit(0);
+                default:
+                    break;
+            }
+        }
+
+    }
 
 }
 
-//´´½¨HashTab ¹ÜÀí¶àÌõÁ´±í
+//åˆ›å»ºHashTab ç®¡ç†å¤šæ¡é“¾è¡¨
 class HashTab {
-	private EmpLinkedList[] empLinkedListArray;
-	private int size; //±íÊ¾ÓĞ¶àÉÙÌõÁ´±í
-	
-	//¹¹ÔìÆ÷
-	public HashTab(int size) {
-		this.size = size;
-		//³õÊ¼»¯empLinkedListArray
-		empLinkedListArray = new EmpLinkedList[size];
-		//£¿ÁôÒ»¸ö¿Ó, ÕâÊ±²»Òª·Ö±ğ³õÊ¼»¯Ã¿¸öÁ´±í
-		for(int i = 0; i < size; i++) {
-			empLinkedListArray[i] = new EmpLinkedList();
-		}
-	}
-	
-	//Ìí¼Ó¹ÍÔ±
-	public void add(Emp emp) {
-		//¸ù¾İÔ±¹¤µÄid ,µÃµ½¸ÃÔ±¹¤Ó¦µ±Ìí¼Óµ½ÄÄÌõÁ´±í
-		int empLinkedListNO = hashFun(emp.id);
-		//½«emp Ìí¼Óµ½¶ÔÓ¦µÄÁ´±íÖĞ
-		empLinkedListArray[empLinkedListNO].add(emp);
-		
-	}
-	//±éÀúËùÓĞµÄÁ´±í,±éÀúhashtab
-	public void list() {
-		for(int i = 0; i < size; i++) {
-			empLinkedListArray[i].list(i);
-		}
-	}
-	
-	//¸ù¾İÊäÈëµÄid,²éÕÒ¹ÍÔ±
-	public void findEmpById(int id) {
-		//Ê¹ÓÃÉ¢ÁĞº¯ÊıÈ·¶¨µ½ÄÄÌõÁ´±í²éÕÒ
-		int empLinkedListNO = hashFun(id);
-		Emp emp = empLinkedListArray[empLinkedListNO].findEmpById(id);
-		if(emp != null) {//ÕÒµ½
-			System.out.printf("ÔÚµÚ%dÌõÁ´±íÖĞÕÒµ½ ¹ÍÔ± id = %d\n", (empLinkedListNO + 1), id);
-		}else{
-			System.out.println("ÔÚ¹şÏ£±íÖĞ£¬Ã»ÓĞÕÒµ½¸Ã¹ÍÔ±~");
-		}
-	}
-	
-	//±àĞ´É¢ÁĞº¯Êı, Ê¹ÓÃÒ»¸ö¼òµ¥È¡Ä£·¨
-	public int hashFun(int id) {
-		return id % size;
-	}
-	
-	
+    private EmpLinkedList[] empLinkedListArray;
+    private int size; //è¡¨ç¤ºæœ‰å¤šå°‘æ¡é“¾è¡¨
+
+    //æ„é€ å™¨
+    public HashTab(int size) {
+        this.size = size;
+        //åˆå§‹åŒ–empLinkedListArray
+        empLinkedListArray = new EmpLinkedList[size];
+        //ï¼Ÿç•™ä¸€ä¸ªå‘, è¿™æ—¶ä¸è¦åˆ†åˆ«åˆå§‹åŒ–æ¯ä¸ªé“¾è¡¨
+        for (int i = 0; i < size; i++) {
+            empLinkedListArray[i] = new EmpLinkedList();
+        }
+    }
+
+    //æ·»åŠ é›‡å‘˜
+    public void add(Emp emp) {
+        //æ ¹æ®å‘˜å·¥çš„id ,å¾—åˆ°è¯¥å‘˜å·¥åº”å½“æ·»åŠ åˆ°å“ªæ¡é“¾è¡¨
+        int empLinkedListNO = hashFun(emp.id);
+        //å°†emp æ·»åŠ åˆ°å¯¹åº”çš„é“¾è¡¨ä¸­
+        empLinkedListArray[empLinkedListNO].add(emp);
+
+    }
+
+    //éå†æ‰€æœ‰çš„é“¾è¡¨,éå†hashtab
+    public void list() {
+        for (int i = 0; i < size; i++) {
+            empLinkedListArray[i].list(i);
+        }
+    }
+
+    //æ ¹æ®è¾“å…¥çš„id,æŸ¥æ‰¾é›‡å‘˜
+    public void findEmpById(int id) {
+        //ä½¿ç”¨æ•£åˆ—å‡½æ•°ç¡®å®šåˆ°å“ªæ¡é“¾è¡¨æŸ¥æ‰¾
+        int empLinkedListNO = hashFun(id);
+        Emp emp = empLinkedListArray[empLinkedListNO].findEmpById(id);
+        if (emp != null) {//æ‰¾åˆ°
+            System.out.printf("åœ¨ç¬¬%dæ¡é“¾è¡¨ä¸­æ‰¾åˆ° é›‡å‘˜ id = %d\n", (empLinkedListNO + 1), id);
+        } else {
+            System.out.println("åœ¨å“ˆå¸Œè¡¨ä¸­ï¼Œæ²¡æœ‰æ‰¾åˆ°è¯¥é›‡å‘˜~");
+        }
+    }
+
+    //ç¼–å†™æ•£åˆ—å‡½æ•°, ä½¿ç”¨ä¸€ä¸ªç®€å•å–æ¨¡æ³•
+    public int hashFun(int id) {
+        return id % size;
+    }
+
+
 }
 
-//±íÊ¾Ò»¸ö¹ÍÔ±
+//è¡¨ç¤ºä¸€ä¸ªé›‡å‘˜
 class Emp {
-	public int id;
-	public String name;
-	public Emp next; //next Ä¬ÈÏÎª null
-	public Emp(int id, String name) {
-		super();
-		this.id = id;
-		this.name = name;
-	}
+    public int id;
+    public String name;
+    public Emp next; //next é»˜è®¤ä¸º null
+
+    public Emp(int id, String name) {
+        super();
+        this.id = id;
+        this.name = name;
+    }
 }
 
-//´´½¨EmpLinkedList ,±íÊ¾Á´±í
+//åˆ›å»ºEmpLinkedList ,è¡¨ç¤ºé“¾è¡¨
 class EmpLinkedList {
-	//Í·Ö¸Õë£¬Ö´ĞĞµÚÒ»¸öEmp,Òò´ËÎÒÃÇÕâ¸öÁ´±íµÄhead ÊÇÖ±½ÓÖ¸ÏòµÚÒ»¸öEmp
-	private Emp head; //Ä¬ÈÏnull
-	
-	//Ìí¼Ó¹ÍÔ±µ½Á´±í
-	//ËµÃ÷
-	//1. ¼Ù¶¨£¬µ±Ìí¼Ó¹ÍÔ±Ê±£¬id ÊÇ×ÔÔö³¤£¬¼´idµÄ·ÖÅä×ÜÊÇ´ÓĞ¡µ½´ó
-	//   Òò´ËÎÒÃÇ½«¸Ã¹ÍÔ±Ö±½Ó¼ÓÈëµ½±¾Á´±íµÄ×îºó¼´¿É
-	public void add(Emp emp) {
-		//Èç¹ûÊÇÌí¼ÓµÚÒ»¸ö¹ÍÔ±
-		if(head == null) {
-			head = emp;
-			return;
-		}
-		//Èç¹û²»ÊÇµÚÒ»¸ö¹ÍÔ±£¬ÔòÊ¹ÓÃÒ»¸ö¸¨ÖúµÄÖ¸Õë£¬°ïÖú¶¨Î»µ½×îºó
-		Emp curEmp = head;
-		while(true) {
-			if(curEmp.next == null) {//ËµÃ÷µ½Á´±í×îºó
-				break;
-			}
-			curEmp = curEmp.next; //ºóÒÆ
-		}
-		//ÍË³öÊ±Ö±½Ó½«emp ¼ÓÈëÁ´±í
-		curEmp.next = emp;
-	}
-	
-	//±éÀúÁ´±íµÄ¹ÍÔ±ĞÅÏ¢
-	public void list(int no) {
-		if(head == null) { //ËµÃ÷Á´±íÎª¿Õ
-			System.out.println("µÚ "+(no+1)+" Á´±íÎª¿Õ");
-			return;
-		}
-		System.out.print("µÚ "+(no+1)+" Á´±íµÄĞÅÏ¢Îª");
-		Emp curEmp = head; //¸¨ÖúÖ¸Õë
-		while(true) {
-			System.out.printf(" => id=%d name=%s\t", curEmp.id, curEmp.name);
-			if(curEmp.next == null) {//ËµÃ÷curEmpÒÑ¾­ÊÇ×îºó½áµã
-				break;
-			}
-			curEmp = curEmp.next; //ºóÒÆ£¬±éÀú
-		}
-		System.out.println();
-	}
-	
-	//¸ù¾İid²éÕÒ¹ÍÔ±
-	//Èç¹û²éÕÒµ½£¬¾Í·µ»ØEmp, Èç¹ûÃ»ÓĞÕÒµ½£¬¾Í·µ»Ønull
-	public Emp findEmpById(int id) {
-		//ÅĞ¶ÏÁ´±íÊÇ·ñÎª¿Õ
-		if(head == null) {
-			System.out.println("Á´±íÎª¿Õ");
-			return null;
-		}
-		//¸¨ÖúÖ¸Õë
-		Emp curEmp = head;
-		while(true) {
-			if(curEmp.id == id) {//ÕÒµ½
-				break;//ÕâÊ±curEmp¾ÍÖ¸ÏòÒª²éÕÒµÄ¹ÍÔ±
-			}
-			//ÍË³ö
-			if(curEmp.next == null) {//ËµÃ÷±éÀúµ±Ç°Á´±íÃ»ÓĞÕÒµ½¸Ã¹ÍÔ±
-				curEmp = null;
-				break;
-			}
-			curEmp = curEmp.next;//ÒÔºó
-		}
-		
-		return curEmp;
-	}
-	
+    //å¤´æŒ‡é’ˆï¼Œæ‰§è¡Œç¬¬ä¸€ä¸ªEmp,å› æ­¤æˆ‘ä»¬è¿™ä¸ªé“¾è¡¨çš„head æ˜¯ç›´æ¥æŒ‡å‘ç¬¬ä¸€ä¸ªEmp
+    private Emp head; //é»˜è®¤null
+
+    //æ·»åŠ é›‡å‘˜åˆ°é“¾è¡¨
+    //è¯´æ˜
+    //1. å‡å®šï¼Œå½“æ·»åŠ é›‡å‘˜æ—¶ï¼Œid æ˜¯è‡ªå¢é•¿ï¼Œå³idçš„åˆ†é…æ€»æ˜¯ä»å°åˆ°å¤§
+    //   å› æ­¤æˆ‘ä»¬å°†è¯¥é›‡å‘˜ç›´æ¥åŠ å…¥åˆ°æœ¬é“¾è¡¨çš„æœ€åå³å¯
+    public void add(Emp emp) {
+        //å¦‚æœæ˜¯æ·»åŠ ç¬¬ä¸€ä¸ªé›‡å‘˜
+        if (head == null) {
+            head = emp;
+            return;
+        }
+        //å¦‚æœä¸æ˜¯ç¬¬ä¸€ä¸ªé›‡å‘˜ï¼Œåˆ™ä½¿ç”¨ä¸€ä¸ªè¾…åŠ©çš„æŒ‡é’ˆï¼Œå¸®åŠ©å®šä½åˆ°æœ€å
+        Emp curEmp = head;
+        while (true) {
+            if (curEmp.next == null) {//è¯´æ˜åˆ°é“¾è¡¨æœ€å
+                break;
+            }
+            curEmp = curEmp.next; //åç§»
+        }
+        //é€€å‡ºæ—¶ç›´æ¥å°†emp åŠ å…¥é“¾è¡¨
+        curEmp.next = emp;
+    }
+
+    //éå†é“¾è¡¨çš„é›‡å‘˜ä¿¡æ¯
+    public void list(int no) {
+        if (head == null) { //è¯´æ˜é“¾è¡¨ä¸ºç©º
+            System.out.println("ç¬¬ " + (no + 1) + " é“¾è¡¨ä¸ºç©º");
+            return;
+        }
+        System.out.print("ç¬¬ " + (no + 1) + " é“¾è¡¨çš„ä¿¡æ¯ä¸º");
+        Emp curEmp = head; //è¾…åŠ©æŒ‡é’ˆ
+        while (true) {
+            System.out.printf(" => id=%d name=%s\t", curEmp.id, curEmp.name);
+            if (curEmp.next == null) {//è¯´æ˜curEmpå·²ç»æ˜¯æœ€åç»“ç‚¹
+                break;
+            }
+            curEmp = curEmp.next; //åç§»ï¼Œéå†
+        }
+        System.out.println();
+    }
+
+    //æ ¹æ®idæŸ¥æ‰¾é›‡å‘˜
+    //å¦‚æœæŸ¥æ‰¾åˆ°ï¼Œå°±è¿”å›Emp, å¦‚æœæ²¡æœ‰æ‰¾åˆ°ï¼Œå°±è¿”å›null
+    public Emp findEmpById(int id) {
+        //åˆ¤æ–­é“¾è¡¨æ˜¯å¦ä¸ºç©º
+        if (head == null) {
+            System.out.println("é“¾è¡¨ä¸ºç©º");
+            return null;
+        }
+        //è¾…åŠ©æŒ‡é’ˆ
+        Emp curEmp = head;
+        while (true) {
+            if (curEmp.id == id) {//æ‰¾åˆ°
+                break;//è¿™æ—¶curEmpå°±æŒ‡å‘è¦æŸ¥æ‰¾çš„é›‡å‘˜
+            }
+            //é€€å‡º
+            if (curEmp.next == null) {//è¯´æ˜éå†å½“å‰é“¾è¡¨æ²¡æœ‰æ‰¾åˆ°è¯¥é›‡å‘˜
+                curEmp = null;
+                break;
+            }
+            curEmp = curEmp.next;//ä»¥å
+        }
+
+        return curEmp;
+    }
+
 }
 

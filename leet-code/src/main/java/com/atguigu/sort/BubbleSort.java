@@ -119,4 +119,32 @@ public class BubbleSort {
         }
     }
 
+
+    public static void bubbleSortV2(int[] arr) {
+
+        boolean flag = false;
+        int temp = 0;
+        for (int i = 0; i < arr.length - 1; i++) {
+            for (int j = 0; j < arr.length - 1 - i; j++) {
+                //如果大的话，两个数就发生交换
+                if (arr[j] > arr[j + 1]) {
+
+                    flag = true;
+                    temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+
+
+                //如果一次都没有交换，则直接推出，冒泡排序的优化点
+                if (!flag) {
+
+                    break;
+
+                } else {
+                    flag = false;
+                }
+            }
+        }
+    }
 }
