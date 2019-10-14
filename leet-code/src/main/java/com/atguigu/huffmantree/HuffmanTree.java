@@ -4,110 +4,157 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * åŠŸèƒ½æè¿°:
+ *
+ * @param: ä»€ä¹ˆæ˜¯éœå¤«æ›¼æ ‘ï¼Œè®©å¶å­èŠ‚ç‚¹çš„æƒå€¼æœ€å°ï¼Œå°±æ˜¯ä¸€é¢—éœå¤«æ›¼æ ‘
+ * @return:
+ * @auther: zhou
+ * @date: 2019/10/14 ä¸‹åˆ2:31
+ */
 public class HuffmanTree {
 
-	public static void main(String[] args) {
-		int arr[] = { 13, 7, 8, 3, 29, 6, 1 };
-		Node root = createHuffmanTree(arr);
-		
-		//²âÊÔÒ»°Ñ
-		preOrder(root); //
-		
-	}
-	
-	//±àĞ´Ò»¸öÇ°Ğò±éÀúµÄ·½·¨
-	public static void preOrder(Node root) {
-		if(root != null) {
-			root.preOrder();
-		}else{
-			System.out.println("ÊÇ¿ÕÊ÷£¬²»ÄÜ±éÀú~~");
-		}
-	}
+    public static void main(String[] args) {
+        int arr[] = {13, 7, 8, 3, 29, 6, 1};
+        Node root = createHuffmanTree(arr);
 
-	// ´´½¨ºÕ·òÂüÊ÷µÄ·½·¨
-	/**
-	 * 
-	 * @param arr ĞèÒª´´½¨³É¹ş·òÂüÊ÷µÄÊı×é
-	 * @return ´´½¨ºÃºóµÄºÕ·òÂüÊ÷µÄroot½áµã
-	 */
-	public static Node createHuffmanTree(int[] arr) {
-		// µÚÒ»²½ÎªÁË²Ù×÷·½±ã
-		// 1. ±éÀú arr Êı×é
-		// 2. ½«arrµÄÃ¿¸öÔªËØ¹¹³É³ÉÒ»¸öNode
-		// 3. ½«Node ·ÅÈëµ½ArrayListÖĞ
-		List<Node> nodes = new ArrayList<Node>();
-		for (int value : arr) {
-			nodes.add(new Node(value));
-		}
-		
-		//ÎÒÃÇ´¦ÀíµÄ¹ı³ÌÊÇÒ»¸öÑ­»·µÄ¹ı³Ì
-		
-		
-		while(nodes.size() > 1) {
-		
-			//ÅÅĞò ´ÓĞ¡µ½´ó 
-			Collections.sort(nodes);
-			
-			System.out.println("nodes =" + nodes);
-			
-			//È¡³ö¸ù½ÚµãÈ¨Öµ×îĞ¡µÄÁ½¿Å¶ş²æÊ÷ 
-			//(1) È¡³öÈ¨Öµ×îĞ¡µÄ½áµã£¨¶ş²æÊ÷£©
-			Node leftNode = nodes.get(0);
-			//(2) È¡³öÈ¨ÖµµÚ¶şĞ¡µÄ½áµã£¨¶ş²æÊ÷£©
-			Node rightNode = nodes.get(1);
-			
-			//(3)¹¹½¨Ò»¿ÅĞÂµÄ¶ş²æÊ÷
-			Node parent = new Node(leftNode.value + rightNode.value);
-			parent.left = leftNode;
-			parent.right = rightNode;
-			
-			//(4)´ÓArrayListÉ¾³ı´¦Àí¹ıµÄ¶ş²æÊ÷
-			nodes.remove(leftNode);
-			nodes.remove(rightNode);
-			//(5)½«parent¼ÓÈëµ½nodes
-			nodes.add(parent);
-		}
-		
-		//·µ»Ø¹ş·òÂüÊ÷µÄroot½áµã
-		return nodes.get(0);
-		
-	}
+        //æµ‹è¯•ä¸€æŠŠ
+        preOrder(root); //
+
+    }
+
+    //ç¼–å†™ä¸€ä¸ªå‰åºéå†çš„æ–¹æ³•
+    public static void preOrder(Node root) {
+        if (root != null) {
+            root.preOrder();
+        } else {
+            System.out.println("æ˜¯ç©ºæ ‘ï¼Œä¸èƒ½éå†~~");
+        }
+    }
+
+
+    public static Node createHuffmanTreeV2(int[] arr) {
+        //éå†æ•°ç»„ï¼Œå°†æ•°ç»„å˜ä¸ºäº†ä¸€ä¸ªnodeçš„èŠ‚ç‚¹åˆ—è¡¨
+
+        List<Node> nodes = new ArrayList<>(arr.length);
+        for (int value : arr) {
+            nodes.add(new Node(value));
+        }
+
+
+        //åˆ›å»ºéœå¤«æ›¼æ ‘çš„è¿‡ç¨‹,æ•´ä¸ªçš„èŠ‚ç‚¹åˆ—è¡¨æ˜¯åœ¨ä¸æ–­çš„é€’å‡çš„
+        while (nodes.size() > 1) {
+            //é¦–å…ˆå¯¹èŠ‚ç‚¹ä¸­çš„åˆ—è¡¨è¿›è¡Œæ’åº
+            Collections.sort(nodes);
+
+            //å–å‡ºæ ¹èŠ‚ç‚¹æƒå€¼æœ€å°çš„ä¸¤é¢—äºŒå‰æ ‘
+            //(1) å–å‡ºæƒå€¼æœ€å°çš„ç»“ç‚¹ï¼ˆäºŒå‰æ ‘ï¼‰
+
+            Node leftNode = nodes.get(0);
+
+            Node rightNode = nodes.get(1);
+            //(3)æ„å»ºä¸€é¢—æ–°çš„äºŒå‰æ ‘
+            Node parent = new Node(leftNode.value + rightNode.value);
+            parent.left = leftNode;
+            parent.right = rightNode;
+
+            //(4)ä»ArrayListåˆ é™¤å¤„ç†è¿‡çš„äºŒå‰æ ‘
+            nodes.remove(leftNode);
+            nodes.remove(rightNode);
+            //(5)å°†parentåŠ å…¥åˆ°nodes
+            nodes.add(parent);
+        }
+
+
+        //è¿”å›å“ˆå¤«æ›¼æ ‘çš„rootç»“ç‚¹
+        return nodes.get(0);
+    }
+
+
+    // åˆ›å»ºèµ«å¤«æ›¼æ ‘çš„æ–¹æ³•
+
+    /**
+     * @param arr éœ€è¦åˆ›å»ºæˆå“ˆå¤«æ›¼æ ‘çš„æ•°ç»„
+     * @return åˆ›å»ºå¥½åçš„èµ«å¤«æ›¼æ ‘çš„rootç»“ç‚¹
+     */
+    public static Node createHuffmanTree(int[] arr) {
+        // ç¬¬ä¸€æ­¥ä¸ºäº†æ“ä½œæ–¹ä¾¿
+        // 1. éå† arr æ•°ç»„
+        // 2. å°†arrçš„æ¯ä¸ªå…ƒç´ æ„æˆæˆä¸€ä¸ªNode
+        // 3. å°†Node æ”¾å…¥åˆ°ArrayListä¸­
+        List<Node> nodes = new ArrayList<Node>();
+        for (int value : arr) {
+            nodes.add(new Node(value));
+        }
+
+        //æˆ‘ä»¬å¤„ç†çš„è¿‡ç¨‹æ˜¯ä¸€ä¸ªå¾ªç¯çš„è¿‡ç¨‹
+
+
+        while (nodes.size() > 1) {
+
+            //æ’åº ä»å°åˆ°å¤§
+            Collections.sort(nodes);
+
+            System.out.println("nodes =" + nodes);
+
+            //å–å‡ºæ ¹èŠ‚ç‚¹æƒå€¼æœ€å°çš„ä¸¤é¢—äºŒå‰æ ‘
+            //(1) å–å‡ºæƒå€¼æœ€å°çš„ç»“ç‚¹ï¼ˆäºŒå‰æ ‘ï¼‰
+            Node leftNode = nodes.get(0);
+            //(2) å–å‡ºæƒå€¼ç¬¬äºŒå°çš„ç»“ç‚¹ï¼ˆäºŒå‰æ ‘ï¼‰
+            Node rightNode = nodes.get(1);
+
+            //(3)æ„å»ºä¸€é¢—æ–°çš„äºŒå‰æ ‘
+            Node parent = new Node(leftNode.value + rightNode.value);
+            parent.left = leftNode;
+            parent.right = rightNode;
+
+            //(4)ä»ArrayListåˆ é™¤å¤„ç†è¿‡çš„äºŒå‰æ ‘
+            nodes.remove(leftNode);
+            nodes.remove(rightNode);
+            //(5)å°†parentåŠ å…¥åˆ°nodes
+            nodes.add(parent);
+        }
+
+        //è¿”å›å“ˆå¤«æ›¼æ ‘çš„rootç»“ç‚¹
+        return nodes.get(0);
+
+    }
 }
 
-// ´´½¨½áµãÀà
-// ÎªÁËÈÃNode ¶ÔÏó³ÖĞøÅÅĞòCollections¼¯ºÏÅÅĞò
-// ÈÃNode ÊµÏÖComparable½Ó¿Ú
+// åˆ›å»ºç»“ç‚¹ç±»
+// ä¸ºäº†è®©Node å¯¹è±¡æŒç»­æ’åºCollectionsé›†åˆæ’åº
+// è®©Node å®ç°Comparableæ¥å£
 class Node implements Comparable<Node> {
-	int value; // ½áµãÈ¨Öµ
-	char c; //×Ö·û
-	Node left; // Ö¸Ïò×ó×Ó½áµã
-	Node right; // Ö¸ÏòÓÒ×Ó½áµã
+    int value; // ç»“ç‚¹æƒå€¼
+    char c; //å­—ç¬¦
+    Node left; // æŒ‡å‘å·¦å­ç»“ç‚¹
+    Node right; // æŒ‡å‘å³å­ç»“ç‚¹
 
-	//Ğ´Ò»¸öÇ°Ğò±éÀú
-	public void preOrder() {
-		System.out.println(this);
-		if(this.left != null) {
-			this.left.preOrder();
-		}
-		if(this.right != null) {
-			this.right.preOrder();
-		}
-	}
-	
-	public Node(int value) {
-		this.value = value;
-	}
+    //å†™ä¸€ä¸ªå‰åºéå†
+    public void preOrder() {
+        System.out.println(this);
+        if (this.left != null) {
+            this.left.preOrder();
+        }
+        if (this.right != null) {
+            this.right.preOrder();
+        }
+    }
 
-	@Override
-	public String toString() {
-		return "Node [value=" + value + "]";
-	}
+    public Node(int value) {
+        this.value = value;
+    }
 
-	@Override
-	public int compareTo(Node o) {
-		// TODO Auto-generated method stub
-		// ±íÊ¾´ÓĞ¡µ½´óÅÅĞò
-		return this.value - o.value;
-	}
+    @Override
+    public String toString() {
+        return "Node [value=" + value + "]";
+    }
+
+    @Override
+    public int compareTo(Node o) {
+        // TODO Auto-generated method stub
+        // è¡¨ç¤ºä»å°åˆ°å¤§æ’åº
+        return this.value - o.value;
+    }
 
 }
