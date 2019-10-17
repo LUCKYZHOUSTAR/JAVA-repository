@@ -6,10 +6,18 @@ import java.util.Date;
 public class HeapSort {
 
     public static void main(String[] args) {
+
+        int[] arr1 = new int[]{4, 6, 8, 5, 9};
+
+        heapSort(arr1);
+
+
         //要求将数组进行升序排序
         //int arr[] = {4, 6, 8, 5, 9};
         // 创建要给80000个的随机的数组
         int[] arr = new int[8000000];
+
+
         for (int i = 0; i < 8000000; i++) {
             arr[i] = (int) (Math.random() * 8000000); // 生成一个[0, 8000000) 数
         }
@@ -145,6 +153,35 @@ public class HeapSort {
         }
         //当for 循环结束后，我们已经将以i 为父结点的树的最大值，放在了 最顶(局部)
         arr[i] = temp;//将temp值放到调整后的位置
+    }
+
+
+    //调整以i为节点的大顶堆
+    public static void adjustHeapV4(int arr[], int i, int length) {
+
+        //先取出当前元素，保存在临时变量中
+        int temp = arr[i];
+
+        for (int k = i * 2 + 1; k < length; k = k * 2 + 1) {
+
+            //在有右子节点，并且右边节点大于左边节点的时候
+            if (k + 1 < length & arr[k] < arr[k + 1]) {
+
+                k++;
+            }
+
+            if (arr[k] > temp) {
+
+                arr[i] = arr[k];//把较大的值，赋给当前节点
+                i = k;//i指向k，继续循环比较,继续从k开始调整大小
+            } else {
+                break;
+
+            }
+        }
+
+        //最后把该位置的值，调换为temp
+        arr[i] = temp;
     }
 
 }

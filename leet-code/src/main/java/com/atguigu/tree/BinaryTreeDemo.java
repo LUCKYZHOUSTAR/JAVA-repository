@@ -64,8 +64,8 @@ public class BinaryTreeDemo {
 
         System.out.println("删除前,前序遍历");
         binaryTree.preOrder(); //  1,2,3,5,4
-        binaryTree.delNode(5);
-        //binaryTree.delNode(3);
+//        binaryTree.delNode(5);
+        binaryTree.delNode(3);
         System.out.println("删除后，前序遍历");
         binaryTree.preOrder(); // 1,2,3,4
 
