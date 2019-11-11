@@ -1,207 +1,207 @@
-package com.atguigu.graph;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-
-public class Graph {
-
-	private ArrayList<String> vertexList; //´æ´¢¶¥µã¼¯ºÏ
-	private int[][] edges; //´æ´¢Í¼¶ÔÓ¦µÄÁÚ½á¾ØÕó
-	private int numOfEdges; //±íÊ¾±ßµÄÊıÄ¿
-	//¶¨Òå¸øÊı×éboolean[], ¼ÇÂ¼Ä³¸ö½áµãÊÇ·ñ±»·ÃÎÊ
-	private boolean[] isVisited;
-	
-	public static void main(String[] args) {
-		//²âÊÔÒ»°ÑÍ¼ÊÇ·ñ´´½¨ok
-		int n = 8;  //½áµãµÄ¸öÊı
-		//String Vertexs[] = {"A", "B", "C", "D", "E"};
-		String Vertexs[] = {"1", "2", "3", "4", "5", "6", "7", "8"};
-		
-		//´´½¨Í¼¶ÔÏó
-		Graph graph = new Graph(n);
-		//Ñ­»·µÄÌí¼Ó¶¥µã
-		for(String vertex: Vertexs) {
-			graph.insertVertex(vertex);
-		}
-		
-		//Ìí¼Ó±ß
-		//A-B A-C B-C B-D B-E 
-//		graph.insertEdge(0, 1, 1); // A-B
-//		graph.insertEdge(0, 2, 1); // 
-//		graph.insertEdge(1, 2, 1); // 
-//		graph.insertEdge(1, 3, 1); // 
-//		graph.insertEdge(1, 4, 1); // 
-		
-		//¸üĞÂ±ßµÄ¹ØÏµ
-		graph.insertEdge(0, 1, 1);
-		graph.insertEdge(0, 2, 1);
-		graph.insertEdge(1, 3, 1);
-		graph.insertEdge(1, 4, 1);
-		graph.insertEdge(3, 7, 1);
-		graph.insertEdge(4, 7, 1);
-		graph.insertEdge(2, 5, 1);
-		graph.insertEdge(2, 6, 1);
-		graph.insertEdge(5, 6, 1);
-
-		
-		
-		//ÏÔÊ¾Ò»°ÑÁÚ½á¾ØÕó
-		graph.showGraph();
-		
-		//²âÊÔÒ»°Ñ£¬ÎÒÃÇµÄdfs±éÀúÊÇ·ñok
-		System.out.println("Éî¶È±éÀú");
-		graph.dfs(); // A->B->C->D->E [1->2->4->8->5->3->6->7]
-//		System.out.println();
-		System.out.println("¹ã¶ÈÓÅÏÈ!");
-		graph.bfs(); // A->B->C->D-E [1->2->3->4->5->6->7->8]
-		
-	}
-	
-	//¹¹ÔìÆ÷
-	public Graph(int n) {
-		//³õÊ¼»¯¾ØÕóºÍvertexList
-		edges = new int[n][n];
-		vertexList = new ArrayList<String>(n);
-		numOfEdges = 0;
-		
-	}
-	
-	//µÃµ½µÚÒ»¸öÁÚ½Ó½áµãµÄÏÂ±ê w 
-	/**
-	 * 
-	 * @param index 
-	 * @return Èç¹û´æÔÚ¾Í·µ»Ø¶ÔÓ¦µÄÏÂ±ê£¬·ñÔò·µ»Ø-1
-	 */
-	public int getFirstNeighbor(int index) {
-		for(int j = 0; j < vertexList.size(); j++) {
-			if(edges[index][j] > 0) {
-				return j;
-			}
-		}
-		return -1;
-	}
-	//¸ù¾İÇ°Ò»¸öÁÚ½Ó½áµãµÄÏÂ±êÀ´»ñÈ¡ÏÂÒ»¸öÁÚ½Ó½áµã
-	public int getNextNeighbor(int v1, int v2) {
-		for(int j = v2 + 1; j < vertexList.size(); j++) {
-			if(edges[v1][j] > 0) {
-				return j;
-			}
-		}
-		return -1;
-	}
-	
-	//Éî¶ÈÓÅÏÈ±éÀúËã·¨
-	//i µÚÒ»´Î¾ÍÊÇ 0
-	private void dfs(boolean[] isVisited, int i) {
-		//Ê×ÏÈÎÒÃÇ·ÃÎÊ¸Ã½áµã,Êä³ö
-		System.out.print(getValueByIndex(i) + "->");
-		//½«½áµãÉèÖÃÎªÒÑ¾­·ÃÎÊ
-		isVisited[i] = true;
-		//²éÕÒ½áµãiµÄµÚÒ»¸öÁÚ½Ó½áµãw
-		int w = getFirstNeighbor(i);
-		while(w != -1) {//ËµÃ÷ÓĞ
-			if(!isVisited[w]) {
-				dfs(isVisited, w);
-			}
-			//Èç¹ûw½áµãÒÑ¾­±»·ÃÎÊ¹ı
-			w = getNextNeighbor(i, w);
-		}
-		
-	}
-	
-	//¶Ôdfs ½øĞĞÒ»¸öÖØÔØ, ±éÀúÎÒÃÇËùÓĞµÄ½áµã£¬²¢½øĞĞ dfs
-	public void dfs() {
-		isVisited = new boolean[vertexList.size()];
-		//±éÀúËùÓĞµÄ½áµã£¬½øĞĞdfs[»ØËİ]
-		for(int i = 0; i < getNumOfVertex(); i++) {
-			if(!isVisited[i]) {
-				dfs(isVisited, i);
-			}
-		}
-	}
-	
-	//¶ÔÒ»¸ö½áµã½øĞĞ¹ã¶ÈÓÅÏÈ±éÀúµÄ·½·¨
-	private void bfs(boolean[] isVisited, int i) {
-		int u ; // ±íÊ¾¶ÓÁĞµÄÍ·½áµã¶ÔÓ¦ÏÂ±ê
-		int w ; // ÁÚ½Ó½áµãw
-		//¶ÓÁĞ£¬¼ÇÂ¼½áµã·ÃÎÊµÄË³Ğò
-		LinkedList queue = new LinkedList();
-		//·ÃÎÊ½áµã£¬Êä³ö½áµãĞÅÏ¢
-		System.out.print(getValueByIndex(i) + "=>");
-		//±ê¼ÇÎªÒÑ·ÃÎÊ
-		isVisited[i] = true;
-		//½«½áµã¼ÓÈë¶ÓÁĞ
-		queue.addLast(i);
-		
-		while( !queue.isEmpty()) {
-			//È¡³ö¶ÓÁĞµÄÍ·½áµãÏÂ±ê
-			u = (Integer)queue.removeFirst();
-			//µÃµ½µÚÒ»¸öÁÚ½Ó½áµãµÄÏÂ±ê w 
-			w = getFirstNeighbor(u);
-			while(w != -1) {//ÕÒµ½
-				//ÊÇ·ñ·ÃÎÊ¹ı
-				if(!isVisited[w]) {
-					System.out.print(getValueByIndex(w) + "=>");
-					//±ê¼ÇÒÑ¾­·ÃÎÊ
-					isVisited[w] = true;
-					//Èë¶Ó
-					queue.addLast(w);
-				}
-				//ÒÔuÎªÇ°Çıµã£¬ÕÒwºóÃæµÄÏÂÒ»¸öÁÚ½áµã
-				w = getNextNeighbor(u, w); //ÌåÏÖ³öÎÒÃÇµÄ¹ã¶ÈÓÅÏÈ
-			}
-		}
-		
-	} 
-	
-	//±éÀúËùÓĞµÄ½áµã£¬¶¼½øĞĞ¹ã¶ÈÓÅÏÈËÑË÷
-	public void bfs() {
-		isVisited = new boolean[vertexList.size()];
-		for(int i = 0; i < getNumOfVertex(); i++) {
-			if(!isVisited[i]) {
-				bfs(isVisited, i);
-			}
-		}
-	}
-	
-	//Í¼ÖĞ³£ÓÃµÄ·½·¨
-	//·µ»Ø½áµãµÄ¸öÊı
-	public int getNumOfVertex() {
-		return vertexList.size();
-	}
-	//ÏÔÊ¾Í¼¶ÔÓ¦µÄ¾ØÕó
-	public void showGraph() {
-		for(int[] link : edges) {
-			System.err.println(Arrays.toString(link));
-		}
-	}
-	//µÃµ½±ßµÄÊıÄ¿
-	public int getNumOfEdges() {
-		return numOfEdges;
-	}
-	//·µ»Ø½áµãi(ÏÂ±ê)¶ÔÓ¦µÄÊı¾İ 0->"A" 1->"B" 2->"C"
-	public String getValueByIndex(int i) {
-		return vertexList.get(i);
-	}
-	//·µ»Øv1ºÍv2µÄÈ¨Öµ
-	public int getWeight(int v1, int v2) {
-		return edges[v1][v2];
-	}
-	//²åÈë½áµã
-	public void insertVertex(String vertex) {
-		vertexList.add(vertex);
-	}
-	//Ìí¼Ó±ß
-	/**
-	 * 
-	 * @param v1 ±íÊ¾µãµÄÏÂ±ê¼´Ê¹µÚ¼¸¸ö¶¥µã  "A"-"B" "A"->0 "B"->1
-	 * @param v2 µÚ¶ş¸ö¶¥µã¶ÔÓ¦µÄÏÂ±ê
-	 * @param weight ±íÊ¾ 
-	 */
-	public void insertEdge(int v1, int v2, int weight) {
-		edges[v1][v2] = weight;
-		edges[v2][v1] = weight;
-		numOfEdges++;
-	}
-}
+//package com.atguigu.graph;
+//
+//import java.util.ArrayList;
+//import java.util.Arrays;
+//import java.util.LinkedList;
+//
+//public class Graph {
+//
+//	private ArrayList<String> vertexList; //ï¿½æ´¢ï¿½ï¿½ï¿½ã¼¯ï¿½ï¿½
+//	private int[][] edges; //ï¿½æ´¢Í¼ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Ú½ï¿½ï¿½ï¿½ï¿½
+//	private int numOfEdges; //ï¿½ï¿½Ê¾ï¿½ßµï¿½ï¿½ï¿½Ä¿
+//	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½boolean[], ï¿½ï¿½Â¼Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ñ±»·ï¿½ï¿½ï¿½
+//	private boolean[] isVisited;
+//
+//	public static void main(String[] args) {
+//		//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Í¼ï¿½Ç·ñ´´½ï¿½ok
+//		int n = 8;  //ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½
+//		//String Vertexs[] = {"A", "B", "C", "D", "E"};
+//		String Vertexs[] = {"1", "2", "3", "4", "5", "6", "7", "8"};
+//
+//		//ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½
+//		Graph graph = new Graph(n);
+//		//Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¶ï¿½ï¿½ï¿½
+//		for(String vertex: Vertexs) {
+//			graph.insertVertex(vertex);
+//		}
+//
+//		//ï¿½ï¿½Ó±ï¿½
+//		//A-B A-C B-C B-D B-E
+////		graph.insertEdge(0, 1, 1); // A-B
+////		graph.insertEdge(0, 2, 1); //
+////		graph.insertEdge(1, 2, 1); //
+////		graph.insertEdge(1, 3, 1); //
+////		graph.insertEdge(1, 4, 1); //
+//
+//		//ï¿½ï¿½ï¿½Â±ßµÄ¹ï¿½Ïµ
+//		graph.insertEdge(0, 1, 1);
+//		graph.insertEdge(0, 2, 1);
+//		graph.insertEdge(1, 3, 1);
+//		graph.insertEdge(1, 4, 1);
+//		graph.insertEdge(3, 7, 1);
+//		graph.insertEdge(4, 7, 1);
+//		graph.insertEdge(2, 5, 1);
+//		graph.insertEdge(2, 6, 1);
+//		graph.insertEdge(5, 6, 1);
+//
+//
+//
+//		//ï¿½ï¿½Ê¾Ò»ï¿½ï¿½ï¿½Ú½ï¿½ï¿½ï¿½ï¿½
+//		graph.showGraph();
+//
+//		//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Ñ£ï¿½ï¿½ï¿½ï¿½Çµï¿½dfsï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ok
+//		System.out.println("ï¿½ï¿½È±ï¿½ï¿½ï¿½");
+//		graph.dfs(); // A->B->C->D->E [1->2->4->8->5->3->6->7]
+////		System.out.println();
+//		System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½!");
+//		graph.bfs(); // A->B->C->D-E [1->2->3->4->5->6->7->8]
+//
+//	}
+//
+//	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//	public Graph(int n) {
+//		//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½vertexList
+//		edges = new int[n][n];
+//		vertexList = new ArrayList<String>(n);
+//		numOfEdges = 0;
+//
+//	}
+//
+//	//ï¿½Ãµï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ú½Ó½ï¿½ï¿½ï¿½ï¿½Â±ï¿½ w
+//	/**
+//	 *
+//	 * @param index
+//	 * @return ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¾Í·ï¿½ï¿½Ø¶ï¿½Ó¦ï¿½ï¿½ï¿½Â±ê£¬ï¿½ï¿½ï¿½ò·µ»ï¿½-1
+//	 */
+//	public int getFirstNeighbor(int index) {
+//		for(int j = 0; j < vertexList.size(); j++) {
+//			if(edges[index][j] > 0) {
+//				return j;
+//			}
+//		}
+//		return -1;
+//	}
+//	//ï¿½ï¿½ï¿½ï¿½Ç°Ò»ï¿½ï¿½ï¿½Ú½Ó½ï¿½ï¿½ï¿½ï¿½Â±ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ú½Ó½ï¿½ï¿½
+//	public int getNextNeighbor(int v1, int v2) {
+//		for(int j = v2 + 1; j < vertexList.size(); j++) {
+//			if(edges[v1][j] > 0) {
+//				return j;
+//			}
+//		}
+//		return -1;
+//	}
+//
+//	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È±ï¿½ï¿½ï¿½ï¿½ã·¨
+//	//i ï¿½ï¿½Ò»ï¿½Î¾ï¿½ï¿½ï¿½ 0
+//	private void dfs(boolean[] isVisited, int i) {
+//		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ê¸Ã½ï¿½ï¿½,ï¿½ï¿½ï¿½
+//		System.out.print(getValueByIndex(i) + "->");
+//		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½
+//		isVisited[i] = true;
+//		//ï¿½ï¿½ï¿½Ò½ï¿½ï¿½iï¿½Äµï¿½Ò»ï¿½ï¿½ï¿½Ú½Ó½ï¿½ï¿½w
+//		int w = getFirstNeighbor(i);
+//		while(w != -1) {//Ëµï¿½ï¿½ï¿½ï¿½
+//			if(!isVisited[w]) {
+//				dfs(isVisited, w);
+//			}
+//			//ï¿½ï¿½ï¿½wï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½
+//			w = getNextNeighbor(i, w);
+//		}
+//
+//	}
+//
+//	//ï¿½ï¿½dfs ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ĞµÄ½ï¿½ã£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ dfs
+//	public void dfs() {
+//		isVisited = new boolean[vertexList.size()];
+//		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ĞµÄ½ï¿½ã£¬ï¿½ï¿½ï¿½ï¿½dfs[ï¿½ï¿½ï¿½ï¿½]
+//		for(int i = 0; i < getNumOfVertex(); i++) {
+//			if(!isVisited[i]) {
+//				dfs(isVisited, i);
+//			}
+//		}
+//	}
+//
+//	//ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¹ï¿½ï¿½ï¿½ï¿½ï¿½È±ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½
+//	private void bfs(boolean[] isVisited, int i) {
+//		int u ; // ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½Ğµï¿½Í·ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Â±ï¿½
+//		int w ; // ï¿½Ú½Ó½ï¿½ï¿½w
+//		//ï¿½ï¿½ï¿½Ğ£ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½Ë³ï¿½ï¿½
+//		LinkedList queue = new LinkedList();
+//		//ï¿½ï¿½ï¿½Ê½ï¿½ã£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+//		System.out.print(getValueByIndex(i) + "=>");
+//		//ï¿½ï¿½ï¿½Îªï¿½Ñ·ï¿½ï¿½ï¿½
+//		isVisited[i] = true;
+//		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//		queue.addLast(i);
+//
+//		while( !queue.isEmpty()) {
+//			//È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ğµï¿½Í·ï¿½ï¿½ï¿½ï¿½Â±ï¿½
+//			u = (Integer)queue.removeFirst();
+//			//ï¿½Ãµï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ú½Ó½ï¿½ï¿½ï¿½ï¿½Â±ï¿½ w
+//			w = getFirstNeighbor(u);
+//			while(w != -1) {//ï¿½Òµï¿½
+//				//ï¿½Ç·ï¿½ï¿½ï¿½Ê¹ï¿½
+//				if(!isVisited[w]) {
+//					System.out.print(getValueByIndex(w) + "=>");
+//					//ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½
+//					isVisited[w] = true;
+//					//ï¿½ï¿½ï¿½
+//					queue.addLast(w);
+//				}
+//				//ï¿½ï¿½uÎªÇ°ï¿½ï¿½ï¿½ã£¬ï¿½ï¿½wï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ú½ï¿½ï¿½
+//				w = getNextNeighbor(u, w); //ï¿½ï¿½ï¿½Ö³ï¿½ï¿½ï¿½ï¿½ÇµÄ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//			}
+//		}
+//
+//	}
+//
+//	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ĞµÄ½ï¿½ã£¬ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//	public void bfs() {
+//		isVisited = new boolean[vertexList.size()];
+//		for(int i = 0; i < getNumOfVertex(); i++) {
+//			if(!isVisited[i]) {
+//				bfs(isVisited, i);
+//			}
+//		}
+//	}
+//
+//	//Í¼ï¿½Ğ³ï¿½ï¿½ÃµÄ·ï¿½ï¿½ï¿½
+//	//ï¿½ï¿½ï¿½Ø½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½
+//	public int getNumOfVertex() {
+//		return vertexList.size();
+//	}
+//	//ï¿½ï¿½Ê¾Í¼ï¿½ï¿½Ó¦ï¿½Ä¾ï¿½ï¿½ï¿½
+//	public void showGraph() {
+//		for(int[] link : edges) {
+//			System.err.println(Arrays.toString(link));
+//		}
+//	}
+//	//ï¿½Ãµï¿½ï¿½ßµï¿½ï¿½ï¿½Ä¿
+//	public int getNumOfEdges() {
+//		return numOfEdges;
+//	}
+//	//ï¿½ï¿½ï¿½Ø½ï¿½ï¿½i(ï¿½Â±ï¿½)ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 0->"A" 1->"B" 2->"C"
+//	public String getValueByIndex(int i) {
+//		return vertexList.get(i);
+//	}
+//	//ï¿½ï¿½ï¿½ï¿½v1ï¿½ï¿½v2ï¿½ï¿½È¨Öµ
+//	public int getWeight(int v1, int v2) {
+//		return edges[v1][v2];
+//	}
+//	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//	public void insertVertex(String vertex) {
+//		vertexList.add(vertex);
+//	}
+//	//ï¿½ï¿½Ó±ï¿½
+//	/**
+//	 *
+//	 * @param v1 ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Â±ê¼´Ê¹ï¿½Ú¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  "A"-"B" "A"->0 "B"->1
+//	 * @param v2 ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Â±ï¿½
+//	 * @param weight ï¿½ï¿½Ê¾
+//	 */
+//	public void insertEdge(int v1, int v2, int weight) {
+//		edges[v1][v2] = weight;
+//		edges[v2][v1] = weight;
+//		numOfEdges++;
+//	}
+//}
