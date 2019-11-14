@@ -1,0 +1,29 @@
+@startuml
+
+Shape <|- Circle
+
+
+class Shape{
+
+}
+
+
+Shape <|- Retangle
+
+GraphicEditor <-- Shape
+
+class GraphicEditor{
+drawRectangle(Shape r)
+drawCircle(Shape r)
+drawShape(Shape s)
+}
+
+
+class Retangle{
+}
+
+class Circle{
+
+}
+
+@enduml

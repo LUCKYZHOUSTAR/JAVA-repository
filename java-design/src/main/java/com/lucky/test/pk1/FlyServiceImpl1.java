@@ -5,7 +5,7 @@ package com.lucky.test.pk1;
  * @Date: 2019/11/11 11:02
  * @Description:实现了两个类
  */
-public class FlyServiceImpl1 implements FlyService,FlyService2 {
+public class FlyServiceImpl1 implements FlyService2 {
     @Override
     public void fly3(String place) {
 

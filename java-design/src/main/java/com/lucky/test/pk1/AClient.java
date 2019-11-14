@@ -8,7 +8,7 @@ package com.lucky.test.pk1;
 //当Aclient，想用fly，fly1的时候，直接依赖接口即可
 public class AClient {
 
-    private FlyService2 flyService2=new FlyServiceImpl1();
+    private FlyService2 flyService2 = new FlyServiceImpl1();
 
 
     public static void main(String[] args) {

@@ -1,0 +1,44 @@
+sequenceDiagram
+    participant KE
+    participant UUS
+    participant ewallet
+    participant usercenter
+    KE-->>UUS: register（ucid+phone）
+    UUS-->>UUS: create openid
+    UUS-->>usercenter: register user（openid+phone）
+    usercenter-->>usercenter: userinfo（lftuid）
+    usercenter->>UUS: userinfo（lftuid）
+    UUS-->>UUS: token（ucid+lftuid+phone）
+    UUS->>KE: token
+    KE-->>ewallet: do business
+
+
+
+
+
+
+
+
+
+  sequenceDiagram
+      participant KE
+      participant UUS
+      participant ewallet
+      participant usercenter
+      KE-->>UUS: register（ucid+phone）
+      UUS-->>UUS: create openid
+      UUS-->>UUS: token（ucid+phone）
+      UUS->>KE: token
+      KE-->>ewallet: do business(token)
+      ewallet-->>ewallet: if has lftuid（ucid+openid+phone）
+      ewallet-->>usercenter: register user（openid+phone）
+      usercenter-->>usercenter: userinfo（lftuid）
+      usercenter->>ewallet: userinfo（lftuid）
+      ewallet-->>ewallet: save user lftuid
+
+
+
+
+
+
+
