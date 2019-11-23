@@ -96,7 +96,7 @@ public class LengthOfLongestSubstring {
     }
 
 
-    //不太理解
+    //理解了
     public static int lengthOfLongestSubstring3(String s) {
         Map<Character, Integer> map = new HashMap<>();
 
@@ -105,6 +105,7 @@ public class LengthOfLongestSubstring {
         for (int i = 0, j = 0; j < s.length(); j++) {
 
             if (map.containsKey(s.charAt(j))) {
+                //防止后续出出现了比左边指针还小的数字
                 i = Math.max(i, map.get(s.charAt(j)) + 1);
             }
 
