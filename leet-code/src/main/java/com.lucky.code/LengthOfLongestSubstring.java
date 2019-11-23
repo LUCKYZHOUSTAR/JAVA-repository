@@ -1,5 +1,8 @@
 package com.lucky.code;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @Auther: chaoqiang.zhou
  * @Date: 2019/9/25 20:43
@@ -64,8 +67,35 @@ public class LengthOfLongestSubstring {
     }
 
 
+    /**
+     * 功能描述:
+     *
+     * @param: 通过一个左右的指针，把临时的变量放置到一个set里面，set里面是没有重复的值
+     * @return:
+     * @auther: zhou
+     * @date: 2019/11/23 下午9:01
+     */
+    public static int lengthOfLongestSubstring2(String s) {
+
+        Set<Character> set = new HashSet<>();
+
+        int max = 0;
+        for (int i = 0, j = 0; j < s.length(); j++) {
+            while (set.contains(s.charAt(j))) {
+                set.remove(s.charAt(i));
+                i++;
+            }
+
+            set.add(s.charAt(j));
+            max = Math.max(max, set.size());
+        }
+
+        return max;
+    }
+
+
     public static void main(String[] args) {
-        System.out.println(lengthOfLongestSubstringV1("dvdf"));
+        System.out.println(lengthOfLongestSubstring2("dvdf"));
 //        System.out.println(lengthOfLongestSubstringV1("abcd"));
     }
 

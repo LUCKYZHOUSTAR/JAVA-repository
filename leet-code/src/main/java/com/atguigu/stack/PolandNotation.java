@@ -1,209 +1,209 @@
-package com.atguigu.stack;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
-
-public class PolandNotation {
-
-	public static void main(String[] args) {
-		
-		
-		//Íê³É½«Ò»¸öÖÐ×º±í´ïÊ½×ª³Éºó×º±í´ïÊ½µÄ¹¦ÄÜ
-		//ËµÃ÷
-		//1. 1+((2+3)¡Á4)-5 => ×ª³É  1 2 3 + 4 ¡Á + 5 ¨C
-		//2. ÒòÎªÖ±½Ó¶Ôstr ½øÐÐ²Ù×÷£¬²»·½±ã£¬Òò´Ë ÏÈ½«  "1+((2+3)¡Á4)-5" =¡· ÖÐ×ºµÄ±í´ïÊ½¶ÔÓ¦µÄList
-		//   ¼´ "1+((2+3)¡Á4)-5" => ArrayList [1,+,(,(,2,+,3,),*,4,),-,5]
-		//3. ½«µÃµ½µÄÖÐ×º±í´ïÊ½¶ÔÓ¦µÄList => ºó×º±í´ïÊ½¶ÔÓ¦µÄList
-		//   ¼´ ArrayList [1,+,(,(,2,+,3,),*,4,),-,5]  =¡· ArrayList [1,2,3,+,4,*,+,5,¨C]
-		
-		String expression = "1+((2+3)*4)-5";//×¢Òâ±í´ïÊ½ 
-		List<String> infixExpressionList = toInfixExpressionList(expression);
-		System.out.println("ÖÐ×º±í´ïÊ½¶ÔÓ¦µÄList=" + infixExpressionList); // ArrayList [1,+,(,(,2,+,3,),*,4,),-,5]
-		List<String> suffixExpreesionList = parseSuffixExpreesionList(infixExpressionList);
-		System.out.println("ºó×º±í´ïÊ½¶ÔÓ¦µÄList" + suffixExpreesionList); //ArrayList [1,2,3,+,4,*,+,5,¨C] 
-		
-		System.out.printf("expression=%d", calculate(suffixExpreesionList)); // ?
-		
-		
-		
-		/*
-		
-		//ÏÈ¶¨Òå¸øÄæ²¨À¼±í´ïÊ½
-		//(30+4)¡Á5-6  => 30 4 + 5 ¡Á 6 - => 164
-		// 4 * 5 - 8 + 60 + 8 / 2 => 4 5 * 8 - 60 + 8 2 / + 
-		//²âÊÔ 
-		//ËµÃ÷ÎªÁË·½±ã£¬Äæ²¨À¼±í´ïÊ½ µÄÊý×ÖºÍ·ûºÅÊ¹ÓÃ¿Õ¸ñ¸ô¿ª
-		//String suffixExpression = "30 4 + 5 * 6 -";
-		String suffixExpression = "4 5 * 8 - 60 + 8 2 / +"; // 76
-		//Ë¼Â·
-		//1. ÏÈ½« "3 4 + 5 ¡Á 6 - " => ·Åµ½ArrayListÖÐ
-		//2. ½« ArrayList ´«µÝ¸øÒ»¸ö·½·¨£¬±éÀú ArrayList ÅäºÏÕ» Íê³É¼ÆËã
-		
-		List<String> list = getListString(suffixExpression);
-		System.out.println("rpnList=" + list);
-		int res = calculate(list);
-		System.out.println("¼ÆËãµÄ½á¹ûÊÇ=" + res);
-		
-		*/
-	}
-	
-	
-	
-	//¼´ ArrayList [1,+,(,(,2,+,3,),*,4,),-,5]  =¡· ArrayList [1,2,3,+,4,*,+,5,¨C]
-	//·½·¨£º½«µÃµ½µÄÖÐ×º±í´ïÊ½¶ÔÓ¦µÄList => ºó×º±í´ïÊ½¶ÔÓ¦µÄList
-	public static List<String> parseSuffixExpreesionList(List<String> ls) {
-		//¶¨ÒåÁ½¸öÕ»
-		Stack<String> s1 = new Stack<String>(); // ·ûºÅÕ»
-		//ËµÃ÷£ºÒòÎªs2 Õâ¸öÕ»£¬ÔÚÕû¸ö×ª»»¹ý³ÌÖÐ£¬Ã»ÓÐpop²Ù×÷£¬¶øÇÒºóÃæÎÒÃÇ»¹ÐèÒªÄæÐòÊä³ö
-		//Òò´Ë±È½ÏÂé·³£¬ÕâÀïÎÒÃÇ¾Í²»ÓÃ Stack<String> Ö±½ÓÊ¹ÓÃ List<String> s2
-		//Stack<String> s2 = new Stack<String>(); // ´¢´æÖÐ¼ä½á¹ûµÄÕ»s2
-		List<String> s2 = new ArrayList<String>(); // ´¢´æÖÐ¼ä½á¹ûµÄLists2
-		
-		//±éÀúls
-		for(String item: ls) {
-			//Èç¹ûÊÇÒ»¸öÊý£¬¼ÓÈës2
-			if(item.matches("\\d+")) {
-				s2.add(item);
-			} else if (item.equals("(")) {
-				s1.push(item);
-			} else if (item.equals(")")) {
-				//Èç¹ûÊÇÓÒÀ¨ºÅ¡°)¡±£¬ÔòÒÀ´Îµ¯³ös1Õ»¶¥µÄÔËËã·û£¬²¢Ñ¹Èës2£¬Ö±µ½Óöµ½×óÀ¨ºÅÎªÖ¹£¬´ËÊ±½«ÕâÒ»¶ÔÀ¨ºÅ¶ªÆú
-				while(!s1.peek().equals("(")) {
-					s2.add(s1.pop());
-				}
-				s1.pop();//!!! ½« ( µ¯³ö s1Õ»£¬ Ïû³ýÐ¡À¨ºÅ
-			} else {
-				//µ±itemµÄÓÅÏÈ¼¶Ð¡ÓÚµÈÓÚs1Õ»¶¥ÔËËã·û, ½«s1Õ»¶¥µÄÔËËã·ûµ¯³ö²¢¼ÓÈëµ½s2ÖÐ£¬ÔÙ´Î×ªµ½(4.1)Óës1ÖÐÐÂµÄÕ»¶¥ÔËËã·ûÏà±È½Ï
-				//ÎÊÌâ£ºÎÒÃÇÈ±ÉÙÒ»¸ö±È½ÏÓÅÏÈ¼¶¸ßµÍµÄ·½·¨
-				while(s1.size() != 0 && Operation.getValue(s1.peek()) >= Operation.getValue(item) ) {
-					s2.add(s1.pop());
-				}
-				//»¹ÐèÒª½«itemÑ¹ÈëÕ»
-				s1.push(item);
-			}
-		}
-		
-		//½«s1ÖÐÊ£ÓàµÄÔËËã·ûÒÀ´Îµ¯³ö²¢¼ÓÈës2
-		while(s1.size() != 0) {
-			s2.add(s1.pop());
-		}
-
-		return s2; //×¢ÒâÒòÎªÊÇ´æ·Åµ½List, Òò´Ë°´Ë³ÐòÊä³ö¾ÍÊÇ¶ÔÓ¦µÄºó×º±í´ïÊ½¶ÔÓ¦µÄList
-		
-	}
-	
-	//·½·¨£º½« ÖÐ×º±í´ïÊ½×ª³É¶ÔÓ¦µÄList
-	//  s="1+((2+3)¡Á4)-5";
-	public static List<String> toInfixExpressionList(String s) {
-		//¶¨ÒåÒ»¸öList,´æ·ÅÖÐ×º±í´ïÊ½ ¶ÔÓ¦µÄÄÚÈÝ
-		List<String> ls = new ArrayList<String>();
-		int i = 0; //ÕâÊ±ÊÇÒ»¸öÖ¸Õë£¬ÓÃÓÚ±éÀú ÖÐ×º±í´ïÊ½×Ö·û´®
-		String str; // ¶Ô¶àÎ»ÊýµÄÆ´½Ó
-		char c; // Ã¿±éÀúµ½Ò»¸ö×Ö·û£¬¾Í·ÅÈëµ½c
-		do {
-			//Èç¹ûcÊÇÒ»¸ö·ÇÊý×Ö£¬ÎÒÐèÒª¼ÓÈëµ½ls
-			if((c=s.charAt(i)) < 48 ||  (c=s.charAt(i)) > 57) {
-				ls.add("" + c);
-				i++; //iÐèÒªºóÒÆ
-			} else { //Èç¹ûÊÇÒ»¸öÊý£¬ÐèÒª¿¼ÂÇ¶àÎ»Êý
-				str = ""; //ÏÈ½«str ÖÃ³É"" '0'[48]->'9'[57]
-				while(i < s.length() && (c=s.charAt(i)) >= 48 && (c=s.charAt(i)) <= 57) {
-					str += c;//Æ´½Ó
-					i++;
-				}
-				ls.add(str);
-			}
-		}while(i < s.length());
-		return ls;//·µ»Ø
-	}
-	
-	//½«Ò»¸öÄæ²¨À¼±í´ïÊ½£¬ ÒÀ´Î½«Êý¾ÝºÍÔËËã·û ·ÅÈëµ½ ArrayListÖÐ
-	public static List<String> getListString(String suffixExpression) {
-		//½« suffixExpression ·Ö¸î
-		String[] split = suffixExpression.split(" ");
-		List<String> list = new ArrayList<String>();
-		for(String ele: split) {
-			list.add(ele);
-		}
-		return list;
-		
-	}
-	
-	//Íê³É¶ÔÄæ²¨À¼±í´ïÊ½µÄÔËËã
-	/*
-	 * 1)´Ó×óÖÁÓÒÉ¨Ãè£¬½«3ºÍ4Ñ¹Èë¶ÑÕ»£»
-		2)Óöµ½+ÔËËã·û£¬Òò´Ëµ¯³ö4ºÍ3£¨4ÎªÕ»¶¥ÔªËØ£¬3Îª´Î¶¥ÔªËØ£©£¬¼ÆËã³ö3+4µÄÖµ£¬µÃ7£¬ÔÙ½«7ÈëÕ»£»
-		3)½«5ÈëÕ»£»
-		4)½ÓÏÂÀ´ÊÇ¡ÁÔËËã·û£¬Òò´Ëµ¯³ö5ºÍ7£¬¼ÆËã³ö7¡Á5=35£¬½«35ÈëÕ»£»
-		5)½«6ÈëÕ»£»
-		6)×îºóÊÇ-ÔËËã·û£¬¼ÆËã³ö35-6µÄÖµ£¬¼´29£¬ÓÉ´ËµÃ³ö×îÖÕ½á¹û
-	 */
-	
-	public static int calculate(List<String> ls) {
-		// ´´½¨¸øÕ», Ö»ÐèÒªÒ»¸öÕ»¼´¿É
-		Stack<String> stack = new Stack<String>();
-		// ±éÀú ls
-		for (String item : ls) {
-			// ÕâÀïÊ¹ÓÃÕýÔò±í´ïÊ½À´È¡³öÊý
-			if (item.matches("\\d+")) { // Æ¥ÅäµÄÊÇ¶àÎ»Êý
-				// ÈëÕ»
-				stack.push(item);
-			} else {
-				// pop³öÁ½¸öÊý£¬²¢ÔËËã£¬ ÔÙÈëÕ»
-				int num2 = Integer.parseInt(stack.pop());
-				int num1 = Integer.parseInt(stack.pop());
-				int res = 0;
-				if (item.equals("+")) {
-					res = num1 + num2;
-				} else if (item.equals("-")) {
-					res = num1 - num2;
-				} else if (item.equals("*")) {
-					res = num1 * num2;
-				} else if (item.equals("/")) {
-					res = num1 / num2;
-				} else {
-					throw new RuntimeException("ÔËËã·ûÓÐÎó");
-				}
-				//°Ñres ÈëÕ»
-				stack.push("" + res);
-			}
-			
-		}
-		//×îºóÁôÔÚstackÖÐµÄÊý¾ÝÊÇÔËËã½á¹û
-		return Integer.parseInt(stack.pop());
-	}
-
-}
-
-//±àÐ´Ò»¸öÀà Operation ¿ÉÒÔ·µ»ØÒ»¸öÔËËã·û ¶ÔÓ¦µÄÓÅÏÈ¼¶
-class Operation {
-	private static int ADD = 1;
-	private static int SUB = 1;
-	private static int MUL = 2;
-	private static int DIV = 2;
-	
-	//Ð´Ò»¸ö·½·¨£¬·µ»Ø¶ÔÓ¦µÄÓÅÏÈ¼¶Êý×Ö
-	public static int getValue(String operation) {
-		int result = 0;
-		switch (operation) {
-		case "+":
-			result = ADD;
-			break;
-		case "-":
-			result = SUB;
-			break;
-		case "*":
-			result = MUL;
-			break;
-		case "/":
-			result = DIV;
-			break;
-		default:
-			System.out.println("²»´æÔÚ¸ÃÔËËã·û" + operation);
-			break;
-		}
-		return result;
-	}
-	
-}
+//package com.atguigu.stack;
+//
+//import java.util.ArrayList;
+//import java.util.List;
+//import java.util.Stack;
+//
+//public class PolandNotation {
+//
+//	public static void main(String[] args) {
+//
+//
+//		//ï¿½ï¿½É½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½×ºï¿½ï¿½ï¿½Ê½×ªï¿½Éºï¿½×ºï¿½ï¿½ï¿½Ê½ï¿½Ä¹ï¿½ï¿½ï¿½
+//		//Ëµï¿½ï¿½
+//		//1. 1+((2+3)ï¿½ï¿½4)-5 => ×ªï¿½ï¿½  1 2 3 + 4 ï¿½ï¿½ + 5 ï¿½C
+//		//2. ï¿½ï¿½ÎªÖ±ï¿½Ó¶ï¿½str ï¿½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã£¬ï¿½ï¿½ï¿½ ï¿½È½ï¿½  "1+((2+3)ï¿½ï¿½4)-5" =ï¿½ï¿½ ï¿½ï¿½×ºï¿½Ä±ï¿½ï¿½Ê½ï¿½ï¿½Ó¦ï¿½ï¿½List
+//		//   ï¿½ï¿½ "1+((2+3)ï¿½ï¿½4)-5" => ArrayList [1,+,(,(,2,+,3,),*,4,),-,5]
+//		//3. ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½×ºï¿½ï¿½ï¿½Ê½ï¿½ï¿½Ó¦ï¿½ï¿½List => ï¿½ï¿½×ºï¿½ï¿½ï¿½Ê½ï¿½ï¿½Ó¦ï¿½ï¿½List
+//		//   ï¿½ï¿½ ArrayList [1,+,(,(,2,+,3,),*,4,),-,5]  =ï¿½ï¿½ ArrayList [1,2,3,+,4,*,+,5,ï¿½C]
+//
+//		String expression = "1+((2+3)*4)-5";//×¢ï¿½ï¿½ï¿½ï¿½Ê½
+//		List<String> infixExpressionList = toInfixExpressionList(expression);
+//		System.out.println("ï¿½ï¿½×ºï¿½ï¿½ï¿½Ê½ï¿½ï¿½Ó¦ï¿½ï¿½List=" + infixExpressionList); // ArrayList [1,+,(,(,2,+,3,),*,4,),-,5]
+//		List<String> suffixExpreesionList = parseSuffixExpreesionList(infixExpressionList);
+//		System.out.println("ï¿½ï¿½×ºï¿½ï¿½ï¿½Ê½ï¿½ï¿½Ó¦ï¿½ï¿½List" + suffixExpreesionList); //ArrayList [1,2,3,+,4,*,+,5,ï¿½C]
+//
+//		System.out.printf("expression=%d", calculate(suffixExpreesionList)); // ?
+//
+//
+//
+//		/*
+//
+//		//ï¿½È¶ï¿½ï¿½ï¿½ï¿½ï¿½æ²¨ï¿½ï¿½ï¿½ï¿½ï¿½Ê½
+//		//(30+4)ï¿½ï¿½5-6  => 30 4 + 5 ï¿½ï¿½ 6 - => 164
+//		// 4 * 5 - 8 + 60 + 8 / 2 => 4 5 * 8 - 60 + 8 2 / +
+//		//ï¿½ï¿½ï¿½ï¿½
+//		//Ëµï¿½ï¿½Îªï¿½Ë·ï¿½ï¿½ã£¬ï¿½æ²¨ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ ï¿½ï¿½ï¿½ï¿½ï¿½ÖºÍ·ï¿½ï¿½ï¿½Ê¹ï¿½Ã¿Õ¸ï¿½ï¿½ï¿½ï¿½
+//		//String suffixExpression = "30 4 + 5 * 6 -";
+//		String suffixExpression = "4 5 * 8 - 60 + 8 2 / +"; // 76
+//		//Ë¼Â·
+//		//1. ï¿½È½ï¿½ "3 4 + 5 ï¿½ï¿½ 6 - " => ï¿½Åµï¿½ArrayListï¿½ï¿½
+//		//2. ï¿½ï¿½ ArrayList ï¿½ï¿½ï¿½Ý¸ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ArrayList ï¿½ï¿½ï¿½Õ» ï¿½ï¿½É¼ï¿½ï¿½ï¿½
+//
+//		List<String> list = getListString(suffixExpression);
+//		System.out.println("rpnList=" + list);
+//		int res = calculate(list);
+//		System.out.println("ï¿½ï¿½ï¿½ï¿½Ä½ï¿½ï¿½ï¿½ï¿½=" + res);
+//
+//		*/
+//	}
+//
+//
+//
+//	//ï¿½ï¿½ ArrayList [1,+,(,(,2,+,3,),*,4,),-,5]  =ï¿½ï¿½ ArrayList [1,2,3,+,4,*,+,5,ï¿½C]
+//	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½×ºï¿½ï¿½ï¿½Ê½ï¿½ï¿½Ó¦ï¿½ï¿½List => ï¿½ï¿½×ºï¿½ï¿½ï¿½Ê½ï¿½ï¿½Ó¦ï¿½ï¿½List
+//	public static List<String> parseSuffixExpreesionList(List<String> ls) {
+//		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ»
+//		Stack<String> s1 = new Stack<String>(); // ï¿½ï¿½ï¿½ï¿½Õ»
+//		//Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªs2 ï¿½ï¿½ï¿½Õ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½Ã»ï¿½ï¿½popï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç»ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//		//ï¿½ï¿½Ë±È½ï¿½ï¿½é·³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾Í²ï¿½ï¿½ï¿½ Stack<String> Ö±ï¿½ï¿½Ê¹ï¿½ï¿½ List<String> s2
+//		//Stack<String> s2 = new Stack<String>(); // ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½Õ»s2
+//		List<String> s2 = new ArrayList<String>(); // ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½Lists2
+//
+//		//ï¿½ï¿½ï¿½ï¿½ls
+//		for(String item: ls) {
+//			//ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½s2
+//			if(item.matches("\\d+")) {
+//				s2.add(item);
+//			} else if (item.equals("(")) {
+//				s1.push(item);
+//			} else if (item.equals(")")) {
+//				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¡ï¿½)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îµï¿½ï¿½ï¿½s1Õ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½s2ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªÖ¹ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Å¶ï¿½ï¿½ï¿½
+//				while(!s1.peek().equals("(")) {
+//					s2.add(s1.pop());
+//				}
+//				s1.pop();//!!! ï¿½ï¿½ ( ï¿½ï¿½ï¿½ï¿½ s1Õ»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½
+//			} else {
+//				//ï¿½ï¿½itemï¿½ï¿½ï¿½ï¿½ï¿½È¼ï¿½Ð¡ï¿½Úµï¿½ï¿½ï¿½s1Õ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½s1Õ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ëµ½s2ï¿½Ð£ï¿½ï¿½Ù´ï¿½×ªï¿½ï¿½(4.1)ï¿½ï¿½s1ï¿½ï¿½ï¿½Âµï¿½Õ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È½ï¿½
+//				//ï¿½ï¿½ï¿½â£ºï¿½ï¿½ï¿½ï¿½È±ï¿½ï¿½Ò»ï¿½ï¿½ï¿½È½ï¿½ï¿½ï¿½ï¿½È¼ï¿½ï¿½ßµÍµÄ·ï¿½ï¿½ï¿½
+//				while(s1.size() != 0 && Operation.getValue(s1.peek()) >= Operation.getValue(item) ) {
+//					s2.add(s1.pop());
+//				}
+//				//ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½itemÑ¹ï¿½ï¿½Õ»
+//				s1.push(item);
+//			}
+//		}
+//
+//		//ï¿½ï¿½s1ï¿½ï¿½Ê£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½s2
+//		while(s1.size() != 0) {
+//			s2.add(s1.pop());
+//		}
+//
+//		return s2; //×¢ï¿½ï¿½ï¿½ï¿½Îªï¿½Ç´ï¿½Åµï¿½List, ï¿½ï¿½Ë°ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¶ï¿½Ó¦ï¿½Äºï¿½×ºï¿½ï¿½ï¿½Ê½ï¿½ï¿½Ó¦ï¿½ï¿½List
+//
+//	}
+//
+//	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½×ºï¿½ï¿½ï¿½Ê½×ªï¿½É¶ï¿½Ó¦ï¿½ï¿½List
+//	//  s="1+((2+3)ï¿½ï¿½4)-5";
+//	public static List<String> toInfixExpressionList(String s) {
+//		//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½List,ï¿½ï¿½ï¿½ï¿½ï¿½×ºï¿½ï¿½ï¿½Ê½ ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//		List<String> ls = new ArrayList<String>();
+//		int i = 0; //ï¿½ï¿½Ê±ï¿½ï¿½Ò»ï¿½ï¿½Ö¸ï¿½ë£¬ï¿½ï¿½ï¿½Ú±ï¿½ï¿½ï¿½ ï¿½ï¿½×ºï¿½ï¿½ï¿½Ê½ï¿½Ö·ï¿½ï¿½ï¿½
+//		String str; // ï¿½Ô¶ï¿½Î»ï¿½ï¿½ï¿½ï¿½Æ´ï¿½ï¿½
+//		char c; // Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½ëµ½c
+//		do {
+//			//ï¿½ï¿½ï¿½cï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ëµ½ls
+//			if((c=s.charAt(i)) < 48 ||  (c=s.charAt(i)) > 57) {
+//				ls.add("" + c);
+//				i++; //iï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½
+//			} else { //ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ç¶ï¿½Î»ï¿½ï¿½
+//				str = ""; //ï¿½È½ï¿½str ï¿½Ã³ï¿½"" '0'[48]->'9'[57]
+//				while(i < s.length() && (c=s.charAt(i)) >= 48 && (c=s.charAt(i)) <= 57) {
+//					str += c;//Æ´ï¿½ï¿½
+//					i++;
+//				}
+//				ls.add(str);
+//			}
+//		}while(i < s.length());
+//		return ls;//ï¿½ï¿½ï¿½ï¿½
+//	}
+//
+//	//ï¿½ï¿½Ò»ï¿½ï¿½ï¿½æ²¨ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ ï¿½ï¿½ï¿½Î½ï¿½ï¿½ï¿½ï¿½Ýºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ëµ½ ArrayListï¿½ï¿½
+//	public static List<String> getListString(String suffixExpression) {
+//		//ï¿½ï¿½ suffixExpression ï¿½Ö¸ï¿½
+//		String[] split = suffixExpression.split(" ");
+//		List<String> list = new ArrayList<String>();
+//		for(String ele: split) {
+//			list.add(ele);
+//		}
+//		return list;
+//
+//	}
+//
+//	//ï¿½ï¿½É¶ï¿½ï¿½æ²¨ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//	/*
+//	 * 1)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¨ï¿½è£¬ï¿½ï¿½3ï¿½ï¿½4Ñ¹ï¿½ï¿½ï¿½Õ»ï¿½ï¿½
+//		2)ï¿½ï¿½ï¿½ï¿½+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½4ï¿½ï¿½3ï¿½ï¿½4ÎªÕ»ï¿½ï¿½Ôªï¿½Ø£ï¿½3Îªï¿½Î¶ï¿½Ôªï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½3+4ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½7ï¿½ï¿½ï¿½Ù½ï¿½7ï¿½ï¿½Õ»ï¿½ï¿½
+//		3)ï¿½ï¿½5ï¿½ï¿½Õ»ï¿½ï¿½
+//		4)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½5ï¿½ï¿½7ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½7ï¿½ï¿½5=35ï¿½ï¿½ï¿½ï¿½35ï¿½ï¿½Õ»ï¿½ï¿½
+//		5)ï¿½ï¿½6ï¿½ï¿½Õ»ï¿½ï¿½
+//		6)ï¿½ï¿½ï¿½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½35-6ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½29ï¿½ï¿½ï¿½É´ËµÃ³ï¿½ï¿½ï¿½ï¿½Õ½ï¿½ï¿½
+//	 */
+//
+//	public static int calculate(List<String> ls) {
+//		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ», Ö»ï¿½ï¿½ÒªÒ»ï¿½ï¿½Õ»ï¿½ï¿½ï¿½ï¿½
+//		Stack<String> stack = new Stack<String>();
+//		// ï¿½ï¿½ï¿½ï¿½ ls
+//		for (String item : ls) {
+//			// ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
+//			if (item.matches("\\d+")) { // Æ¥ï¿½ï¿½ï¿½ï¿½Ç¶ï¿½Î»ï¿½ï¿½
+//				// ï¿½ï¿½Õ»
+//				stack.push(item);
+//			} else {
+//				// popï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã£¬ ï¿½ï¿½ï¿½ï¿½Õ»
+//				int num2 = Integer.parseInt(stack.pop());
+//				int num1 = Integer.parseInt(stack.pop());
+//				int res = 0;
+//				if (item.equals("+")) {
+//					res = num1 + num2;
+//				} else if (item.equals("-")) {
+//					res = num1 - num2;
+//				} else if (item.equals("*")) {
+//					res = num1 * num2;
+//				} else if (item.equals("/")) {
+//					res = num1 / num2;
+//				} else {
+//					throw new RuntimeException("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+//				}
+//				//ï¿½ï¿½res ï¿½ï¿½Õ»
+//				stack.push("" + res);
+//			}
+//
+//		}
+//		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½stackï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//		return Integer.parseInt(stack.pop());
+//	}
+//
+//}
+//
+////ï¿½ï¿½Ð´Ò»ï¿½ï¿½ï¿½ï¿½ Operation ï¿½ï¿½ï¿½Ô·ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½È¼ï¿½
+//class Operation {
+//	private static int ADD = 1;
+//	private static int SUB = 1;
+//	private static int MUL = 2;
+//	private static int DIV = 2;
+//
+//	//Ð´Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¶ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½È¼ï¿½ï¿½ï¿½ï¿½ï¿½
+//	public static int getValue(String operation) {
+//		int result = 0;
+//		switch (operation) {
+//		case "+":
+//			result = ADD;
+//			break;
+//		case "-":
+//			result = SUB;
+//			break;
+//		case "*":
+//			result = MUL;
+//			break;
+//		case "/":
+//			result = DIV;
+//			break;
+//		default:
+//			System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" + operation);
+//			break;
+//		}
+//		return result;
+//	}
+//
+//}
