@@ -18,23 +18,54 @@ sequenceDiagram
 
 
 
+sequenceDiagram
+    participant KE
+    participant UUS
+    participant ewallet
+    participant usercenter
+    KE-->>UUS: register（ucid+phone）
+    UUS-->>UUS: create openid
+    UUS-->>UUS: token（ucid+phone）
+    UUS->>KE: token
+    KE-->>ewallet: do business(token)
+    ewallet-->>ewallet: if has lftuid（ucid+openid+phone）
+    ewallet-->>usercenter: register user（openid+phone）
+    usercenter-->>usercenter: userinfo（lftuid）
+    usercenter->>ewallet: userinfo（lftuid）
+    ewallet-->>ewallet: save user lftuid
+    KE-->>UUS: cancel out（ucid+phone）
+    UUS-->>ewallet: log out（ucid+phone）
+    ewallet-->>usercenter: log out（ucid+phone）
+    usercenter->>ewallet:  log out
+    ewallet->>UUS:  log out
+    UUS->>KE:  log out
 
 
-  sequenceDiagram
-      participant KE
-      participant UUS
-      participant ewallet
-      participant usercenter
-      KE-->>UUS: register（ucid+phone）
-      UUS-->>UUS: create openid
-      UUS-->>UUS: token（ucid+phone）
-      UUS->>KE: token
-      KE-->>ewallet: do business(token)
-      ewallet-->>ewallet: if has lftuid（ucid+openid+phone）
-      ewallet-->>usercenter: register user（openid+phone）
-      usercenter-->>usercenter: userinfo（lftuid）
-      usercenter->>ewallet: userinfo（lftuid）
-      ewallet-->>ewallet: save user lftuid
+
+
+
+sequenceDiagram
+    participant zhongtai
+    participant UUS
+    participant usercenter
+    zhongtai-->>UUS: 取消实名
+    UUS-->>usercenter:用户中心注销账户
+    usercenter-->>UUS: 返回注销结果
+    UUS-->>UUS: 注销uus实名信息
+    UUS-->>zhongtai: 同步返回注销结果
+    UUS-->>zhongtai: uus失败，用户取消实名失败
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
