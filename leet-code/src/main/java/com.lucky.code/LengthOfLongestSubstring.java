@@ -1,6 +1,8 @@
 package com.lucky.code;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -94,8 +96,31 @@ public class LengthOfLongestSubstring {
     }
 
 
+    //不太理解
+    public static int lengthOfLongestSubstring3(String s) {
+        Map<Character, Integer> map = new HashMap<>();
+
+        int max = 0;
+
+        for (int i = 0, j = 0; j < s.length(); j++) {
+
+            if (map.containsKey(s.charAt(j))) {
+                i = Math.max(i, map.get(s.charAt(j)) + 1);
+            }
+
+
+            map.put(s.charAt(j), j);
+
+            max = Math.max(max, j - i + 1);
+        }
+
+
+        return max;
+    }
+
+
     public static void main(String[] args) {
-        System.out.println(lengthOfLongestSubstring2("dvdf"));
+        System.out.println(lengthOfLongestSubstring3("dvdf"));
 //        System.out.println(lengthOfLongestSubstringV1("abcd"));
     }
 
