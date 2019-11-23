@@ -89,7 +89,7 @@ public class LengthOfLongestSubstring {
             }
 
             set.add(s.charAt(j));
-            max = Math.max(max, set.size());
+            max = Math.max(max, j - i + 1);
         }
 
         return max;
@@ -120,7 +120,7 @@ public class LengthOfLongestSubstring {
 
 
     public static void main(String[] args) {
-        System.out.println(lengthOfLongestSubstring3("dvdf"));
+        System.out.println(lengthOfLongestSubstring2("dvdf"));
 //        System.out.println(lengthOfLongestSubstringV1("abcd"));
     }
 
