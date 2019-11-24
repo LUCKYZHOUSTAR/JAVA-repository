@@ -40,5 +40,5 @@ public class MergeTest {
     //计算器
 
 
-    //正则表达式
+    //正则表达式--》指针解决
 }
