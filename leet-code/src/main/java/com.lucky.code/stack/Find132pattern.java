@@ -39,5 +39,11 @@ public class Find132pattern {
 
         return false;
     }
-    
+
+
+    public static void main(String[] args) {
+//        float f = 1.3;
+//        short s1 = 1; s1 = s1 + 1;s1+1
+
+    }
 }
