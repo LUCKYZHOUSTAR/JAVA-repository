@@ -25,6 +25,20 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
+        ctx.channel().eventLoop().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    Thread.sleep(5 * 1000);
+                    ctx.writeAndFlush(Unpooled.copiedBuffer("hello, 客户端~(>^ω^<)喵2", CharsetUtil.UTF_8));
+                    System.out.println("channel code=" + ctx.channel().hashCode());
+                } catch (Exception ex) {
+                    System.out.println("发生异常" + ex.getMessage());
+                }
+            }
+        });
+
 /*
 
         //比如这里我们有一个非常耗时长的业务-> 异步执行 -> 提交该channel 对应的

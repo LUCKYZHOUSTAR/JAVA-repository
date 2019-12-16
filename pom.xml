@@ -10,11 +10,11 @@
         <!--<module>java-guava</module>-->
         <module>java-basic</module>
         <!--<module>java-thread</module>-->
-        <!--<module>netty-example</module>-->
+        <module>netty-example</module>
         <!--<module>java-spring</module>-->
         <!--<module>java-junit</module>-->
         <!--<module>spring-web</module>-->
-        <!--<module>java-redis</module>-->
+        <module>java-redis</module>
         <!--<module>java-util</module>-->
         <!--<module>java-disruptor</module>-->
         <!--<module>java-metrics</module>-->

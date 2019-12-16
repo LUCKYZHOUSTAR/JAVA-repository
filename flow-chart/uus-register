@@ -56,11 +56,190 @@ sequenceDiagram
     UUS-->>zhongtai: uus失败，用户取消实名失败
 
 
+@取消实名流程
+sequenceDiagram
+    participant zhongtai
+    participant UUS
+    participant 钱包
+    participant 订单系统
+    participant 履约系统
+    participant usercenter
+    participant 账户中心
+
+    zhongtai-->>UUS: 同步取消实名
+    UUS-->>钱包:获取用户在途交易信息
+    钱包-->>账户中心:查询用户余额
+    钱包-->>订单系统:查询在途订单
+    钱包-->>履约系统:查询在途履约订单
+    钱包-->>UUS:返回在途交易信息
+    UUS-->>UUS:判断是否可以取消实名
+    UUS-->>usercenter:请求取消实名
+    rect rgb(250,250,210)
+    usercenter-->>账户中心:判断是否有在途余额
+    usercenter-->>账户中心:注销账户
+    账户中心-->>账户中心:注销账户
+    账户中心-->>usercenter:用户注销结果
+    end
+    usercenter-->>UUS: 返回注销结果
+    UUS-->>UUS: 注销uus实名信息
+    UUS-->>zhongtai: 同步返回注销结果
+    UUS-->>zhongtai: uus失败，用户取消实名失败
+
+
+
+@用户注销流程
+sequenceDiagram
+    participant zhongtai
+    participant UUS
+    participant usercenter
+    participant 账户中心
+    zhongtai-->>zhongtai: 用户注销
+    zhongtai-->>UUS: 异步调用uus注销
+    UUS-->>usercenter:用户中心注销账户
+    rect rgb(250,250,210)
+    usercenter-->>账户中心:判断是否有在途余额
+    usercenter-->>账户中心:注销账户
+    账户中心-->>账户中心:注销账户
+    账户中心-->>usercenter:用户注销结果
+    end
+    usercenter-->>UUS: 返回注销结果
+    UUS-->>UUS: 注销uus实名信息
+    UUS-->>zhongtai: 同步返回注销结果
+    UUS-->>zhongtai: uus失败，用户取消实名失败
+
+
+
+
+手机号变更流程
+sequenceDiagram
+    participant zhongtai
+    participant UUS
+    participant usercenter
+   participant 钱包
+
+    zhongtai-->>zhongtai: 修改手机号
+    zhongtai-->>UUS:异步通知修改手机号
+
+    UUS-->>usercenter:用户中心修改手机号
+    usercenter-->>usercenter: 手机号不正常，则修改，否则失败
+    usercenter-->>UUS: 修改手机号结果
+    UUS-->>UUS: 内部变更手机号
+    UUS-->>钱包: 异步通知到浅薄啊
 
 
 
 
 
+
+@注销流程
+sequenceDiagram
+participant zhongtai
+    participant UUS
+    participant 钱包
+    participant 订单系统
+    participant 履约系统
+    participant usercenter
+    participant 账户中心
+
+    zhongtai-->>UUS: 同步取消实名
+    UUS-->>钱包:获取用户在途交易信息
+    钱包-->>账户中心:查询用户余额
+    钱包-->>订单系统:查询在途订单
+    钱包-->>履约系统:查询在途履约订单
+    钱包-->>UUS:返回在途交易信息
+    UUS-->>UUS:判断是否可以取消实名
+    UUS-->>usercenter:请求取消实名
+    rect rgb(250,250,210)
+    usercenter-->>账户中心:判断是否有在途余额
+    usercenter-->>账户中心:注销账户
+    账户中心-->>账户中心:注销账户
+    账户中心-->>usercenter:用户注销结果
+    end
+    usercenter-->>UUS: 返回注销结果
+    UUS-->>UUS: 注销uus实名信息
+    UUS-->>zhongtai: 同步返回注销结果
+    UUS-->>zhongtai: uus失败，用户取消实名失败
+
+
+钱包签约实名信息
+sequenceDiagram
+    participant KE
+    participant 钱包
+    participant UUS
+    participant 用户中心
+    participant KE中台
+    participant 账户中心
+    KE-->>钱包: 身份证实名
+    钱包-->>UUS: 查询用户信息
+    UUS-->>KE中台: 查询用户信息
+    KE中台-->>UUS: 用户信息
+    UUS-->>钱包: 用户信息
+    钱包-->>KE: 用户信息
+    KE-->>钱包: 实名请求
+    钱包-->>用户中心:二素实名
+    用户中心-->>通道鉴权:二要素鉴权
+    通道鉴权-->>用户中心: 鉴权成功
+    用户中心-->>钱包: 实名成功
+    钱包-->>用户中心:开户请求
+    用户中心-->>账户中心:二要素开户
+    账户中心-->>用户中心:开户成功
+    用户中心-->>钱包:开户成功
+    钱包-->>KE: 签约成功
+    钱包-->>钱包: 异步推送实名信息
+    UUS-->>KE中台: 推送实名结果信息
+    UUS-->>用户中心: 推送钱包实名信息
+
+
+
+
+
+
+
+@用户注销流程
+    sequenceDiagram
+    participant 大C
+    participant zhongtai
+    participant UUS
+    participant 钱包
+    participant 订单系统
+    participant 履约系统
+    participant usercenter
+    participant 账户中心
+
+    大C-->>大C: 注销账户
+    大C-->>zhongtai: 同步取消实名，判断是否有在途
+    zhongtai-->>UUS: 同步取消实名
+    UUS-->>钱包:获取用户在途交易信息
+    钱包-->>账户中心:查询用户余额
+    钱包-->>订单系统:查询在途订单
+    钱包-->>履约系统:查询在途履约订单
+    钱包-->>UUS:返回在途交易信息
+    UUS-->>UUS:判断是否可以取消实名
+    UUS-->>usercenter:请求取消实名
+    rect rgb(250,250,210)
+    usercenter-->>账户中心:判断是否有在途余额
+    usercenter-->>账户中心:注销账户
+    账户中心-->>账户中心:注销账户
+    账户中心-->>usercenter:用户注销结果
+    end
+    usercenter-->>UUS: 返回注销结果
+    UUS-->>UUS: 注销uus实名信息
+    UUS-->>zhongtai: 同步返回注销结果
+    UUS-->>zhongtai: uus失败，用户取消实名失败
+    zhongtai-->>大C: 注销实名成功
+    大C-->>zhongtai: 账户注销成功
+    大C-->>UUS: 异步通知UUS
+    UUS-->>usercenter:用户中心注销账户
+    rect rgb(250,250,210)
+    usercenter-->>账户中心:判断是否有在途余额
+    usercenter-->>账户中心:注销账户
+    账户中心-->>账户中心:注销账户
+    账户中心-->>usercenter:用户注销结果
+    end
+    usercenter-->>UUS: 返回注销结果
+    UUS-->>UUS: 注销uus实名信息
+    UUS-->>zhongtai: 同步返回注销结果
+    UUS-->>zhongtai: uus失败，用户取消实名失败
 
 
 
