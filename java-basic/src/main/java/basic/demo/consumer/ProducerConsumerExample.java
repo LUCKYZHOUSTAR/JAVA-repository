@@ -1,6 +1,14 @@
 package basic.demo.consumer;
 
 
+/**
+ * 功能描述:
+ *
+ * @param: 生产者消费者代码
+ * @return:
+ * @auther: zhou
+ * @date: 2019/12/27 下午8:22
+ */
 public class ProducerConsumerExample {
 
     public static void main(String[] args) {

@@ -2,7 +2,6 @@ package basic.fee.model;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -48,13 +47,11 @@ public class TimeUtils {
     }
 
 
+    //计算两者相差的天数
     public static long until(LocalDateTime startDate, LocalDateTime endDate) {
-        Duration duration = Duration.between(startDate, endDate);
-        return duration.toDays();
+
+        return Math.abs(endDate.getDayOfYear() - startDate.getDayOfYear());
     }
-
-
-
 
 
 }

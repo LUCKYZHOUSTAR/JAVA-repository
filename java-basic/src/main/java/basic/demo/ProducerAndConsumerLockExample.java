@@ -5,32 +5,32 @@ import java.io.IOException;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ProducerAndConsumerExample {
+public class ProducerAndConsumerLockExample {
 
     public static void main(String[] args) throws IOException {
-        Person person = new Person();
-        new Thread(new Consumer(person), "消费者一").start();
-        new Thread(new Consumer(person), "消费者二").start();
-        new Thread(new Consumer(person), "消费者三").start();
+        Goods goods = new Goods();
+        new Thread(new Consumer(goods), "消费者一").start();
+        new Thread(new Consumer(goods), "消费者二").start();
+        new Thread(new Consumer(goods), "消费者三").start();
 
-        new Thread(new Producer(person), "生产者一").start();
-        new Thread(new Producer(person), "生产者一").start();
-        new Thread(new Producer(person), "生产者一").start();
+        new Thread(new Producer(goods), "生产者一").start();
+        new Thread(new Producer(goods), "生产者一").start();
+        new Thread(new Producer(goods), "生产者一").start();
     }
 }
 
 class Producer implements Runnable {
-    private Person person;
+    private Goods goods;
 
-    public Producer(Person person) {
-        this.person = person;
+    public Producer(Goods goods) {
+        this.goods = goods;
     }
 
     @Override
     public void run() {
 
         for (int i = 0; i < 10; i++) {
-            person.produce();
+            goods.produce();
         }
 
     }
@@ -39,25 +39,25 @@ class Producer implements Runnable {
 
 class Consumer implements Runnable {
 
-    private Person person;
+    private Goods goods;
 
-    public Consumer(Person person) {
-        this.person = person;
+    public Consumer(Goods goods) {
+        this.goods = goods;
     }
 
     @Override
     public void run() {
 
         for (int i = 0; i < 10; i++) {
-            person.consume();
+            goods.consume();
         }
 
     }
 
 }
 
-class Person {
-    private int foodNum = 0;
+class Goods {
+    private int num = 0;
 
     private ReentrantLock lock = new ReentrantLock();
 
@@ -68,12 +68,10 @@ class Person {
     public void produce() {
         lock.lock();
         try {
-            while (foodNum == MAX_NUM) {
-                System.out.println("box is full，size = " + foodNum);
+            while (num == MAX_NUM) {
                 condition.await();
             }
-            foodNum++;
-            System.out.println("produce success foodNum = " + foodNum);
+            num++;
             condition.signalAll();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -86,12 +84,10 @@ class Person {
     public void consume() {
         lock.lock();
         try {
-            while (foodNum == 0) {
-                System.out.println("box is empty,size = " + foodNum);
+            while (num == 0) {
                 condition.await();
             }
-            foodNum--;
-            System.out.println("consume success foodNum = " + foodNum);
+            num--;
             condition.signalAll();
         } catch (InterruptedException e) {
             e.printStackTrace();

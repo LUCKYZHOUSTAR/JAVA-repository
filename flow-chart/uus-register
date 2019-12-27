@@ -248,6 +248,22 @@ sequenceDiagram
 
 
 
+h5请求校验逻辑
+sequenceDiagram
+    participant h5
+    participant HandlerInterceptor
+    participant BusinessService
+    participant MonitorLogService
+
+    h5-->>HandlerInterceptor: token校验
+    HandlerInterceptor-->>HandlerInterceptor: preHandler计时
+    HandlerInterceptor-->>BusinessService: 处理业务逻辑
+    BusinessService-->>HandlerInterceptor: afterCompletion记录业务操作时间
+    HandlerInterceptor-->>HandlerInterceptor: 大于3s
+    HandlerInterceptor-->>MonitorLogService: 请求信息入库
+
+
+
 
 
 
