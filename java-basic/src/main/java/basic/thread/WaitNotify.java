@@ -24,6 +24,44 @@ import java.util.concurrent.TimeUnit;
  * 从上述细节中可以看到，等待/通知机制依托于同步机制，其目的就是确保等待线程从
  * wait()方法返回时能够感知到通知线程对变量做出的修改。
  * @Date:Create in 20:56 2017/10/24
+ *
+ *
+ * 1.1个线程有两个ObjectMonitor对象列表
+ * 2.ObjectMonitor对象中有两个队列:_WaitSet 和_EntryList，用来保存ObjectWaiter对象列表
+ *
+ * **_WaitSet ** ：处于wait状态的线程，会被加入到wait set；
+ * _EntryList：处于等待锁block状态的线程，会被加入到entry set； 因为释放后，都可能还回去竞争锁
+ *
+ *
+ *
+ * ObjectWaiter
+ * ObjectWaiter对象是双向链表结构，保存了_thread（当前线程）以及当前的状态TState等数据， 每个等待锁的线程都会被封装成ObjectWaiter对象。
+ *
+ *
+ *
+ * wait方法实现
+ *
+ *
+ * lock.wait()方法最终通过ObjectMonitor的void wait(jlong millis, bool interruptable, TRAPS);实现：
+ * 1、将当前线程封装成ObjectWaiter对象node；
+ *
+ * 2、通过ObjectMonitor::AddWaiter方法将node添加到_WaitSet列表中；
+ *
+ * 3、通过ObjectMonitor::exit方法释放当前的ObjectMonitor对象，这样其它竞争线程就可以获取该ObjectMonitor对象。
+ * 4、最终底层的park方法会挂起线程；
+ *
+ *
+ * notify方法实现
+ * lock.notify()方法最终通过ObjectMonitor的void notify(TRAPS)实现：
+ * 1、如果当前_WaitSet为空，即没有正在等待的线程，则直接返回；
+ * 2、通过ObjectMonitor::DequeueWaiter方法，获取_WaitSet列表中的第一个ObjectWaiter节点，实现也很简单。
+ * 这里需要注意的是，在jdk的notify方法注释是随机唤醒一个线程，其实是第一个ObjectWaiter节点
+ * 3、根据不同的策略，将取出来的ObjectWaiter节点，加入到_EntryList或则通过Atomic::cmpxchg_ptr指令进行自旋操作cxq，具体代码实现有点长，这里就不贴了，有兴趣的同学可以看objectMonitor::notify方法；
+ * notifyAll方法实现
+ * lock.notifyAll()方法最终通过ObjectMonitor的void notifyAll(TRAPS)实现：
+ * 通过for循环取出_WaitSet的ObjectWaiter节点，并根据不同策略，加入到_EntryList或则进行自旋操作。
+ *
+ * 从JVM的方法实现中，可以发现：notify和notifyAll并不会释放所占有的ObjectMonitor对象，其实真正释放ObjectMonitor对象的时间点是在执行monitorexit指令，一旦释放ObjectMonitor对象了，entry set中ObjectWaiter节点所保存的线程就可以开始竞争ObjectMonitor对象进行加锁操作了。
  */
 public class WaitNotify {
     static boolean flag = true;
