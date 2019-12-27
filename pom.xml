@@ -7,25 +7,25 @@
     <artifactId>java-class-repository</artifactId>
     <version>1.0.1-SNAPSHOT</version>
     <modules>
-        <!--<module>java-guava</module>-->
+        <module>java-guava</module>
         <module>java-basic</module>
-        <!--<module>java-thread</module>-->
+        <module>java-thread</module>
         <module>netty-example</module>
-        <!--<module>java-spring</module>-->
-        <!--<module>java-junit</module>-->
-        <!--<module>spring-web</module>-->
+        <module>java-spring</module>
+        <module>java-junit</module>
+        <module>spring-web</module>
         <module>java-redis</module>
-        <!--<module>java-util</module>-->
-        <!--<module>java-disruptor</module>-->
-        <!--<module>java-metrics</module>-->
-        <!--<module>java-benchmarks</module>-->
-        <!--<module>java-jms</module>-->
-        <!--<module>spring-boot</module>-->
-        <!--<module>spring-quartz</module>-->
-        <!--<module>java-jetty</module>-->
-        <!--<module>java-task</module>-->
-        <!--<module>spring-task</module>-->
-        <!--<module>java-metrics-boot</module>-->
+        <module>java-util</module>
+        <module>java-disruptor</module>
+        <module>java-metrics</module>
+        <module>java-benchmarks</module>
+        <module>java-jms</module>
+        <module>spring-boot</module>
+        <module>spring-quartz</module>
+        <module>java-jetty</module>
+        <module>java-task</module>
+        <module>spring-task</module>
+        <module>java-metrics-boot</module>
         <module>java-jctools</module>
         <module>java-encrypt</module>
         <module>java-spring-boot-test</module>
@@ -33,20 +33,20 @@
         <module>java-design</module>
         <module>java-netty</module>
         <!--<module>com-lucky-jupiter</module>-->
-        <!--<module>java-rpc</module>-->
+        <module>java-rpc</module>
 
         <!--测试-->
         <!--<module>elastic-search</module>-->
-        <!--<module>java-disrupt</module>-->
-        <!--<module>log-agent</module>-->
-        <!--<module>squirrel-foundation</module>-->
-        <!--<module>java-design-patterns</module>-->
-        <!--<module>spring-machine</module>-->
-        <!--<module>java.assist</module>-->
-        <!--<module>java-swagger</module>-->
-        <!--<module>web-mertric</module>-->
-        <!--<module>state.machine</module>-->
-        <!--<module>spring.websocket</module>-->
+        <module>java-disrupt</module>
+        <module>log-agent</module>
+        <module>squirrel-foundation</module>
+        <module>java-design-patterns</module>
+        <module>spring-machine</module>
+        <module>java.assist</module>
+        <module>java-swagger</module>
+        <module>web-mertric</module>
+        <module>state.machine</module>
+        <module>spring.websocket</module>
     </modules>
     <packaging>pom</packaging>
     <properties>
