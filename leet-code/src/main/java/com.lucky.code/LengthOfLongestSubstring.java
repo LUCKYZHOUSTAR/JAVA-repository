@@ -73,7 +73,7 @@ public class LengthOfLongestSubstring {
      * 功能描述:
      *
      * @param: 通过一个左右的指针，把临时的变量放置到一个set里面，set里面是没有重复的值
-     * @return:
+     * @return:aabcddbc
      * @auther: zhou
      * @date: 2019/11/23 下午9:01
      */
