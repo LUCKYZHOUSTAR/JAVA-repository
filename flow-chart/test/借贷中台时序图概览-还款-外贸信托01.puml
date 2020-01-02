@@ -1,0 +1,115 @@
+@startuml
+
+
+
+title 中台-各系统交互时序-外贸信托还款
+
+participant 业务系统 #EEEBDC
+'participant 产品配置中心
+'participant 统一进件
+participant Artemis
+participant 额度
+participant 天玑
+participant 资金
+participant 资金方
+
+
+== 还款查询 ==
+
+业务系统 -> Artemis: 贷款计算器 /api/v1/artemis/repay/try/plan
+note right
+贷款计算器接口需业务方将相关信息以参数形式传入
+end note
+activate Artemis
+Artemis -> 天玑: 计算还款计划 /api/V2/phecda/try-repay-plan
+deactivate Artemis
+
+业务系统 -> Artemis: 贷前还款试算 /api/v1/artemis/repay/trail
+note right
+贷前还款试算前提：
+需要业务端统一进件落库必要信息
+调用前，浮动利率类产品需设置统一进件中利率字段
+需在资金路由后才能发起试算
+end note
+activate Artemis
+Artemis -> 天玑: 贷前试算 /api/V2/phecda/try-repay-plan/{loanAppCode}
+deactivate Artemis
+
+业务系统 -> Artemis: 根据loanAppCode查询还款计划 /api/v1/artemis/repay/bill/loanAppCode/{loanAppCode}
+activate Artemis
+Artemis -> 天玑: 查询天玑还款计划 /api/V2/phecda/repay-plan
+deactivate Artemis
+
+业务系统 -> Artemis: 提前还款试算 /api/v1/artemis/repay/demo
+activate Artemis
+Artemis -> 天玑: 计算还款计划 /api/V2/phecda/try-prepay
+deactivate Artemis
+
+业务系统 -> Artemis: 查询还款流水 /api/v1/artemis/repay/record/success
+activate Artemis
+Artemis -> 天玑: 查询天玑还款流水 /api/V2/phecda/repay/full-records
+deactivate Artemis
+
+
+== 用户主动还款流程-正常/逾期还款 ==
+
+业务系统 -> Artemis: 发起还款 /api/v1/artemis/repay/repay
+activate Artemis
+Artemis -\天玑: 天玑中台代扣还款 /api/V2/phecda/repay-withhold
+activate 天玑
+天玑-\资金: T4.1.1_线上还款申请
+activate 资金
+资金 -> 资金方: 线上还款 2311
+天玑/--资金: T4.1.3_线上还款申请结果通知
+...
+天玑->天玑: 更新还款计划
+'note left
+'还款成功时
+'end note
+'天玑->资金: T4.4.1_推送还款计划
+'资金 -> 资金方: 更新还款计划 2201
+deactivate 资金
+...
+Artemis /--天玑: 还款结果通知（MQ）
+deactivate 天玑
+Artemis -> 额度: 额度归还
+业务系统 <-- Artemis: 支付成功通知（MQ）
+deactivate Artemis
+
+== 用户主动还款流程-提前结清 ==
+
+业务系统 -> Artemis: 发起还款 /api/v1/artemis/repay/repay
+activate Artemis
+Artemis -\天玑: 天玑中台代扣还款 /api/V2/phecda/repay-withhold
+activate 天玑
+天玑->资金: T4.7.2_B类提前结清的申请
+activate 资金
+note left
+提前结清需要同时推送原还款计划、提前还款试算还款计划
+end note
+资金 -> 资金方: 更新还款计划 2201
+note left
+还款前推送原还款计划
+end note
+资金 -> 资金方: 线上还款 2311
+...
+资金 -> 资金方: 合同结清 3101
+note left
+还款成功时，结清合同
+end note
+...
+资金 -> 资金方: 更新还款计划 2201
+note left
+还款失败时，推送原还款计划
+end note
+...
+天玑/--资金: T4.7.6_提前结清的结果通知
+deactivate 资金
+天玑->天玑: 更新还款计划
+Artemis /--天玑: 还款结果通知（MQ）
+deactivate 天玑
+Artemis -> 额度: 额度归还
+业务系统 <-- Artemis: 支付成功通知（MQ）
+deactivate Artemis
+
+@enduml

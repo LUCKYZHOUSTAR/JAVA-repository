@@ -27,7 +27,7 @@ public class NightlyPriceStrategy extends AbstractPriceStrategy {
 
         if (costMinute == 1) {
             priceResponse.setSumFee(priceResponse.getSumFee() + 30);
-        } else if (costMinute>0&&costMinute <= 11) {
+        } else if (costMinute > 0 && costMinute <= 11) {
             //大于1分钟的计算规则信息
 
             priceResponse.setSumFee(priceResponse.getSumFee() + 130);
@@ -50,8 +50,7 @@ public class NightlyPriceStrategy extends AbstractPriceStrategy {
     }
 
     @Override
-    public int ruleEndValue()
-    {
+    public int ruleEndValue() {
         return ruleEndValue;
     }
 }

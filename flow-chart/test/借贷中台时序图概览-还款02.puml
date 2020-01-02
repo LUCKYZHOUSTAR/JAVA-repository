@@ -1,0 +1,163 @@
+@startuml
+
+
+
+title 中台通用-各系统交互时序
+
+participant 业务系统 #EEEBDC
+'participant 产品配置中心
+'participant 统一进件
+participant Artemis
+participant 额度
+participant 天玑
+participant 资金
+'participant 收银台
+participant 资金方
+
+
+== 还款计划更新 ==
+
+note over 天玑
+对外部资方生成还款计划的，外部还款计划变更时会通知查询还款计划
+中航信托
+end note
+资金 <- 资金方: 还款计划更新
+activate 资金
+天玑 <-- 资金: 还款计划更新MQ
+deactivate 资金
+activate 天玑
+天玑 -> 资金: T4.2.1_查询还款计划
+天玑 -> 天玑: 还款计划更新
+deactivate 天玑
+
+== 外部资金渠道用户主动还款流程 ==
+
+业务系统 -> Artemis: 发起还款 /api/v1/artemis/repay/repay
+note right
+外部资金渠道用户主动还款
+由天玑通知外部资金渠道进行代扣
+end note
+activate Artemis
+Artemis -\ 天玑: 天玑中台代扣还款 /api/V2/phecda/repay-withhold
+activate 天玑
+...
+天玑 -> 理房通: 资金代扣
+note left
+目前仅对博能小贷走该通路
+end note
+天玑 <-- 理房通: 资金代扣结果
+...
+天玑 -> 资金: T4.1.1_线上还款申请
+note left
+除贝壳小贷(收银台)、博能小贷、微众外
+其他资金方走该通路
+end note
+天玑 <-- 资金: T4.1.3_线上还款申请结果通知
+...
+note over 天玑
+微众特有流程：本息 与 费 由不同主体分别维护、分别扣
+end note
+天玑 -> 资金: C2.1.1 缴费申请接口
+note left
+微众渠道，金服各项费，通过自有通道扣I类户
+end note
+天玑 -> 资金: T4.1.1_线上还款申请
+note left
+微众本息，通过资金调用微众扣取
+end note
+天玑 <-- 资金: C2.1.3 缴费结果异步通知
+天玑 <-- 资金: T4.1.3_线上还款申请结果通知
+...
+天玑 -> 资金: T4.2.1_查询还款计划
+note left
+对外部资方生成还款计划的，查询还款计划
+中航信托、微众
+end note
+天玑 -> 天玑: 还款计划更新
+Artemis /--天玑: 部分费用平账结果通知（MQ）
+note right
+微众
+本息 或 费 第一笔有回盘时，仅平账部分账单，未全部平账时
+天玑发送部分平账MQ，包含平账部分账单
+end note
+业务系统 <-- Artemis: 部分费用平账结果通知（MQ）
+Artemis /--天玑: 还款结果通知（MQ）
+deactivate 天玑
+Artemis -> 额度: 额度归还
+业务系统 <-- Artemis: 支付成功通知（MQ）
+deactivate Artemis
+
+== 天玑批量代扣流程 ==
+
+天玑 -> 天玑: 批量代扣
+activate 天玑
+...
+天玑 -> 理房通: 资金代扣
+note left
+目前仅对博能小贷走该通路
+end note
+天玑 <-- 理房通: 资金代扣结果
+...
+天玑 -> 资金: T4.1.1_线上还款申请
+note left
+除贝壳小贷(收银台)、博能小贷、微众外
+其他资金方走该通路
+end note
+天玑 <-- 资金: T4.1.3_线上还款申请结果通知
+...
+note over 天玑
+微众特有流程：本息 与 费 由不同主体分别维护、分别扣
+end note
+天玑 -> 资金: C2.1.1 缴费申请接口
+note left
+微众渠道，金服各项费，通过自有通道扣I类户
+end note
+天玑 <-- 资金: C2.1.3 缴费结果异步通知
+...
+天玑 -> 资金: T4.2.1_查询还款计划
+note left
+对外部资方生成还款计划的，查询还款计划
+中航信托、微众
+end note
+天玑 -> 天玑: 还款计划更新
+Artemis /--天玑: 部分费用平账结果通知（MQ）
+note right
+微众
+本息 或 费 第一笔有回盘时，仅平账部分账单，未全部平账时
+天玑发送部分平账MQ，包含平账部分账单
+end note
+业务系统 <-- Artemis: 部分费用平账结果通知（MQ）
+Artemis /--天玑: 还款结果通知（MQ）
+deactivate 天玑
+activate Artemis
+Artemis -> 额度: 额度归还
+业务系统 <-- Artemis: 还款结果通知（MQ）
+deactivate Artemis
+
+== 外部资金批量代扣流程 ==
+
+天玑 <-- 资金: 外部资金代扣结果
+activate 天玑
+天玑 -> 资金: T4.2.1_查询还款计划
+note left
+对外部资方生成还款计划的，查询还款计划
+中航信托、微众
+end note
+天玑 -> 天玑: 还款计划更新
+Artemis /--天玑: 部分费用平账结果通知（MQ）
+note right
+微众
+本息 或 费 第一笔有回盘时，仅平账部分账单，未全部平账时
+天玑发送部分平账MQ，包含平账部分账单
+end note
+业务系统 <-- Artemis: 部分费用平账结果通知（MQ）
+Artemis /--天玑: 还款结果通知（MQ）
+deactivate 天玑
+activate Artemis
+Artemis -> 额度: 额度归还
+业务系统 <-- Artemis: 还款结果通知（MQ）
+deactivate Artemis
+
+
+
+@enduml

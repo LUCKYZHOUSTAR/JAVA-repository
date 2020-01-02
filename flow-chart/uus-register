@@ -264,6 +264,19 @@ sequenceDiagram
 
 
 
+//indexapi接口信息
+ke中台-->ewallet: indexapi to get main page info
+ewallet-->WalletAccountCenter: query wallet
+WalletAccountCenter-->ewallet: get Account info
+ewallet->ewallet: assembly urls
+ewallet-->ewalletService: get matched business config
+ewalletService-->ewallet: return matched business config
+ewallet-->ke中台: return page info
+
+
+
+
+
 
 
 

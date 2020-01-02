@@ -1,0 +1,28 @@
+@startuml
+
+
+
+title 中台通用-各系统交互时序
+
+actor 金融产品经理
+participant 业务系统 #EEEBDC
+participant 产品配置中心
+participant 天玑
+
+
+== 产品配置 ==
+
+金融产品经理 -> 产品配置中心: 金融产品配置
+activate 产品配置中心
+产品配置中心 -> 天玑: 计费规则
+deactivate 产品配置中心
+
+业务系统 -> 产品配置中心: 金融产品信息查询
+activate 产品配置中心
+产品配置中心 -> 天玑: 计费规则查询
+产品配置中心 <-- 天玑
+业务系统 <-- 产品配置中心: 金融产品信息查询结果
+deactivate 产品配置中心
+
+
+@enduml

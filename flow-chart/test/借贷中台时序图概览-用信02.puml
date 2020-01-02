@@ -1,0 +1,123 @@
+@startuml
+
+
+
+title 中台通用-各系统交互时序
+
+participant 业务系统 #EEEBDC
+participant 产品配置中心
+participant 统一进件
+participant Artemis
+'participant 风控引擎
+'participant 额度
+participant 资金
+'actor 财务
+
+
+
+== 用信流程 ==
+
+业务系统 -\ Artemis: 4.1.4.1 资方合同创建申请接口
+note right #DarkGrey
+申请资方合同调用为optional，仅针对外部资金（如中航）
+调用前，浮动利率类产品需设置统一进件中利率字段
+end note
+activate Artemis
+Artemis -\ 资金: T2.6.1_合同创建申请
+Artemis /-- 资金: T2.6.3_合同创建结果通知
+统一进件 <- Artemis: 更新合同文件fileID document.SEALED_LOAN_CONTRACT
+业务系统 /-- Artemis: 合同创建结果通知（MQ）
+deactivate Artemis
+
+业务系统 -\ Artemis: 4.1.4.3 资方合同签章申请接口
+note right #DarkGrey
+资方合同签章调用为optional，仅针对外部资金（如光大）
+调用前，浮动利率类产品需设置统一进件中利率字段
+end note
+activate Artemis
+Artemis -\ 资金: T2.6.4_合同签章申请
+Artemis /-- 资金: T2.6.6_合同签章结果通知
+统一进件 <- Artemis: 更新合同文件fileID document.SEALED_LOAN_CONTRACT
+业务系统 /-- Artemis: 合同创建结果通知（MQ）
+deactivate Artemis
+
+业务系统 -\ Artemis: 4.1.3.1 资方备件上传接口
+note right #DarkGrey
+推送备件信息调用为optional，仅针对外部资金（如中航）
+end note
+activate Artemis
+Artemis -\ 资金: T2.7.1_备件上传
+Artemis /-- 资金: T2.7.3_备件上传结果通知
+业务系统 /-- Artemis: 备件上传结果通知（MQ）
+deactivate Artemis
+
+业务系统 -\ Artemis: 4.1.6.1 资方签约/风控申请接口
+note right #DarkGrey
+资金方签约申请调用为optional，仅针对外部资金（如中航）
+end note
+activate Artemis
+Artemis -\ 资金: T2.3.1_资金方审核申请
+Artemis /-- 资金: T2.3.3_资金方审核结果通知
+
+...
+统一进件 <- Artemis: 更新资金路由结果fundChannel、mainChannel
+note right
+资金平台维护各业务线可依次路由列表
+如资方审批失败，则返回 路由变更 ，及后续可路由的资方；
+业务方需根据返回的路由变更情况，重新走资金接口调用流程；
+如无更多资方可路由，则返回审批失败，无需该段流程；
+end note
+统一进件 <- Artemis: 设置financeId /api/1.0/loan-app/finance-id/{loanAppCode}
+产品配置中心 <- 统一进件: 获取financeId
+...
+
+业务系统 /-- Artemis: 资金方签约结果通知（MQ）
+
+deactivate Artemis
+
+== 微众特有接口 ==
+
+业务系统 -\ Artemis: 8.1.1、复审申请
+activate Artemis
+Artemis -\ 资金: TS1.1.1_ 复审申请
+Artemis /-- 资金: TS1.1.3_ 复审申请结果通知
+业务系统 /-- Artemis: 复审结果通知（MQ）
+deactivate Artemis
+
+业务系统 -> Artemis: 8.2.1、OCR校验申请
+activate Artemis
+Artemis -> 资金: TS1.2.1_OCR校验申请
+deactivate Artemis
+
+Artemis <-- 资金: 验五结果通知
+activate Artemis
+业务系统 <-- Artemis: 8.3.2、验五结果通知（MQ）
+deactivate Artemis
+
+业务系统 -\ Artemis: 8.4.1、人脸识别申请
+activate Artemis
+Artemis -\ 资金: TS1.4.1_人脸识别申请
+Artemis /-- 资金: TS1.4.3_人脸识别结果通知
+业务系统 /-- Artemis: 人脸识别申请（MQ）
+deactivate Artemis
+
+业务系统 -> Artemis: 8.5.1、获取 拉起SDK 时的 ticket
+activate Artemis
+Artemis -> 资金: TS1.2.1_OCR校验申请
+deactivate Artemis
+
+业务系统 -> Artemis: 8.6.1、OTP申请
+activate Artemis
+Artemis -> 资金: TS1.6.1_OTP申请
+deactivate Artemis
+
+Artemis <-- 资金: 开户结果通知（MQ）
+activate Artemis
+业务系统 <-- Artemis: 8.7.2、开户结果通知（MQ）
+deactivate Artemis
+
+
+
+
+
+@enduml

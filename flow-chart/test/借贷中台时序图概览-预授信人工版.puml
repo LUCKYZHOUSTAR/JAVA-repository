@@ -1,0 +1,64 @@
+@startuml
+
+
+
+title 中台通用-各系统交互时序
+
+actor 风控团队 #EEEBDC
+actor 贝分期运营 #EEEBDC
+actor 风控技术 #EEEBDC
+participant 客源系统 #APPLICATION
+participant "标签系统/千人千面" #APPLICATION
+participant CRM #APPLICATION
+participant 业务系统 #EEEBDC
+participant 业务风控系统 #EEEBDC
+participant UUS #EEEBDC
+participant 统一进件
+participant Artemis
+participant 决策引擎
+participant 额度
+
+
+== 预授信流程 - 批量版（一期半人工版） ==
+
+客源系统 -> "标签系统/千人千面": 获取需要跑批名单
+activate 客源系统
+客源系统 -> 业务系统: 推送消息
+activate 业务系统
+客源系统 <- 业务系统: 获取名单
+deactivate 客源系统
+loop for each 客户
+    业务系统 -> UUS: 获取客户信息
+    业务系统 -> 统一进件: 预授信进件
+    activate 统一进件
+    业务系统 -> 统一进件: 预授信提交
+    统一进件 -> Artemis: 预授信申请
+    activate Artemis
+    Artemis <-> 决策引擎: 预授信自动策略
+    统一进件 <- Artemis: 预授信自动策略结果
+    deactivate Artemis
+    业务系统 <- 统一进件: 预授信自动策略结果
+    deactivate 统一进件
+end loop
+风控团队 <- 业务系统: 批量结果导出
+deactivate 业务系统
+activate 风控团队
+风控团队 -> 风控团队: 人工额度授信
+风控团队 -> 贝分期运营: 授信结果
+deactivate 风控团队
+activate 贝分期运营
+贝分期运营 -> 风控技术: 授信结果
+activate 风控技术
+风控技术 -> 额度: 额度设置
+贝分期运营 <- 风控技术: 额度设置完毕
+deactivate 风控技术
+贝分期运营 -> 客源系统: 上传跑批名单
+deactivate 贝分期运营
+activate 客源系统
+客源系统 -> 客源系统: 派单
+客源系统 -> CRM: 数据分发
+deactivate 客源系统
+
+
+
+@enduml
