@@ -1,0 +1,117 @@
+@startuml
+skinparam backgroundColor #EEEBDC
+skinparam sequence {
+	ArrowColor gray
+'	ActorBorderColor DeepSkyBlue
+'	LifeLineBorderColor gray
+'	LifeLineBackgroundColor gray
+
+	ParticipantBorderColor gray
+	ParticipantBackgroundColor gray
+'	ParticipantFontName Impact
+'	ParticipantFontSize 17
+'	ParticipantFontColor #A9DCDF
+
+	ActorBackgroundColor gray
+	ActorFontColor gray
+'	ActorFontSize 17
+'	ActorFontName Aapex
+}
+
+title A端用户整体交互流程
+participant h5 #EEEBDC
+participant "ewallet-api" #EEEBDC
+participant "ewallet-user-service" #EEEBDC
+participant "ewallet-account-service" #EEEBDC
+participant "ewallet-access-service" #EEEBDC
+
+participant "UUS" #EEEBDC
+participant "wallet-user-center" #EEEBDC
+
+participant "wallet-account-center" #EEEBDC
+participant "ewallet-schedule" #EEEBDC
+participant "ewallet-admin" #EEEBDC
+
+
+
+h5->"ewallet-api":进入首页
+group 用户维度的静态数据
+
+"ewallet-api"->"ewallet-user-service":获取用户静态账户信息
+"ewallet-api"->"UUS": 查询用户信息
+"ewallet-api"->"wallet-account-center": 查询用户账户信息
+
+end
+
+
+||50||
+
+
+
+group A端首页信息
+
+"ewallet-api"->"ewallet-account-service":获取用户首页信息
+"ewallet-account-service"->"ewallet-account-service":拼接首页信息
+note right #DarkGrey
+包括贝壳币信息、奖励金明细、全局的开关
+end note
+end
+
+
+||50||
+
+group A端入口信息
+activate "ewallet-access-service"
+
+"ewallet-api"->"ewallet-access-service":获取首页入口信息
+"ewallet-access-service"--\\"ewallet-api":返回入口信息
+deactivate "ewallet-access-service"
+
+note right #aqua
+包括入口、活动、banner图信息
+end note
+end
+
+
+||50||
+
+
+group 薪资管理流程
+h5->"ewallet-api":开启薪资管理
+note right #aqua
+1.校验账户规则，二类账户不允许设置
+2.更新用户薪资标识，并mq通知企业钱包
+end note
+"ewallet-api"->"ewallet-user-service":薪资管理设置
+
+||30||
+
+h5->"ewallet-api":设置薪资自动提现管理标识
+note right #aqua
+1.校验自动提现开关是否开启
+2.校验用户是否开启提现卡
+end note
+"ewallet-api"->"ewallet-user-service":开启自动提现功能
+
+end
+
+
+||100||
+
+group 自动提现功能流程
+
+"ewallet-schedule"->"ewallet-schedule":凌晨自动提现流程
+"ewallet-schedule"->"ewallet-admin":查询最大用户的id
+"ewallet-schedule"->"ewallet-admin":根据id，分批次的查询用户信息
+  loop 校验用户是否开启薪资管理
+	        "ewallet-schedule"->"ewallet-schedule":丢用户信息，到mq消息队列
+
+  end
+
+  "ewallet-api"->"ewallet-api":处理用户自动提现逻辑
+
+end
+
+
+
+@enduml

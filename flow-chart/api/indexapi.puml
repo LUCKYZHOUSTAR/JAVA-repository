@@ -1,0 +1,36 @@
+@startuml
+title 找房首页接口时序图
+participant ke中台 #EEEBDC
+participant "ewallet-api"
+participant "wallet-account-center"
+participant "ewallet-service"
+== 首页交互流程 ==
+
+ke中台 -> "ewallet-api": 获取首页信息
+group 账户维度数据
+"ewallet-api" -> "wallet-account-center": 查询账户信息
+activate "wallet-account-center"
+"ewallet-api" <- "wallet-account-center": 用户开户结果信息
+deactivate "wallet-account-center"
+
+end
+
+
+||100||
+
+"ewallet-api" -> "ewallet-api": 拼接url信息
+note right #DarkGrey
+判断当前sdk版本号，大于2.7.0，url不拼接token信息
+end note
+
+||50||
+
+
+"ewallet-api" -> "ewallet-service": 获取运营后台入口信息
+
+"ewallet-service" --\\ "ewallet-api": 用户开户结果信息
+
+ke中台 --\\ "ewallet-api": 首页信息返回
+
+
+@enduml

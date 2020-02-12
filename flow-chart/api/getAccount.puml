@@ -1,0 +1,17 @@
+@startuml
+title 获取账户信息接口
+participant ke中台 #EEEBDC
+participant "ewallet-api"
+participant "wallet-account-center"
+== 信息交互流程 ==
+
+ke中台 -> "ewallet-api": 获取账户信息
+"ewallet-api" -> "wallet-account-center": 查询账户信息
+activate "wallet-account-center"
+"ewallet-api" <- "wallet-account-center": 用户账户结果信息
+deactivate "wallet-account-center"
+
+ke中台 \\-- "ewallet-api": 账户信息返回
+
+
+@enduml

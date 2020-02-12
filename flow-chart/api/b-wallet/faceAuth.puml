@@ -1,0 +1,59 @@
+@startuml
+skinparam backgroundColor #f0f0f0
+skinparam sequence {
+	ArrowColor gray
+	ParticipantBorderColor gray
+	ParticipantBackgroundColor gray
+	ActorBackgroundColor gray
+	ActorFontColor #f0f0f0
+	LifeLineBorderColor gray
+    LifeLineBackgroundColor gray
+
+}
+
+title 人脸认证交互流程图
+participant h5 #f0f0f0
+participant 钱包 #f0f0f0
+participant 理房通认证系统 #f0f0f0
+
+
+
+activate 钱包 #f0f0f0
+h5->钱包: 初始化人脸识别流程（ /v2/real/face/init）
+
+activate 理房通认证系统 #f0f0f0
+钱包->理房通认证系统: 发起认证
+
+理房通认证系统-->钱包: 初始化结果
+
+钱包-->h5: 初始化结果（随机数）
+
+
+
+h5->钱包: 获取文件上传的密钥（/v2/real/fileToken）
+
+理房通认证系统-->钱包: 获取文件密钥
+
+钱包-->h5: 文件密钥下发
+
+
+h5->理房通认证系统: 提交认证（file+filetoken）
+理房通认证系统-->h5: 上传结果
+
+
+h5->钱包: 获取人脸认证结果（/v2/real/face/result）
+
+理房通认证系统-->钱包: 获取认证结果
+
+钱包-->h5: 获取认证结果
+
+
+
+deactivate "理房通认证系统"
+deactivate "钱包"
+
+
+理房通认证系统-->钱包: 异步通知认证结果
+
+
+@enduml

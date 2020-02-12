@@ -24,4 +24,14 @@ public class User {
   public void setId(String id) {
     this.id = id;
   }
+
+
+
+  public static void main(String[] args) {
+    User user = new User();
+
+  }
 }
+
+
+

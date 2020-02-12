@@ -20,5 +20,4 @@ public interface PriceStrategy {
     boolean isSupport(String callStartTime, String callEndTime);
 
 
-
 }

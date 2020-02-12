@@ -53,6 +53,23 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
         </dependency>
+
+
+
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.icepdf/icepdf-core -->
+
+        <dependency>
+            <groupId>org.icepdf.os</groupId>
+            <artifactId>icepdf-core</artifactId>
+            <version>6.2.2</version>
+        </dependency>
+
     </dependencies>
 
 

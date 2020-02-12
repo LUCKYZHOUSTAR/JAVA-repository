@@ -1,0 +1,31 @@
+@startuml
+skinparam backgroundColor #EEEBDC
+skinparam sequence {
+	ArrowColor gray
+	ParticipantBorderColor gray
+	ParticipantBackgroundColor gray
+	ActorBackgroundColor gray
+	ActorFontColor gray
+	LifeLineBorderColor gray
+    LifeLineBackgroundColor gray
+}
+
+title sdk加载地址列表
+participant sdk #EEEBDC
+participant "ewallet-api" #EEEBDC
+participant "ewallet-user-service" #EEEBDC
+
+
+
+sdk->"ewallet-api":进入首页
+group 拼接sdk首页信息
+
+"ewallet-api"->"ewallet-user-service":获取地址信息
+"ewallet-user-service"->"ewallet-user-service": 版本号判断，拼接url
+note right #DarkGrey
+判断当前sdk版本号，大于2.0.4.0，url不拼接token信息，否则会拼接url
+end note
+end
+
+
+@enduml

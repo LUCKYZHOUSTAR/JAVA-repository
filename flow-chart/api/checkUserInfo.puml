@@ -1,0 +1,28 @@
+@startuml
+title 身份校验流程
+participant ke中台 #EEEBDC
+participant "ewallet-api"
+participant "UUS"
+participant "wallet-user-center"
+
+
+ke中台 -> "ewallet-api": name+certNo+ucid
+activate "UUS"
+"ewallet-api" -> "UUS": ucid--》获取lftuid
+"ewallet-api" <- "UUS":返回lftuid
+deactivate "UUS"
+
+activate "wallet-user-center"
+
+"ewallet-api" -> "wallet-user-center":lftuid--》获取用户信息
+"ewallet-api" <- "wallet-user-center":返回lftuid
+
+deactivate "wallet-user-center"
+
+||50||
+
+
+ke中台 \\-- "ewallet-api": 校验信息返回
+
+
+@enduml
