@@ -1,5 +1,5 @@
 @startuml
-skinparam backgroundColor #f0f0f0
+skinparam backgroundColor #FFFFFF
 skinparam sequence {
 	ArrowColor gray
 	ParticipantBorderColor gray
@@ -12,15 +12,15 @@ skinparam sequence {
 }
 
 title 找房首页交互时序图
-participant 业务APP #f0f0f0
-participant 找房api网关 #f0f0f0
-participant 找房中台 #f0f0f0
-participant UUS #f0f0f0
-participant 钱包服务 #f0f0f0
+participant 业务APP #FFFFFF
+participant 找房api网关 #FFFFFF
+participant 找房中台 #FFFFFF
+participant UUS #FFFFFF
+participant 钱包服务 #FFFFFF
 
 
 
-activate 找房api网关 #f0f0f0
+activate 找房api网关 #FFFFFF
 业务APP-->找房api网关: 进入钱包首页
 找房api网关-->找房中台: 获取token
 找房中台-->UUS: 获取token
