@@ -22,10 +22,17 @@ participant 钱包服务 #FFFFFF
 
 activate 找房api网关 #FFFFFF
 业务APP-->找房api网关: 进入钱包首页
+
+
 找房api网关-->找房中台: 获取token
+activate UUS #FFFFFF
+
 找房中台-->UUS: 获取token
 
+
 UUS->找房中台: 返回用户登录的token
+deactivate "UUS"
+
 找房中台->找房api网关: 返回用户登录的token
 
 找房api网关-->找房中台: 获取首页信息
@@ -41,6 +48,7 @@ UUS->找房中台: 返回用户登录的token
 deactivate "找房api网关"
 
 
+||100||
 
 
 @enduml
