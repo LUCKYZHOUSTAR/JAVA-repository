@@ -2,13 +2,34 @@
 skinparam backgroundColor #FFFFFF
 skinparam sequence {
 	ArrowColor gray
-	ParticipantBorderColor gray
-	ParticipantBackgroundColor gray
-	ActorBackgroundColor gray
+	ParticipantBorderColor #FFFFFF
+	ParticipantBackgroundColor #FFFFFF
+	ActorBackgroundColor #FFFFFF
 	ActorFontColor #f0f0f0
 	LifeLineBorderColor gray
     LifeLineBackgroundColor gray
 
+    ParticipantBorderColor FFFFFF
+'    LifeLineBorderColor blue
+'    LifeLineBackgroundColor #A9DCDF
+
+
+
+'ArrowColor DeepSkyBlue
+'	ActorBorderColor DeepSkyBlue
+'	LifeLineBorderColor blue
+'	LifeLineBackgroundColor #A9DCDF
+'
+'	ParticipantBorderColor DeepSkyBlue
+'	ParticipantBackgroundColor DodgerBlue
+'	ParticipantFontName Impact
+'	ParticipantFontSize 17
+'	ParticipantFontColor #A9DCDF
+'
+'	ActorBackgroundColor aqua
+'	ActorFontColor DeepSkyBlue
+'	ActorFontSize 17
+'	ActorFontName Aapex
 }
 
 title 找房首页交互时序图
