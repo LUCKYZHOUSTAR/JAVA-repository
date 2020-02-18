@@ -5,7 +5,7 @@ skinparam sequence {
 	ParticipantBorderColor #FFFFFF
 	ParticipantBackgroundColor #FFFFFF
 	ActorBackgroundColor #FFFFFF
-	ActorFontColor #f0f0f0
+	ActorFontColor #FFFFFF
 	LifeLineBorderColor gray
     LifeLineBackgroundColor gray
 
