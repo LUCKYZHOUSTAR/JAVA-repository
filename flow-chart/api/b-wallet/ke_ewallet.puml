@@ -2,16 +2,14 @@
 skinparam backgroundColor #FFFFFF
 skinparam sequence {
 	ArrowColor gray
-	ParticipantBorderColor #FFFFFF
-	ParticipantBackgroundColor #FFFFFF
-	ActorBackgroundColor #FFFFFF
-	ActorFontColor #FFFFFF
-	LifeLineBorderColor gray
-    LifeLineBackgroundColor gray
+	ParticipantBorderColor #5b9bd5
+	ParticipantBackgroundColor #5b9bd5
+	ActorBackgroundColor #5b9bd5
+	ActorFontColor #5b9bd5
+	LifeLineBorderColor 5b9bd5
+    LifeLineBackgroundColor 5b9bd5
 
     ParticipantBorderColor FFFFFF
-'    LifeLineBorderColor blue
-'    LifeLineBackgroundColor #A9DCDF
 
 
 
@@ -33,7 +31,7 @@ skinparam sequence {
 }
 
 title 找房首页交互时序图
-participant 业务APP #FFFFFF
+participant 业务APP #5b9bd5
 participant 找房api网关 #FFFFFF
 participant 找房中台 #FFFFFF
 participant UUS #FFFFFF
