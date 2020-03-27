@@ -16,7 +16,6 @@ public class GlmapperGeneric<T> {
     }
 
 
-
     public void noSpecifyType() {
         GlmapperGeneric glmapperGeneric = new GlmapperGeneric();
         glmapperGeneric.setT("test");
