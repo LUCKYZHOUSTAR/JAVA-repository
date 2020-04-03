@@ -61,6 +61,11 @@
             <artifactId>jna</artifactId>
             <version>4.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>net.cassite</groupId>
+            <artifactId>captcha</artifactId>
+            <version>0.0.1-RELEASE</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.icepdf/icepdf-core -->
 
@@ -69,6 +74,7 @@
             <artifactId>icepdf-core</artifactId>
             <version>6.2.2</version>
         </dependency>
+
 
     </dependencies>
 
