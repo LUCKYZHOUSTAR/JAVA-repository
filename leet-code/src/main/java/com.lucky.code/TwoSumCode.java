@@ -24,26 +24,43 @@ import java.util.Map;
 
 public class TwoSumCode {
 
+    //public static int[] twoSum(int[] nums, int target) {
+    //    Map<Integer,Integer> numMap = new HashMap(nums.length);
+    //
+    //    for (int i = 0; i < nums.length; i++) {
+    //        numMap.put(nums[i], i);
+    //    }
+    //
+    //    for (int i = 0; i < nums.length; i++) {
+    //        int source = target - nums[i];
+    //        if (numMap.containsKey(source)&& numMap.get(source)!=i) {
+    //            return new int[]{i, (int) numMap.get(source)};
+    //        }
+    //    }
+    //
+    //    throw new IllegalArgumentException("No two sum solution");
+    //
+    //}
+
     public static int[] twoSum(int[] nums, int target) {
-        Map<Integer,Integer> numMap = new HashMap(nums.length);
+        Map<Integer, Integer> numMap = new HashMap<>(nums.length);
 
         for (int i = 0; i < nums.length; i++) {
-            numMap.put(nums[i], i);
-        }
+            int leftNum = target - nums[i];
 
-        for (int i = 0; i < nums.length; i++) {
-            int source = target - nums[i];
-            if (numMap.containsKey(source)&& numMap.get(source)!=i) {
-                return new int[]{i, (int) numMap.get(source)};
+            if (numMap.containsKey(leftNum)) {
+                return new int[] {numMap.get(leftNum), i};
             }
+
+            numMap.put(nums[i], i);
         }
 
         throw new IllegalArgumentException("No two sum solution");
 
     }
-
     public static void main(String[] args) {
         int[] target = new int[]{3, 2, 4};
+        int[] result = twoSum(target, 6);
         System.out.println(twoSum(target,6));
     }
 }

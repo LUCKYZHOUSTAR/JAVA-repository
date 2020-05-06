@@ -43,7 +43,6 @@ public class LengthOfLongestSubstring {
         return ans;
     }
 
-
     //abcabcaa
     //保存目前的最长子串值
     //两个指针，右指针扩容，左指针保持不变，一次前进，分配每个数值的坐标，当发现有重复的数值的时候，计算这两个数值的坐标差即可，其实就是左指针移动到了这个位置
@@ -67,7 +66,6 @@ public class LengthOfLongestSubstring {
         return ans;
 
     }
-
 
     /**
      * 功能描述:
@@ -95,8 +93,7 @@ public class LengthOfLongestSubstring {
         return max;
     }
 
-
-    //理解了
+    //理解了abcdabcde
     public static int lengthOfLongestSubstring3(String s) {
         Map<Character, Integer> map = new HashMap<>();
 
@@ -109,21 +106,17 @@ public class LengthOfLongestSubstring {
                 i = Math.max(i, map.get(s.charAt(j)) + 1);
             }
 
-
             map.put(s.charAt(j), j);
 
             max = Math.max(max, j - i + 1);
         }
 
-
         return max;
     }
 
-
     public static void main(String[] args) {
         System.out.println(lengthOfLongestSubstring2("dvdf"));
-//        System.out.println(lengthOfLongestSubstringV1("abcd"));
+        //        System.out.println(lengthOfLongestSubstringV1("abcd"));
     }
-
 
 }

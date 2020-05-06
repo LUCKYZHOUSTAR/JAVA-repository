@@ -25,6 +25,7 @@ package com.lucky.boot;
  * EnableAutoConfiguration:会扫描/META-INF/spring.factories文件中的jar包，
  */
 
+import com.lucky.boot.config.DebugConfig;
 import com.lucky.boot.flag.ContentService;
 import com.lucky.boot.service.FlyService;
 import org.springframework.boot.SpringApplication;
@@ -47,5 +48,8 @@ public class BootStrapTest {
         ApplicationContext context = SpringApplication.run(BootStrapTest.class, args);
         //context.getBean(FlyService.class).fly();
         //context.getBean(ContentService.class).doSomething();
+
+       DebugConfig debugConfig= context.getBean(DebugConfig.class);
+        System.out.println(debugConfig);
     }
 }

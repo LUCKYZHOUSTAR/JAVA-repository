@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @Author:chaoqiang.zhou
- * @Description:
+ * @Description:只会扫描到该包，但是不会当成bean进行注入
  * @Date:Create in 15:12 2017/12/12
  */
 @Configuration
