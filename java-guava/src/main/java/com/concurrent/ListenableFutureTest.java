@@ -6,6 +6,9 @@ import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author:chaoqiang.zhou
@@ -16,7 +19,8 @@ public class ListenableFutureTest {
     /**
      * 1、MoreExecutors
      * <p>
-     * 该类是final类型的工具类，提供了很多静态方法。例如listeningDecorator方法初始化ListeningExecutorService方法，使用此实例submit方法即可初始化ListenableFuture对象。
+     * 该类是final类型的工具类，提供了很多静态方法。例如listeningDecorator方法初始化ListeningExecutorService方法，使用此实例submit
+     * 方法即可初始化ListenableFuture对象。
      * <p>
      * 2、ListeningExecutorService
      * <p>
@@ -41,6 +45,16 @@ public class ListenableFutureTest {
     // 创建线程池
     final static ListeningExecutorService service = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool());
 
+    private static ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(4,
+        createThreadFactory("ScheduledExecutor pool"));
+
+
+    private static ThreadFactory createThreadFactory(String name) {
+        return new ThreadFactoryBuilder()
+            .setPriority(Thread.NORM_PRIORITY)
+            .setNameFormat("   GEI-" + name + " - %s")
+            .setUncaughtExceptionHandler((t, e) -> System.out.println("2323")).build();
+    }
     public static void main(String[] args) throws Exception {
         Long t1 = System.currentTimeMillis();
         // 任务1
@@ -50,6 +64,25 @@ public class ListenableFutureTest {
                 return true;
             }
         });
+
+        //可以在future基础上套用一层超时的futures
+        ListenableFuture<Boolean> timeoutFuture = Futures.withTimeout(booleanTask, 1000, TimeUnit.MILLISECONDS,
+            executor);
+
+        //还可以为future添加回调函数
+        Futures.addCallback(timeoutFuture, new FutureCallback<Boolean>() {
+            @Override
+            public void onSuccess(Boolean aBoolean) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+
+            }
+        });
+
+
 
         booleanTask.addListener(new Runnable() {
             @Override
@@ -120,6 +153,5 @@ public class ListenableFutureTest {
         // 执行时间
         System.err.println("time: " + (System.currentTimeMillis() - t1));
     }
-
 
 }
