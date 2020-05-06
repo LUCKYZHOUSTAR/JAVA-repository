@@ -4,6 +4,13 @@ package com.lucky.boot;
  * @Author:chaoqiang.zhou
  * @Description:
  * @Date:Create in 15:41 2017/12/20
+ * @Author:chaoqiang.zhou
+ * @Description:
+ * @Date:Create in 14:16 2017/12/12
+ * <p>
+ * EnableAutoConfiguration:会扫描/META-INF/spring.factories文件中的jar包，
+ *
+ * EnableAutoConfiguration:会扫描/META-INF/spring.factories文件中的jar包，
  */
 
 /**
@@ -13,7 +20,6 @@ package com.lucky.boot;
  * <p>
  * EnableAutoConfiguration:会扫描/META-INF/spring.factories文件中的jar包，
  */
-
 
 /**
  * EnableAutoConfiguration:会扫描/META-INF/spring.factories文件中的jar包，
@@ -37,9 +43,9 @@ import org.springframework.context.ApplicationContext;
 public class BootStrapTest {
 
     public static void main(String[] args) {
-        System.out.println("sadf");
+        //System.out.println("sadf");
         ApplicationContext context = SpringApplication.run(BootStrapTest.class, args);
-        context.getBean(FlyService.class).fly();
-        context.getBean(ContentService.class).doSomething();
+        //context.getBean(FlyService.class).fly();
+        //context.getBean(ContentService.class).doSomething();
     }
 }

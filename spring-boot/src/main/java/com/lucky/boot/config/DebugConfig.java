@@ -22,7 +22,6 @@ public class DebugConfig {
     @PostConstruct
     public void init() {
         debug = true;
-        log.info("ascp.tools.gei.debug.enable = true");
     }
 
     public static boolean isDebug() {

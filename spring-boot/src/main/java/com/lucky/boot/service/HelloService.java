@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @Date:Create in 14:24 2017/12/12
  */
 @Slf4j
-@Component
+//@Component
 public class HelloService {
 
     public void sayHello() {
