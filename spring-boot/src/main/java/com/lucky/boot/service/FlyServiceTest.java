@@ -13,4 +13,7 @@ public class FlyServiceTest {
     public FlyServiceTest(HelloService helloService) {
         System.out.println("走我了吗");
     }
+
+    public FlyServiceTest() {
+    }
 }
