@@ -82,7 +82,7 @@ public class LengthOfLongestSubstring {
         int max = 0;
         for (int i = 0, j = 0; j < s.length(); j++) {
             while (set.contains(s.charAt(j))) {
-                set.remove(s.charAt(i));
+                set.remove(s.charAt(j));
                 i++;
             }
 
@@ -93,8 +93,9 @@ public class LengthOfLongestSubstring {
         return max;
     }
 
-    //理解了abcdabcde
+    //理解了labcadefdbcde
     public static int lengthOfLongestSubstring3(String s) {
+        //字母在字符中的位置索引
         Map<Character, Integer> map = new HashMap<>();
 
         int max = 0;
@@ -103,6 +104,9 @@ public class LengthOfLongestSubstring {
 
             if (map.containsKey(s.charAt(j))) {
                 //防止后续出出现了比左边指针还小的数字
+                System.out.println(s.charAt(j));
+                System.out.println(map.get(s.charAt(j)));
+                //比如abcdabcbdea，当指针都向后再次指向c的时候，左边指针指向了第一个c字母，当下一个字段又是b的时候，此时左边指针在c，如果不比较max的话，i又移到了左边，就出现问题了
                 i = Math.max(i, map.get(s.charAt(j)) + 1);
             }
 
@@ -115,7 +119,7 @@ public class LengthOfLongestSubstring {
     }
 
     public static void main(String[] args) {
-        System.out.println(lengthOfLongestSubstring2("dvdf"));
+        System.out.println(lengthOfLongestSubstring3("labcadefdbcde"));
         //        System.out.println(lengthOfLongestSubstringV1("abcd"));
     }
 

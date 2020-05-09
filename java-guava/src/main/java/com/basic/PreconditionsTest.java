@@ -32,7 +32,7 @@ public class PreconditionsTest {
     public void testPrecon() {
 
 //        Preconditions.checkArgument(3 < 4);
-//        Preconditions.checkArgument(3 > 4, "%s is wrong", "3<4");
+        Preconditions.checkArgument(3 > 4, "%s is wrong", "3<4");
 //        Preconditions.checkState(3>4);
         Preconditions.checkNotNull(null);
 

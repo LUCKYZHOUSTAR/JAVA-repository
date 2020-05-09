@@ -11,6 +11,20 @@ package com.lucky.boot;
  * EnableAutoConfiguration:会扫描/META-INF/spring.factories文件中的jar包，
  *
  * EnableAutoConfiguration:会扫描/META-INF/spring.factories文件中的jar包，
+ * @Author:chaoqiang.zhou
+ * @Description:
+ * @Date:Create in 14:16 2017/12/12
+ * <p>
+ * EnableAutoConfiguration:会扫描/META-INF/spring.factories文件中的jar包，
+ *
+ * EnableAutoConfiguration:会扫描/META-INF/spring.factories文件中的jar包，
+ * @Author:chaoqiang.zhou
+ * @Description:
+ * @Date:Create in 14:16 2017/12/12
+ * <p>
+ * EnableAutoConfiguration:会扫描/META-INF/spring.factories文件中的jar包，
+ *
+ * EnableAutoConfiguration:会扫描/META-INF/spring.factories文件中的jar包，
  */
 
 /**
@@ -25,8 +39,14 @@ package com.lucky.boot;
  * EnableAutoConfiguration:会扫描/META-INF/spring.factories文件中的jar包，
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.common.eventbus.EventBus;
 import com.lucky.boot.config.DebugConfig;
 import com.lucky.boot.flag.ContentService;
+import com.lucky.boot.msg.CustomEvent;
+import com.lucky.boot.msg.CustomEventListener;
 import com.lucky.boot.service.FlyService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -49,7 +69,25 @@ public class BootStrapTest {
         //context.getBean(FlyService.class).fly();
         //context.getBean(ContentService.class).doSomething();
 
-       DebugConfig debugConfig= context.getBean(DebugConfig.class);
-        System.out.println(debugConfig);
+        //DebugConfig debugConfig = context.getBean(DebugConfig.class);
+        //System.out.println(debugConfig);
+
+        evenBusTest();
     }
+
+    public static void evenBusTest() {
+        EventBus eventBus = new EventBus();
+
+        List<String> listenedMessageList = new ArrayList<>();
+        CustomEventListener customEventListener = new CustomEventListener(listenedMessageList);
+
+        eventBus.register(customEventListener);
+
+        eventBus.post(new CustomEvent("post a custom event ---- 1"));
+
+        eventBus.unregister(customEventListener);
+
+        eventBus.post(new CustomEvent("post a custom event ---- 2"));
+    }
+
 }

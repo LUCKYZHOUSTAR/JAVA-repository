@@ -1,7 +1,5 @@
 package space;
 
-import space.space.PrivateTest3;
-
 /**
  * desc:私有类信息
  *
