@@ -100,7 +100,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.13.1</version>
         </dependency>
         <!-- javax的jsr序列化依赖，jersey里面用到的，勿动 end -->
     </dependencies>
