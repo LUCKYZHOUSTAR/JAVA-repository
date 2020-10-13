@@ -64,7 +64,7 @@
         <version.protobuf>2.6.1</version.protobuf>
         <version.jedis>2.8.1</version.jedis>
         <version.fastjson>1.2.8</version.fastjson>
-        <version.junit>4.12</version.junit>
+        <version.junit>4.13.1</version.junit>
         <version.fst>2.45</version.fst>
         <version.nsq>1.0.0.RC2-M7</version.nsq>
         <version.mongodb>3.2.2</version.mongodb>
@@ -159,7 +159,7 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.12</version>
+                <version>4.13.1</version>
                 <!--<scope>test</scope>-->
             </dependency>
             <dependency>
