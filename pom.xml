@@ -61,7 +61,7 @@
         <version.netty>4.1.0.CR6</version.netty>
         <version.etcd4j>2.10.0</version.etcd4j>
         <version.jug>2.0.0</version.jug>
-        <version.protobuf>2.6.1</version.protobuf>
+        <version.protobuf>3.16.3</version.protobuf>
         <version.jedis>2.8.1</version.jedis>
         <version.fastjson>1.2.8</version.fastjson>
         <version.junit>4.12</version.junit>
